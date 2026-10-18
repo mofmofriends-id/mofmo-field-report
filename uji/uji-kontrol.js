@@ -23,7 +23,8 @@
  * membuka WMS dengan papan palsu di Playwright untuk layarnya.
  */
 const fs = require('fs'), path = require('path'), vm = require('vm'), http = require('http');
-const AKAR = '/home/claude/fieldreport';
+/* 18 Okt: default ke repo tempat uji ini berada, bukan salinan lama /home/claude/fieldreport (dulu diam diam menguji kode lama) */
+const AKAR = process.env.AKAR || require('path').resolve(__dirname, '..');
 const DIHARAPKAN = 32;
 const cek = []; const c = (n, ok, k) => cek.push([n, !!ok, k]);
 

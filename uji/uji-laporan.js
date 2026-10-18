@@ -19,7 +19,8 @@
  * Unduh, lalu membuka berkasnya dengan python-pptx.
  */
 const fs = require('fs'), path = require('path'), vm = require('vm'), http = require('http'), { execFileSync } = require('child_process');
-const AKAR = '/home/claude/fieldreport';
+/* 18 Okt: default ke repo tempat uji ini berada, bukan salinan lama /home/claude/fieldreport (dulu diam diam menguji kode lama) */
+const AKAR = process.env.AKAR || require('path').resolve(__dirname, '..');
 const DIHARAPKAN = 23;
 const cek = []; const c = (n, ok, k) => cek.push([n, !!ok, k]);
 const SEMENTARA = fs.mkdtempSync('/tmp/uji-laporan-');

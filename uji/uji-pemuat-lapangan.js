@@ -19,7 +19,8 @@
  */
 const { chromium } = require('playwright');
 const http = require('http'), fs = require('fs'), path = require('path');
-const AKAR = '/home/claude/fieldreport';
+/* 18 Okt: default ke repo tempat uji ini berada, bukan salinan lama /home/claude/fieldreport (dulu diam diam menguji kode lama) */
+const AKAR = process.env.AKAR || require('path').resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.webmanifest': 'application/manifest+json', '.png': 'image/png' };
 let BEDA = null, LOKAL_MATI = false, TUNDA_LOKAL = 0;
