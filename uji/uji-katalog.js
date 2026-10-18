@@ -67,7 +67,8 @@ for p in r.pages:
     hal.append({'w': float(p.mediabox.width), 'h': float(p.mediabox.height), 'img': [[int(i['/Width']), int(i['/Height']), str(i['/Filter'])] for i in im]})
 print(json.dumps({'hal': hal, 'judul': (r.metadata or {}).get('/Title')}))
 `;
-const AKAR = '/home/claude/fieldreport';
+/* 18 Okt: default ke repo tempat uji ini berada, bukan salinan lama /home/claude/fieldreport (dulu diam diam menguji kode lama) */
+const AKAR = process.env.AKAR || require('path').resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
