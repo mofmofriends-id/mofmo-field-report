@@ -148,6 +148,16 @@
 
   var TEKS = {
     en: {
+      sp_judul: 'Ready for {cap}?', sp_sebelum: 'Starts {t}, {d} days to go. Parcel cards go out during the edition, up to {n} orders.', sp_hariIni: 'Starts today, {t}. Parcel cards go out during the edition, up to {n} orders.', sp_jalan: 'Running, ends {t}.', sp_skor: '{a} of {b} ready', sp_kaki: 'Checked again every time this tab opens. Nothing changes by itself; the buttons only take you to where it is fixed.',
+      sp_tanggal: 'Edition dates', sp_tanggalKet: '{m} to {s} ({n} days).', sp_tanpaAcara: 'No active edition', sp_tanpaAcaraKet: 'Create the edition below first.',
+      sp_tingkatOk: 'Leaderboard rewards split by rank', sp_tingkatOkKet: 'Leaderboard rewards start beyond rank 1.', sp_tingkatW: 'Leaderboard reward not split by rank', sp_tingkatWKet: 'Every winner still gets the same value.',
+      sp_voucherOk: 'Voucher codes filled in', sp_voucherOkKet: 'Every reward with a value or switched on has a voucher code.', sp_voucherW: 'Voucher codes missing', sp_voucherWKet: '{n} reward(s) have a value or are on but no voucher code: {d}. Create them in Seller Centre, then paste the codes.',
+      sp_nyalaOk: '{n} reward(s) switched on', sp_nyalaOkKet: 'Buyers see them in the REWARDS tab.', sp_nyalaW: 'No reward switched on', sp_nyalaWKet: '0 of {n} rewards ON. Buyers see nothing in the REWARDS tab yet.',
+      sp_kuotaOk: 'Quotas match', sp_kuotaOkKet: 'Leaderboard quotas equal their number of ranks; other rewards with a value have a quota above 0.', sp_kuotaW: 'Quota does not match', sp_kuotaWKet: 'Check the quota of: {d}.',
+      sp_berlakuOk: 'Vouchers valid long enough', sp_berlakuOkKet: 'Every voucher in use is valid until the edition ends or later.', sp_berlakuC: 'Voucher validity too short or empty', sp_berlakuCKet: '{d}. Set it to {s} or later so vouchers do not expire before winners use them.',
+      sp_kartuOk: 'Parcel QR cards ready', sp_kartuW: 'Not enough parcel QR cards', sp_kartuKet: '{a} of {b} cards printed.',
+      sp_ujiOk: 'Test data cleaned up', sp_ujiOkKet: 'No cards with a TES or UJI voucher left.', sp_ujiW: 'Test cards still there', sp_ujiWKet: '{n} card(s) with a TES or UJI voucher. Delete them after testing.',
+      sp_keHadiah: 'Go to rewards', sp_cetak: 'Print cards', sp_tingkat: 'Add 3 tiers', sp_hapusUji: 'Delete test data',
       judul: 'Kitabku', judulH: 'Title', tabRingkas: 'Event & rewards', tabCetak: 'Print QR cards', tabStruk: 'Receipt claims', tabPasang: 'Link card', tabTemplate: 'Templates', tutup: 'Close', tp_judul: 'Design templates', tp_ket: 'Saved in Google Drive, folder Arsip Template Mofmo Collection, one folder per event. Files stay private to the Drive owner.', tp_acara: 'Event', tp_berkas: 'Files (PNG, JPG, PDF, AI, PSD, SVG, ZIP; max 15 MB each)', tp_catatan: 'Note (optional)', tp_unggah: 'Upload', tp_kirim: 'Uploading…', tp_kosong: 'No templates archived yet.', tp_final: 'FINAL', tp_jadiFinal: 'Mark final', tp_batalFinal: 'Unmark final', tp_buka: 'Open in Drive', tp_besar: function (n) { return n + ' is larger than 15 MB. Shrink it first or save it straight to Drive.'; }, tp_tanpaAcara: 'Fill in the event name first.', tp_tanpaBerkas: 'Choose a file first.', tp_ok: function (n) { return n + ' file(s) uploaded.'; }, tp_gagal: function (n, p) { return n + ' failed: ' + p; },
       muat: 'Loading…', gagal: 'The Kitabku server could not be reached. Check the signal and try again.', ulang: 'Try again', sesiHabis: 'Your WMS session has ended. Sign in again.',
       kKartu: 'Cards unlocked', kPemain: 'Collectors', kStruk: 'Receipts waiting', kKlaim: 'Rewards claimed', kKode: 'Shopee cards printed', kDipakai: 'scanned',
@@ -188,6 +198,16 @@
       kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.'
     },
     id: {
+      sp_judul: 'Siap edisi {cap}?', sp_sebelum: 'Mulai {t}, {d} hari lagi. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_hariIni: 'Mulai hari ini, {t}. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_jalan: 'Sedang berjalan, selesai {t}.', sp_skor: '{a} dari {b} siap', sp_kaki: 'Dicek ulang tiap tab ini dibuka. Tidak ada yang diubah otomatis; tombol cuma membawa ke tempat membetulkannya.',
+      sp_tanggal: 'Tanggal edisi', sp_tanggalKet: '{m} sampai {s} ({n} hari).', sp_tanpaAcara: 'Belum ada edisi aktif', sp_tanpaAcaraKet: 'Buat edisinya dulu di bawah.',
+      sp_tingkatOk: 'Hadiah papan sudah per peringkat', sp_tingkatOkKet: 'Ada hadiah papan yang mulai di bawah peringkat 1.', sp_tingkatW: 'Hadiah papan belum dibagi per peringkat', sp_tingkatWKet: 'Semua pemenang masih dapat nominal yang sama.',
+      sp_voucherOk: 'Kode voucher lengkap', sp_voucherOkKet: 'Semua hadiah yang bernominal atau menyala sudah punya kode voucher.', sp_voucherW: 'Kode voucher belum diisi', sp_voucherWKet: '{n} hadiah bernominal atau menyala tapi belum ada kode voucher: {d}. Buat dulu di Seller Centre, lalu tempel kodenya.',
+      sp_nyalaOk: '{n} hadiah menyala', sp_nyalaOkKet: 'Pembeli melihatnya di tab HADIAH.', sp_nyalaW: 'Belum ada hadiah yang menyala', sp_nyalaWKet: '0 dari {n} hadiah ON. Pembeli belum melihat hadiah apa pun di tab HADIAH.',
+      sp_kuotaOk: 'Kuota cocok', sp_kuotaOkKet: 'Kuota hadiah papan sama dengan jumlah peringkatnya; hadiah lain yang bernominal punya kuota di atas 0.', sp_kuotaW: 'Kuota belum cocok', sp_kuotaWKet: 'Cek kuota: {d}.',
+      sp_berlakuOk: 'Masa berlaku voucher aman', sp_berlakuOkKet: 'Semua voucher yang dipakai berlaku sampai edisi selesai atau lebih.', sp_berlakuC: 'Masa berlaku voucher pendek atau kosong', sp_berlakuCKet: '{d}. Isi {s} atau sesudahnya supaya voucher tidak keburu habis sebelum dipakai pemenang.',
+      sp_kartuOk: 'Kartu QR paket cukup', sp_kartuW: 'Kartu QR paket kurang', sp_kartuKet: '{a} dari {b} kartu sudah dicetak.',
+      sp_ujiOk: 'Data uji sudah bersih', sp_ujiOkKet: 'Tidak ada kartu dengan voucher TES atau UJI yang tersisa.', sp_ujiW: 'Kartu uji masih ada', sp_ujiWKet: '{n} kartu bervoucher TES atau UJI. Hapus sesudah tes selesai.',
+      sp_keHadiah: 'Ke daftar hadiah', sp_cetak: 'Cetak kartu', sp_tingkat: 'Tambah 3 tingkat', sp_hapusUji: 'Hapus data uji',
       judul: 'Kitabku', judulH: 'Judul', tabRingkas: 'Event & hadiah', tabCetak: 'Cetak kartu QR', tabStruk: 'Klaim struk', tabPasang: 'Pasang kartu', tabTemplate: 'Template', tutup: 'Tutup', tp_judul: 'Template desain', tp_ket: 'Tersimpan di Google Drive, folder Arsip Template Mofmo Collection, satu folder per event. Berkas tetap privat milik pemilik Drive.', tp_acara: 'Event', tp_berkas: 'Berkas (PNG, JPG, PDF, AI, PSD, SVG, ZIP; maks 15 MB per berkas)', tp_catatan: 'Catatan (boleh kosong)', tp_unggah: 'Unggah', tp_kirim: 'Mengunggah…', tp_kosong: 'Belum ada template yang diarsipkan.', tp_final: 'FINAL', tp_jadiFinal: 'Tandai final', tp_batalFinal: 'Batal final', tp_buka: 'Buka di Drive', tp_besar: function (n) { return n + ' lebih dari 15 MB. Kecilkan dulu atau simpan langsung di Drive.'; }, tp_tanpaAcara: 'Isi nama event dulu.', tp_tanpaBerkas: 'Pilih berkasnya dulu.', tp_ok: function (n) { return n + ' berkas terunggah.'; }, tp_gagal: function (n, p) { return n + ' gagal: ' + p; },
       muat: 'Memuat…', gagal: 'Server Kitabku belum bisa dihubungi. Cek sinyal lalu coba lagi.', ulang: 'Coba lagi', sesiHabis: 'Sesi WMS sudah habis. Masuk lagi.',
       kKartu: 'Kartu terbuka', kPemain: 'Kolektor', kStruk: 'Struk menunggu', kKlaim: 'Hadiah diambil', kKode: 'Kartu Shopee dicetak', kDipakai: 'dipindai',
@@ -387,14 +407,57 @@
     /* isian yang ditolak server tetap di form (18 Okt): dulu form kembali ke nilai lama dan hadiah baru kosong lagi */
     var rows = (r.hadiah || []).map(function (h) { return htmlHadiah(A.draf[h.id] ? Object.assign({}, h, A.draf[h.id]) : h); }).join(''), tp = tumpangPapan(r.hadiah);
     if (tp.length) rows = '<div class="tolak-alat kb-tumpang" role="alert">' + esc(t('tumpang').replace('{d}', tp.join(', '))) + '</div>' + rows;
-    var hadiah = '<section class="kb-kotak"><h3>' + esc(t('hadiah')) + '</h3><p class="ket-alat">' + esc(t('ketHadiah')) + '</p>' +
+    var hadiah = '<section class="kb-kotak" id="kbHadiah"><h3>' + esc(t('hadiah')) + '</h3><p class="ket-alat">' + esc(t('ketHadiah')) + '</p>' +
       (rows || '<p class="ket-alat">' + esc(t('tanpaHadiah')) + '</p>') +
       '<details class="kb-det"' + (A.draf.baru ? ' open' : '') + '><summary>' + esc(t('hadiahBaru')) + '</summary>' + htmlHadiah(A.draf.baru ? Object.assign({}, A.draf.baru, { baru: true }) : { id: '', jenis: 'kartu', angka: 3, saluran: 'semua', aktif: false, baru: true }) + '</details>' +
       (rows ? '' : '<button type="button" class="btn dua" data-kb="usulan">' + esc(t('usulan')) + '</button>') +
       /* tombol tingkat cuma muncul selama belum ada hadiah papan yang mulai di bawah peringkat 1 */
       ((r.hadiah || []).some(function (h) { return h.jenis === 'papan' && Number(h.peringkat_dari) > 1; }) ? '' :
         '<div class="kb-tingkat-usul"><button type="button" class="btn dua" data-kb="tingkat3">' + esc(t('tingkat3')) + '</button><small class="ket-alat">' + esc(t('tingkat3Ket')) + '</small></div>') + '</section>';
-    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + '<div class="kb-kpis">' + kpi + '</div>' + acara + hadiah;
+    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + htmlSiap(r) + '<div class="kb-kpis">' + kpi + '</div>' + acara + hadiah;
+  }
+  /* ---------- Siap edisi (18 Okt 2026, mockup disetujui Ferdy) ----------
+     Cek kesiapan edisi sebelum dan selama edisi: tanggal, tingkat papan, kode voucher, hadiah menyala,
+     kuota, masa berlaku, kartu paket, kartu uji. Cuma membaca A.ringkas; tidak mengubah apa pun.
+     Hadiah "dipakai" = bernominal ATAU menyala: hadiah tanpa nominal yang mati dianggap belum dipakai.
+     Baris kartu dan uji butuh hitungan paket dari server kitab v13; server lama tidak mengirimnya. */
+  function selisihHari(a, b) { return Math.round((Date.parse(b + 'T00:00:00Z') - Date.parse(a + 'T00:00:00Z')) / 864e5); }
+  function teksIsi(k, o) { var x = t(k); Object.keys(o || {}).forEach(function (n) { x = x.split('{' + n + '}').join(o[n]); }); return x; }
+  function cekSiap(r, hari) {
+    var ac = r && r.acara, H = (r && r.hadiah) || [], pk = r && r.paket, L = [];
+    if (ac && String(ac.selesai).slice(0, 10) < hari) return null;
+    var dipakai = H.filter(function (h) { return String(h.nominal || '').trim() || h.aktif; });
+    if (ac) L.push({ id: 'tanggal', s: 'ok', j: t('sp_tanggal'), k: teksIsi('sp_tanggalKet', { m: tgl(ac.mulai), s: tgl(ac.selesai), n: selisihHari(String(ac.mulai).slice(0, 10), String(ac.selesai).slice(0, 10)) + 1 }) });
+    else L.push({ id: 'tanggal', s: 'w', j: t('sp_tanpaAcara'), k: t('sp_tanpaAcaraKet') });
+    var bertingkat = H.some(function (h) { return h.jenis === 'papan' && Number(h.peringkat_dari) > 1; });
+    L.push(bertingkat ? { id: 'tingkat', s: 'ok', j: t('sp_tingkatOk'), k: t('sp_tingkatOkKet') } : { id: 'tingkat', s: 'w', j: t('sp_tingkatW'), k: t('sp_tingkatWKet'), b: ['data-kb="tingkat3"', t('sp_tingkat'), 1] });
+    var tanpaV = dipakai.filter(function (h) { return !String(h.voucher || '').trim(); }).map(function (h) { return h.id; });
+    L.push(tanpaV.length ? { id: 'voucher', s: 'w', j: t('sp_voucherW'), k: teksIsi('sp_voucherWKet', { n: tanpaV.length, d: tanpaV.join(', ') }), b: ['data-kb="keHadiah"', t('sp_keHadiah')] } : { id: 'voucher', s: 'ok', j: t('sp_voucherOk'), k: t('sp_voucherOkKet') });
+    var nyala = H.filter(function (h) { return h.aktif; }).length;
+    L.push(nyala ? { id: 'nyala', s: 'ok', j: teksIsi('sp_nyalaOk', { n: nyala }), k: t('sp_nyalaOkKet') } : { id: 'nyala', s: 'w', j: t('sp_nyalaW'), k: teksIsi('sp_nyalaWKet', { n: H.length }), b: ['data-kb="keHadiah"', t('sp_keHadiah')] });
+    var salahK = H.filter(function (h) { return h.jenis === 'papan' ? (h.aktif || String(h.nominal || '').trim() || Number(h.peringkat_dari) > 1) && teksKuota(h) : (String(h.nominal || '').trim() && !(Number(h.kuota) > 0)); }).map(function (h) { return h.id; });
+    L.push(salahK.length ? { id: 'kuota', s: 'w', j: t('sp_kuotaW'), k: teksIsi('sp_kuotaWKet', { d: salahK.join(', ') }), b: ['data-kb="keHadiah"', t('sp_keHadiah')] } : { id: 'kuota', s: 'ok', j: t('sp_kuotaOk'), k: t('sp_kuotaOkKet') });
+    var batas = ac ? String(ac.selesai).slice(0, 10) : '';
+    var pendek = batas ? dipakai.filter(function (h) { var b = String(h.berlaku_sampai || '').slice(0, 10); return !b || b < batas; }).map(function (h) { return h.id + ' (' + (h.berlaku_sampai ? tgl(h.berlaku_sampai) : '-') + ')'; }) : [];
+    L.push(pendek.length ? { id: 'berlaku', s: 'c', j: t('sp_berlakuC'), k: teksIsi('sp_berlakuCKet', { d: pendek.join(', '), s: tgl(batas) }), b: ['data-kb="keHadiah"', t('sp_keHadiah')] } : { id: 'berlaku', s: 'ok', j: t('sp_berlakuOk'), k: t('sp_berlakuOkKet') });
+    if (pk) {
+      L.push({ id: 'kartu', s: pk.dicetak >= pk.target ? 'ok' : 'w', j: t(pk.dicetak >= pk.target ? 'sp_kartuOk' : 'sp_kartuW'), k: teksIsi('sp_kartuKet', { a: nf(pk.dicetak), b: nf(pk.target) }), b: pk.dicetak >= pk.target ? null : ['data-kbtab="cetak"', t('sp_cetak'), 1] });
+      L.push(pk.uji ? { id: 'uji', s: 'w', j: t('sp_ujiW'), k: teksIsi('sp_ujiWKet', { n: nf(pk.uji) }), b: ['data-kbtab="pasang"', t('sp_hapusUji')] } : { id: 'uji', s: 'ok', j: t('sp_ujiOk'), k: t('sp_ujiOkKet') });
+    }
+    var sub = '';
+    if (ac) { var m = String(ac.mulai).slice(0, 10), d = selisihHari(hari, m), n = pk ? pk.target : 50; sub = d > 0 ? teksIsi('sp_sebelum', { t: tgl(m), d: d, n: n }) : d === 0 ? teksIsi('sp_hariIni', { t: tgl(m), n: n }) : teksIsi('sp_jalan', { t: tgl(ac.selesai) }); }
+    return { judul: teksIsi('sp_judul', { cap: ac ? (ac.cap || ac.nama) : '' }).replace(/\s+\?/, '?'), sub: sub, item: L, siap: L.filter(function (x) { return x.s === 'ok'; }).length };
+  }
+  function htmlSiap(r) {
+    var c = cekSiap(r, hariIniWib()); if (!c) return '';
+    var ikon = { ok: '✓', w: '!', c: '?' };
+    return '<section class="kb-kotak kb-siap" id="kbSiap"><div class="kb-siap-kepala"><div><h3>' + esc(c.judul) + '</h3>' + (c.sub ? '<p class="ket-alat">' + esc(c.sub) + '</p>' : '') + '</div>' +
+      '<span class="kb-siap-skor' + (c.siap === c.item.length ? ' ok' : '') + '">' + esc(teksIsi('sp_skor', { a: c.siap, b: c.item.length })) + '</span></div>' +
+      '<div class="kb-siap-batang" aria-hidden="true"><i style="width:' + Math.round(c.siap / c.item.length * 100) + '%"></i></div><ul class="kb-siap-daftar">' +
+      c.item.map(function (x) {
+        return '<li class="' + x.s + '" data-siap="' + x.id + '" data-status="' + x.s + '"><span class="kb-siap-ikon" aria-hidden="true">' + ikon[x.s] + '</span><div><b>' + esc(x.j) + '</b><small>' + esc(x.k) + '</small></div>' +
+          (x.b ? '<button type="button" class="btn' + (x.b[2] ? '' : ' dua') + '" ' + x.b[0] + '>' + esc(x.b[1]) + '</button>' : '') + '</li>';
+      }).join('') + '</ul><p class="ket-alat">' + esc(t('sp_kaki')) + '</p></section>';
   }
   function htmlHadiah(h) {
     var k = h.baru ? 'baru' : h.id, sel = function (nm, opsi, nilai) { return '<select data-f="' + nm + '">' + opsi.map(function (o) { return '<option value="' + o[0] + '"' + (String(nilai) === String(o[0]) ? ' selected' : '') + '>' + esc(o[1]) + '</option>'; }).join('') + '</select>'; };
@@ -895,6 +958,7 @@
     else if (a === 'hadiah') simpanHadiah(x.getAttribute('data-id'));
     else if (a === 'usulan') pasangUsulan();
     else if (a === 'tingkat3') pasangTingkat3();
+    else if (a === 'keHadiah') { var hd = el('kbHadiah'); if (hd && hd.scrollIntoView) hd.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     else if (a === 'buatPaket') buatPaket();
     else if (a === 'cetakPaketLagi') cetakA4();
     else if (a === 'pngPaket') pngPaket();

@@ -193,6 +193,19 @@
     });
     return urut.filter(function (no) { return !per[no].batal; }).map(function (no) { var x = per[no]; return { no: no, isi: Object.keys(x.isi).map(function (bc) { return { barcode: bc, qty: x.isi[bc] }; }) }; });
   }
+  /* 18 Okt 2026: pesanan yang sudah dikemas tapi tidak berkartu di Excel ini. Server (paketEdisi) yang memutus
+     mana yang ternyata sudah punya kartu dari halaman Pasang kartu; tanggal edisi disaring sesudah jawabannya datang. */
+  function kandidatTanpaKartu(baris) {
+    var per = {}, urut = [];
+    (baris || []).forEach(function (b) {
+      var x = per[b.no]; if (!x) { x = per[b.no] = { no: b.no, batal: false, kartu: false, tKemas: '', tSerah: '', pengemas: '', pcs: 0 }; urut.push(b.no); }
+      if (b.status === 'Batal') x.batal = true;
+      if (String(b.kartu || '').trim()) x.kartu = true;
+      ['tKemas', 'tSerah', 'pengemas'].forEach(function (f) { if (!x[f] && b[f]) x[f] = String(b[f]); });
+      x.pcs += Number(b.qty) || 0;
+    });
+    return urut.map(function (no) { return per[no]; }).filter(function (x) { return !x.batal && !x.kartu && x.tKemas; });
+  }
   function tanpaKartu(baris) { return (baris || []).map(function (b) { var o = {}; Object.keys(b).forEach(function (f) { if (f !== 'kartu') o[f] = b[f]; }); return o; }); }
 
   /* ================= hitungan laporan ================= */
@@ -578,6 +591,9 @@
       sudah: function (n, t) { return n + ' hari sudah setor bulan ini' + (t ? ' · terakhir ' + t : ''); }, kepalaGagal: 'Berkas ini tidak punya tabel dengan kolom No Pesanan dan Barcode.', bacaGagal: 'Berkas tidak bisa dibaca. Pastikan .xlsx.',
       kartuJudul: 'Kartu QR paket', kartuIsiGagal: function (t) { return 'Isi pesanan belum terkirim ke Mofmo Collection: ' + t + ' Kartu tetap tersambung dan voucher pembeli tetap jalan; kartu koleksinya menyusul sesudah berkas yang sama disetor ulang.'; }, kartuJalan: 'Memasang kartu QR ke pesanan…', kartuGagal: function (t) { return 'Kartu QR belum terpasang: ' + t + ' Setor ulang berkas yang sama nanti; laporan dan stok tidak akan tertulis dua kali.'; },
       kartuHasil: function (n, s) { return n + ' kartu terpasang' + (s ? ', ' + s + ' sudah terpasang sebelumnya' : '') + '.'; }, kartuArah: 'Betulkan lewat Kitabku > Pasang kartu, lalu setor ulang kalau perlu.',
+      edisiMaju: function (cap, a, b) { return 'Kartu edisi ' + cap + ': ' + a + ' dari ' + b + ' terpasang'; }, edisiSisa: function (n) { return 'sisa ' + n + ' kartu'; }, edisiPenuh: 'penuh', edisiPenuhKet: 'Kuota kartu edisi ini sudah habis. Pesanan berikutnya tidak perlu kartu dan tidak lagi ditandai.',
+      tanpaJudul: function (n) { return n + ' pesanan di setoran ini tidak punya kartu'; }, tanpaBaris: function (pcs, jam, oleh, serah) { return pcs + ' pcs · dikemas ' + jam + (oleh ? ' oleh ' + oleh : '') + ' · ' + (serah ? 'sudah diserahkan kurir' : 'belum diserahkan'); },
+      tanpaArah: 'Yang belum diserahkan: selipin kartu, lalu scan di Kitabku > Pasang kartu. Yang sudah dikirim: pembelinya tidak dapat kartu, tidak perlu diapa-apain.',
       k_lain: function (k, l) { return 'kartu ' + k + ' sudah terpasang ke pesanan ' + l; }, k_penuh: function (k, l) { return 'pesanan ini sudah punya kartu ' + l + ', kartu ' + k + ' tidak dipasang'; },
       k_bukan: function (k) { return k + ' kartu per produk (cara lama), bukan kartu paket'; }, k_tidak: function (k) { return 'kode kartu ' + k + ' tidak dikenal'; }, k_salah: function (k) { return 'kode kartu atau No Pesanan tidak terbaca (' + k + ')'; },
       k_dipakai: function (k) { return 'kartu ' + k + ' sudah dibuka pembeli'; }, k_terbuka: function (k, l) { return 'kartu lama ' + l + ' pesanan ini sudah dibuka pembeli'; }, k_dua: function (k) { return 'dua kartu berbeda di satu pesanan (' + k + '); satu paket satu kartu'; },
@@ -594,6 +610,9 @@
       sudah: function (n, t) { return n + ' days submitted this month' + (t ? ' · last ' + t : ''); }, kepalaGagal: 'This file has no table with No Pesanan and Barcode columns.', bacaGagal: 'The file could not be read. Make sure it is .xlsx.',
       kartuJudul: 'Parcel QR cards', kartuIsiGagal: function (t) { return 'Order contents not sent to Mofmo Collection yet: ' + t + ' Cards stay linked and the buyer voucher still works; collection cards follow once the same file is submitted again.'; }, kartuJalan: 'Linking QR cards to orders…', kartuGagal: function (t) { return 'QR cards were not linked: ' + t + ' Submit the same file again later; the report and stock will not be written twice.'; },
       kartuHasil: function (n, s) { return n + ' cards linked' + (s ? ', ' + s + ' already linked before' : '') + '.'; }, kartuArah: 'Fix it in Kitabku > Link card, then submit again if needed.',
+      edisiMaju: function (cap, a, b) { return cap + ' edition cards: ' + a + ' of ' + b + ' linked'; }, edisiSisa: function (n) { return n + ' cards left'; }, edisiPenuh: 'full', edisiPenuhKet: 'This edition\'s card quota is used up. Later orders need no card and are no longer flagged.',
+      tanpaJudul: function (n) { return n + ' order(s) in this submission have no card'; }, tanpaBaris: function (pcs, jam, oleh, serah) { return pcs + ' pcs · packed ' + jam + (oleh ? ' by ' + oleh : '') + ' · ' + (serah ? 'handed to courier' : 'not handed over yet'); },
+      tanpaArah: 'Not handed over yet: tuck a card in, then scan it in Kitabku > Link card. Already shipped: that buyer gets no card, nothing to do.',
       k_lain: function (k, l) { return 'card ' + k + ' is already linked to order ' + l; }, k_penuh: function (k, l) { return 'this order already has card ' + l + ', card ' + k + ' was not linked'; },
       k_bukan: function (k) { return k + ' is a per-product card (old kind), not a parcel card'; }, k_tidak: function (k) { return 'card code ' + k + ' not recognised'; }, k_salah: function (k) { return 'card code or order number could not be read (' + k + ')'; },
       k_dipakai: function (k) { return 'card ' + k + ' was already opened by the buyer'; }, k_terbuka: function (k, l) { return 'old card ' + l + ' on this order was already opened by the buyer'; }, k_dua: function (k) { return 'two different cards in one order (' + k + '); one parcel holds one card'; },
@@ -691,12 +710,24 @@
     });
     (q.masalah || []).forEach(function (m) { salah.push(m.no + ': ' + T('k_dua')(m.kode.map(kodeTampilK).join(', '))); });
     if (q.isiGagal) o += '<p class="ls-awas">' + esc(T('kartuIsiGagal')(q.isiGagal)) + '</p>';
-    if (!q.adaKartu) return o + '</div>';
-    o += '<p class="' + (salah.length ? 'ls-awas' : 'ls-hasil') + '">' + esc(T('kartuHasil')(n, sudah)) + '</p>';
-    if (salah.length) o += '<ul class="ls-tolak">' + salah.slice(0, 30).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul><p class="ket-alat">' + esc(T('kartuArah')) + '</p>';
-    return o + '</div>';
+    if (q.adaKartu) {
+      o += '<p class="' + (salah.length ? 'ls-awas' : 'ls-hasil') + '">' + esc(T('kartuHasil')(n, sudah)) + '</p>';
+      if (salah.length) o += '<ul class="ls-tolak">' + salah.slice(0, 30).map(function (t) { return '<li>' + esc(t) + '</li>'; }).join('') + '</ul><p class="ket-alat">' + esc(T('kartuArah')) + '</p>';
+    }
+    return o + kartuEdisi(q.edisi) + '</div>';
   }
-  function pasangKartuSetor(pas, isi) {
+  function kartuEdisi(e) {
+    if (!e) return '';
+    var p = e.paket, b = Math.max(1, Number(p.target) || 0), a = Math.min(Number(p.terpasang) || 0, b);
+    var o = '<div class="ls-maju" data-ls-edisi="1"><div class="ls-maju-angka">' + esc(T('edisiMaju')(e.cap, a, b)) + '<span>' + esc(e.penuh ? T('edisiPenuh') : T('edisiSisa')(b - a)) + '</span></div>' +
+      '<div class="ls-maju-batang" aria-hidden="true"><i style="width:' + Math.round(a / b * 100) + '%"></i></div></div>';
+    if (e.penuh) o += '<p class="ket-alat">' + esc(T('edisiPenuhKet')) + '</p>';
+    if (!e.tanpa.length) return o;
+    return o + '<div class="ls-tanpa" data-ls-tanpa="1"><b>' + esc(T('tanpaJudul')(e.tanpa.length)) + '</b><ul>' + e.tanpa.slice(0, 50).map(function (x) {
+      return '<li><code>' + esc(x.no) + '</code><span>' + esc(T('tanpaBaris')(x.pcs, String(x.tKemas).slice(0, 16), x.pengemas, !!x.tSerah)) + '</span></li>';
+    }).join('') + '</ul></div><p class="ket-alat">' + esc(T('tanpaArah')) + '</p>';
+  }
+  function pasangKartuSetor(pas, isi, kandidat) {
     var K = W.WmsKitabku, adaKartu = pas.item.length || pas.masalah.length;
     if (!K || !K.panggil) { if (adaKartu) S.kartu = { galat: 'Kitabku' }; return Promise.resolve(); }
     if (adaKartu) { S.kartu = { jalan: true }; ulangPrat(); }
@@ -713,7 +744,21 @@
       return K.panggil('pasangKartu', { item: potong }).then(function (r) { if (!r || !r.ok) throw new Error((r && r.pesan) || T('gagal')); hasil = hasil.concat(r.hasil || []); return lanjut(); });
     }
     /* isi yang ditolak (mis. server belum tahap 3) tidak menahan kartu terpasang: voucher pembeli tetap jalan, kartunya menyusul */
-    return kirimIsi().catch(function (e) { isiGagal = String(e && e.message || e); }).then(lanjut).then(function () { if (adaKartu || isiGagal) S.kartu = { hasil: hasil, masalah: pas.masalah, adaKartu: !!adaKartu, isiGagal: isiGagal }; }, function (e) { S.kartu = { galat: String(e && e.message || e) }; }).then(ulangPrat);
+    /* 18 Okt: progres kartu edisi dan pesanan yang kelewat kartu. Server lama (tanpa paketEdisi) atau galat jaringan
+       cuma menghilangkan bagian ini; kotak hasil tetap seperti dulu. */
+    kandidat = kandidat || [];
+    function cekEdisi() {
+      if (!adaKartu && !kandidat.length) return Promise.resolve(null);
+      return K.panggil('paketEdisi', { pesanan: kandidat.slice(0, 2000).map(function (x) { return x.no; }) }).then(function (r) {
+        if (!r || !r.ok || !r.acara || !r.paket) return null;
+        var punya = {}; (r.punya || []).forEach(function (n) { punya[n] = 1; });
+        var m = String(r.acara.mulai || '').slice(0, 10), z = String(r.acara.selesai || '').slice(0, 10), penuh = r.paket.terpasang >= r.paket.target;
+        var tanpa = penuh ? [] : kandidat.filter(function (x) { var t = tglDari(x.tKemas); return !punya[String(x.no).toUpperCase()] && t >= m && t <= z; });
+        return { cap: r.acara.cap || '', paket: r.paket, penuh: penuh, tanpa: tanpa };
+      }, function () { return null; });
+    }
+    var edisi = null;
+    return kirimIsi().catch(function (e) { isiGagal = String(e && e.message || e); }).then(lanjut).then(function () { return cekEdisi().then(function (x) { edisi = x; }); }).then(function () { if (adaKartu || isiGagal || (edisi && edisi.tanpa.length)) S.kartu = { hasil: hasil, masalah: pas.masalah, adaKartu: !!adaKartu, isiGagal: isiGagal, edisi: edisi }; }, function (e) { S.kartu = { galat: String(e && e.message || e) }; }).then(ulangPrat);
   }
   /* daftar pesanan bermasalah dari pratinjau Gudang Shopee: larik berisi {no, alasan|pesan|sebab} */
   function masalahGerak(r) {
@@ -792,7 +837,7 @@
         S.hasil = h || { ok: false };
         if (!h || h.ok === false) return;
         S.berkas = null; S.data = null; var f = el('lsBerkas'); if (f) f.value = '';
-        var isiKirim = isiPesananDari(barisAsli), janjiKartu = (pasKartu.item.length || pasKartu.masalah.length || isiKirim.length) ? pasangKartuSetor(pasKartu, isiKirim) : Promise.resolve();
+        var isiKirim = isiPesananDari(barisAsli), kandidat = kandidatTanpaKartu(barisAsli), janjiKartu = (pasKartu.item.length || pasKartu.masalah.length || isiKirim.length) ? pasangKartuSetor(pasKartu, isiKirim, kandidat) : Promise.resolve();
         /* laporan tersimpan: pratinjau gerak stok lewat jalur Gudang Shopee (tidak menulis apa pun) */
         status(T('gerakMuat'));
         return opsBerkas(barisSetor, S.dp, oleh).then(function (b64) {
@@ -834,5 +879,5 @@
     });
   }
 
-  W.WmsLapShopee = { _pasanganKartu: pasanganKartu, _isiPesananDari: isiPesananDari, _opsTabel: opsTabel, hitung: hitung, laporan: laporan, mentahan: mentahan, gambar: gambar, _uraiBuku: uraiBuku, _bacaBuku: bacaBuku, _bacaLembarXml: bacaLembarXml, _waktuSel: waktuSel, _susunLaporan: susunLaporan };
+  W.WmsLapShopee = { _pasanganKartu: pasanganKartu, _kandidatTanpaKartu: kandidatTanpaKartu, _isiPesananDari: isiPesananDari, _opsTabel: opsTabel, hitung: hitung, laporan: laporan, mentahan: mentahan, gambar: gambar, _uraiBuku: uraiBuku, _bacaBuku: bacaBuku, _bacaLembarXml: bacaLembarXml, _waktuSel: waktuSel, _susunLaporan: susunLaporan };
 })();
