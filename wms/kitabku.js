@@ -154,7 +154,8 @@
       hadiah: 'Rewards', ketHadiah: 'Rewards switched on appear in every buyer\'s book. Voucher codes are created by hand in Shopee Seller Centre; paste the code here.',
       jenis: 'Type', angka: 'Target', saluran: 'Counts', semua: 'All cards', online: 'Shopee cards only', isi: 'Reward', nominal: 'Value', minBelanja: 'Min. spend',
       voucher: 'Voucher code', kuota: 'Quota', terpakai: 'claimed', aktif: 'On', simpan: 'Save', tersimpan: 'Saved', usulan: 'Add the mockup rewards (switched off)',
-      j_kartu: 'Cards collected', j_bab: 'Chapter complete', j_bintang: 'Game stars', j_edisi: 'Edition cards', j_papan: 'Total leaderboard', pemenang: 'Rank to', peringkatDari: 'Rank from', ketPapan: 'One reward = one rank tier, each with its own voucher. Example: #1 (1 to 1), #2-3 (2 to 3), #4-10 (4 to 10). Buyers in this range on the Total leaderboard can claim it after the edition ends. Set the quota to the number of ranks in the range. The voucher can be filled in later.',
+      j_kartu: 'Cards collected', j_bab: 'Chapter complete', j_bintang: 'Game stars', j_edisi: 'Edition cards', j_papan: 'Total leaderboard', pemenang: 'Rank to', peringkatDari: 'Rank from', ketPapan: 'One reward = one rank tier, each with its own voucher. Example: #1 (1 to 1), #2-3 (2 to 3), #4-10 (4 to 10), up to rank 100. Buyers in this range on the Total leaderboard can claim it after the edition ends. Set the quota to the number of ranks in the range. The voucher can be filled in later.',
+      kuotaCek: 'Quota is {k}, but this range has {n} ranks. Buyers past the quota will see "quota used up".',
       tumpang: 'Active Total leaderboard rewards overlap: {d}. A buyer in the shared ranks can claim two vouchers. Change the ranges or turn one off.', hadiahBaru: 'New reward', idHadiah: 'ID (letters, no spaces)',
       tanpaHadiah: 'No rewards yet.', kosongNominal: 'value not set',
       berlakuSampai: 'Valid until', berlakuUntuk: 'Applies to', semuaProduk: 'All shop products', maksPembeli: 'Max. uses per buyer', syarat: 'Terms shown to the buyer', syaratPh: 'e.g. One use per Shopee account. Cannot be exchanged for cash.',
@@ -189,7 +190,8 @@
       hadiah: 'Hadiah', ketHadiah: 'Hadiah yang dinyalakan langsung tampil di buku setiap pembeli. Kode voucher dibuat manual di Shopee Seller Centre, lalu tempel kodenya di sini.',
       jenis: 'Jenis', angka: 'Target', saluran: 'Dihitung', semua: 'Semua kartu', online: 'Kartu Shopee saja', isi: 'Hadiah', nominal: 'Nilai', minBelanja: 'Min. belanja',
       voucher: 'Kode voucher', kuota: 'Kuota', terpakai: 'diambil', aktif: 'Nyala', simpan: 'Simpan', tersimpan: 'Tersimpan', usulan: 'Pasang hadiah dari mockup (nonaktif)',
-      j_kartu: 'Jumlah kartu', j_bab: 'Bab lengkap', j_bintang: 'Bintang game', j_edisi: 'Kartu edisi', j_papan: 'Papan Total', pemenang: 'Peringkat sampai', peringkatDari: 'Peringkat dari', ketPapan: 'Satu hadiah = satu tingkat peringkat, masing-masing dengan voucher sendiri. Contoh: #1 (1 sampai 1), #2-3 (2 sampai 3), #4-10 (4 sampai 10). Pembeli di rentang ini pada papan Total bisa klaim sesudah edisi selesai. Isi kuota sama dengan jumlah peringkat di rentang. Voucher boleh diisi belakangan.',
+      j_kartu: 'Jumlah kartu', j_bab: 'Bab lengkap', j_bintang: 'Bintang game', j_edisi: 'Kartu edisi', j_papan: 'Papan Total', pemenang: 'Peringkat sampai', peringkatDari: 'Peringkat dari', ketPapan: 'Satu hadiah = satu tingkat peringkat, masing-masing dengan voucher sendiri. Contoh: #1 (1 sampai 1), #2-3 (2 sampai 3), #4-10 (4 sampai 10), paling jauh sampai peringkat 100. Pembeli di rentang ini pada papan Total bisa klaim sesudah edisi selesai. Isi kuota sama dengan jumlah peringkat di rentang. Voucher boleh diisi belakangan.',
+      kuotaCek: 'Kuota {k}, padahal rentang ini ada {n} peringkat. Pembeli di luar kuota akan melihat "kuota habis".',
       tumpang: 'Rentang hadiah papan Total yang aktif tumpang tindih: {d}. Pembeli di peringkat yang sama bisa klaim dua voucher. Ubah rentangnya atau matikan salah satu.', hadiahBaru: 'Hadiah baru', idHadiah: 'ID (huruf, tanpa spasi)',
       tanpaHadiah: 'Belum ada hadiah.', kosongNominal: 'nilai belum diisi',
       berlakuSampai: 'Berlaku sampai', berlakuUntuk: 'Berlaku untuk', semuaProduk: 'Semua produk toko', maksPembeli: 'Maks. pakai per pembeli', syarat: 'Syarat dan ketentuan untuk pembeli', syaratPh: 'misal: Satu kali pakai per akun Shopee. Tidak dapat diuangkan.',
@@ -403,7 +405,7 @@
       '<label>' + esc(t('berlakuUntuk')) + inp('berlaku_untuk', h.berlaku_untuk || '', t('semuaProduk')) + '</label>' +
       '<label>' + esc(t('maksPembeli')) + inp('maks_per_pembeli', h.maks_per_pembeli || 1, '', 'number') + '</label>' +
       '<label class="kb-syarat">' + esc(t('syarat')) + '<textarea data-f="syarat" rows="2" maxlength="300" placeholder="' + esc(t('syaratPh')) + '">' + esc(h.syarat || '') + '</textarea></label>' +
-      '</div>' + (h.jenis === 'papan' ? '<p class="ket-alat">' + esc(t('ketPapan')) + '</p>' : '') + '<div class="kb-hbawah">' + (!h.baru && !h.nominal && h.voucher == null ? '<small class="kb-mut">' + esc(t('kosongNominal')) + '</small>' : '') +
+      '</div>' + (h.jenis === 'papan' ? '<p class="tolak-alat kb-kuota-cek" role="status"' + (teksKuota(h) ? '' : ' hidden') + '>' + esc(teksKuota(h)) + '</p><p class="ket-alat">' + esc(t('ketPapan')) + '</p>' : '') + '<div class="kb-hbawah">' + (!h.baru && !h.nominal && h.voucher == null ? '<small class="kb-mut">' + esc(t('kosongNominal')) + '</small>' : '') +
       '<button type="button" class="btn" data-kb="hadiah" data-id="' + esc(k) + '">' + esc(A.simpanOk[k] ? t('tersimpan') : t('simpan')) + '</button></div></div>';
   }
   function judulAdmin(h) {
@@ -415,6 +417,11 @@
   function rentangPapan(h) {
     var d = Number(h.peringkat_dari) || 1, s = Number(h.angka) || 0;
     return d === s ? '#' + d : d > 1 ? '#' + d + '-' + s : '· top ' + s;
+  }
+  /* 18 Okt pagi: kuota tingkat papan dibanding jumlah peringkat di rentangnya; '' kalau sama */
+  function teksKuota(h) {
+    var d = Number(h.peringkat_dari) || 1, s = Number(h.angka) || 0, n = s - d + 1, k = Number(h.kuota) || 0;
+    return n >= 1 && k !== n ? t('kuotaCek').replace('{k}', k).replace('{n}', n) : '';
   }
   /* pasangan hadiah papan aktif yang rentangnya beririsan: pembeli di irisan bisa klaim dua voucher */
   function tumpangPapan(daftar) {
@@ -838,6 +845,12 @@
     if (x.id === 'kbPsPesanan') A.ps.pesanan = x.value;
     if (x.id === 'kbPsKartu') A.ps.kartu = x.value;
     if (x.hasAttribute('data-pilih')) { var sid = x.getAttribute('data-pilih'); A.pilih[sid] = A.pilih[sid] || {}; A.pilih[sid][x.value] = x.checked; }
+    var fk = x.getAttribute && x.getAttribute('data-f');
+    if (fk === 'peringkat_dari' || fk === 'angka' || fk === 'kuota') {
+      /* peringatan kuota ikut berubah saat mengetik, tanpa menggambar ulang form (kursor tidak loncat) */
+      var bx = x.closest('[data-hadiah]'), pk = bx && bx.querySelector('.kb-kuota-cek');
+      if (pk) { var hk = bacaHadiah(bx.getAttribute('data-hadiah')), tk = teksKuota(hk); pk.textContent = tk; pk.hidden = !tk; }
+    }
     if (e.type === 'change' && x.getAttribute('data-f') === 'jenis') {
       /* ganti jenis: kolom target berubah antara angka dan pilihan bab */
       var box = x.closest('[data-hadiah]'), k = box.getAttribute('data-hadiah'), h = bacaHadiah(k); h.baru = k === 'baru';
