@@ -60,13 +60,13 @@ const buka = async () => { await p.evaluate(() => WmsKitabku.buka('ringkas')); a
 const judul = (id) => p.evaluate((id) => { const x = document.querySelector('[data-hadiah=' + id + '] .kb-hkepala b'); return x ? x.textContent : ''; }, id);
 const peringatan = () => p.evaluate(() => { const x = document.querySelector('.kb-tumpang'); return x ? x.textContent : ''; });
 
-const tombol = () => p.evaluate(() => { const x = document.querySelector('[data-kb=tingkat3]'); return x && x.offsetParent !== null ? x.textContent : ''; });
+const tombol = () => p.evaluate(() => { const x = document.querySelector('#kbHadiah [data-kb=tingkat3]'); return x && x.offsetParent !== null ? x.textContent : ''; });
 
 await bagian('A. tombol tingkat di daftar hadiah yang sudah berisi', async () => {
   await p.goto('http://localhost:' + srv.address().port + '/uji.html'); await buka();
   const t0 = await tombol();
   c('A1 tombol terlihat walau daftar hadiah tidak kosong, menyebut #1, #2-3, #4-10', /#1/.test(t0) && /#2-3/.test(t0) && /#4-10/.test(t0), t0 || '(tidak ada tombol)');
-  await p.click('[data-kb=tingkat3]'); await p.waitForTimeout(1200);
+  await p.click('#kbHadiah [data-kb=tingkat3]'); await p.waitForTimeout(1200);
   const h = (id) => db.st.hadiah.find((x) => x.id === id) || {};
   const ok = (x, d, s, k) => x.jenis === 'papan' && x.peringkat_dari === d && x.angka === s && x.kuota === k && x.aktif === false && !x.voucher;
   c('A2 tingkat #2-3 dan #4-10 dipasang MATI, kuota 2 dan 7, voucher kosong', ok(h('juara23'), 2, 3, 2) && ok(h('juara410'), 4, 10, 7), JSON.stringify([h('juara23'), h('juara410')]));

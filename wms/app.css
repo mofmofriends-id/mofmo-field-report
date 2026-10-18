@@ -1134,3 +1134,36 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 #kbHu .kb-hu-yakin{display:flex;gap:8px;align-items:center;font-weight:800;margin:10px 0}
 #kbHu .kb-hu-hapus{background:#a3333d;color:#fff;border-color:#a3333d}
 #kbHu .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
+/* Siap edisi di Kitabku (18 Okt 2026) */
+.kb-siap-kepala{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.kb-siap-kepala h3{margin:0}.kb-siap-kepala .ket-alat{margin:4px 0 0}
+.kb-siap-skor{display:inline-flex;align-items:center;height:30px;padding:0 12px;border-radius:999px;font-size:13px;font-weight:900;background:var(--wBg);color:var(--wInk);white-space:nowrap}
+.kb-siap-skor.ok{background:var(--okBg);color:var(--okInk)}
+.kb-siap-batang{height:8px;border-radius:999px;background:var(--soft);overflow:hidden;margin:10px 0 4px}
+.kb-siap-batang i{display:block;height:100%;background:var(--okInk);border-radius:999px}
+.kb-siap-daftar{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px}
+.kb-siap-daftar li{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:start;padding:11px 12px;border:1.5px solid var(--line2);border-radius:14px;background:var(--card)}
+.kb-siap-daftar li.w{background:var(--wBg);border-color:var(--wBg)}
+.kb-siap-daftar li.c{background:#FFF4DE;border-color:#F3DDB0}
+[data-theme=dark] .kb-siap-daftar li.c{background:#4A3B22;border-color:#5E4A2A}
+.kb-siap-ikon{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-weight:900;font-size:13px;background:var(--okBg);color:var(--okInk)}
+.kb-siap-daftar li.w .kb-siap-ikon{background:var(--wInk);color:var(--card)}
+.kb-siap-daftar li.c .kb-siap-ikon{background:#B7791F;color:#fff}
+.kb-siap-daftar b{display:block;font-size:14.5px}
+.kb-siap-daftar small{display:block;color:var(--mut);font-size:12.5px;line-height:1.45;margin-top:2px;overflow-wrap:anywhere}
+.kb-siap-daftar li.w small{color:var(--wInk)}
+.kb-siap-daftar .btn{white-space:nowrap;align-self:center}
+@media (max-width:560px){.kb-siap-daftar li{grid-template-columns:24px minmax(0,1fr)}.kb-siap-daftar .btn{grid-column:2;justify-self:start}}
+
+/* kotak kartu QR sesudah setor: progres edisi dan pesanan tanpa kartu (18 Okt 2026) */
+.ls-maju{display:flex;flex-direction:column;gap:6px;padding:10px 12px;border-radius:14px;background:var(--card);border:1.5px solid var(--line2)}
+.ls-maju-angka{display:flex;justify-content:space-between;align-items:baseline;font-weight:900;font-size:14px;gap:4px 10px;flex-wrap:wrap}
+.ls-maju-angka span{font-weight:700;color:var(--mut);font-size:12.5px}
+.ls-maju-batang{height:8px;border-radius:999px;background:var(--soft);overflow:hidden}
+.ls-maju-batang i{display:block;height:100%;background:var(--okInk);border-radius:999px}
+.ls-tanpa{font-size:13px;color:var(--wInk);background:var(--wBg);border-radius:14px;padding:10px 12px;min-width:0}
+.ls-tanpa b{display:block;margin-bottom:4px}
+.ls-tanpa ul{list-style:none;margin:0;padding:0}
+.ls-tanpa li{display:flex;flex-wrap:wrap;gap:2px 10px;padding:6px 0;border-top:1px solid var(--wLine);min-width:0}
+.ls-tanpa code{font-family:ui-monospace,Menlo,monospace;font-weight:800}
+.ls-tanpa li span{flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
