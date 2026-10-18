@@ -1122,3 +1122,6 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 .kb-tp-daftar small{opacity:.75}
 .kb-tp-daftar li[data-tp-final="1"]{background:color-mix(in srgb,var(--acc) 12%,transparent);border-radius:12px;padding-left:8px;padding-right:8px}
 .kb-tp-daftar .kb-cap{align-self:flex-start;transform:none}
+
+/* 18 Okt: tombol tiga tingkat papan di bawah daftar hadiah */
+.kb-tingkat-usul{display:flex;flex-direction:column;gap:6px;margin-top:12px;align-items:flex-start}

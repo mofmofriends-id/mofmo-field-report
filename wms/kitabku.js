@@ -129,6 +129,8 @@
   var SITUS = 'https://mofmofriends.id/#k=';
   /* usulan hadiah dari mockup (Ferdy: "gas keduanya"); dipasang NONAKTIF karena nominal belum ditentukan.
      Judul dikosongkan: web Kitab menulis judulnya sendiri dalam bahasa pembeli. */
+  /* 18 Okt (Ferdy setuju mockup): tiga tingkat papan Total sekali klik, dipasang NONAKTIF. [id, dari, sampai, kuota] */
+  var TINGKAT3 = [['juara1', 1, 1, 1], ['juara23', 2, 3, 2], ['juara410', 4, 10, 7]];
   var USULAN = [
     { id: 'patok3', judul: '', jenis: 'kartu', angka: 3, saluran: 'semua', hadiah: 'Gelar Penjelajah' },
     { id: 'patok5', judul: '', jenis: 'kartu', angka: 5, saluran: 'online', hadiah: 'Voucher Shopee' },
@@ -155,6 +157,7 @@
       jenis: 'Type', angka: 'Target', saluran: 'Counts', semua: 'All cards', online: 'Shopee cards only', isi: 'Reward', nominal: 'Value', minBelanja: 'Min. spend',
       voucher: 'Voucher code', kuota: 'Quota', terpakai: 'claimed', aktif: 'On', simpan: 'Save', tersimpan: 'Saved', usulan: 'Add the mockup rewards (switched off)',
       j_kartu: 'Cards collected', j_bab: 'Chapter complete', j_bintang: 'Game stars', j_edisi: 'Edition cards', j_papan: 'Total leaderboard', pemenang: 'Rank to', peringkatDari: 'Rank from', ketPapan: 'One reward = one rank tier, each with its own voucher. Example: #1 (1 to 1), #2-3 (2 to 3), #4-10 (4 to 10), up to rank 100. Buyers in this range on the Total leaderboard can claim it after the edition ends. Set the quota to the number of ranks in the range. The voucher can be filled in later.',
+      tingkat3: 'Add 3 leaderboard tiers: #1, #2-3, #4-10', tingkat3Ket: 'Added switched off with quotas 1, 2 and 7. Fill in the value and voucher code, then switch them on. Existing leaderboard rewards are not changed.',
       kuotaCek: 'Quota is {k}, but this range has {n} ranks. Buyers past the quota will see "quota used up".',
       tumpang: 'Active Total leaderboard rewards overlap: {d}. A buyer in the shared ranks can claim two vouchers. Change the ranges or turn one off.', hadiahBaru: 'New reward', idHadiah: 'ID (letters, no spaces)',
       tanpaHadiah: 'No rewards yet.', kosongNominal: 'value not set',
@@ -191,6 +194,7 @@
       jenis: 'Jenis', angka: 'Target', saluran: 'Dihitung', semua: 'Semua kartu', online: 'Kartu Shopee saja', isi: 'Hadiah', nominal: 'Nilai', minBelanja: 'Min. belanja',
       voucher: 'Kode voucher', kuota: 'Kuota', terpakai: 'diambil', aktif: 'Nyala', simpan: 'Simpan', tersimpan: 'Tersimpan', usulan: 'Pasang hadiah dari mockup (nonaktif)',
       j_kartu: 'Jumlah kartu', j_bab: 'Bab lengkap', j_bintang: 'Bintang game', j_edisi: 'Kartu edisi', j_papan: 'Papan Total', pemenang: 'Peringkat sampai', peringkatDari: 'Peringkat dari', ketPapan: 'Satu hadiah = satu tingkat peringkat, masing-masing dengan voucher sendiri. Contoh: #1 (1 sampai 1), #2-3 (2 sampai 3), #4-10 (4 sampai 10), paling jauh sampai peringkat 100. Pembeli di rentang ini pada papan Total bisa klaim sesudah edisi selesai. Isi kuota sama dengan jumlah peringkat di rentang. Voucher boleh diisi belakangan.',
+      tingkat3: 'Tambah 3 tingkat papan: #1, #2-3, #4-10', tingkat3Ket: 'Dipasang nonaktif dengan kuota 1, 2, dan 7. Isi nilai dan kode voucher, lalu nyalakan. Hadiah papan lama tidak diubah.',
       kuotaCek: 'Kuota {k}, padahal rentang ini ada {n} peringkat. Pembeli di luar kuota akan melihat "kuota habis".',
       tumpang: 'Rentang hadiah papan Total yang aktif tumpang tindih: {d}. Pembeli di peringkat yang sama bisa klaim dua voucher. Ubah rentangnya atau matikan salah satu.', hadiahBaru: 'Hadiah baru', idHadiah: 'ID (huruf, tanpa spasi)',
       tanpaHadiah: 'Belum ada hadiah.', kosongNominal: 'nilai belum diisi',
@@ -380,7 +384,10 @@
     var hadiah = '<section class="kb-kotak"><h3>' + esc(t('hadiah')) + '</h3><p class="ket-alat">' + esc(t('ketHadiah')) + '</p>' +
       (rows || '<p class="ket-alat">' + esc(t('tanpaHadiah')) + '</p>') +
       '<details class="kb-det"' + (A.draf.baru ? ' open' : '') + '><summary>' + esc(t('hadiahBaru')) + '</summary>' + htmlHadiah(A.draf.baru ? Object.assign({}, A.draf.baru, { baru: true }) : { id: '', jenis: 'kartu', angka: 3, saluran: 'semua', aktif: false, baru: true }) + '</details>' +
-      (rows ? '' : '<button type="button" class="btn dua" data-kb="usulan">' + esc(t('usulan')) + '</button>') + '</section>';
+      (rows ? '' : '<button type="button" class="btn dua" data-kb="usulan">' + esc(t('usulan')) + '</button>') +
+      /* tombol tingkat cuma muncul selama belum ada hadiah papan yang mulai di bawah peringkat 1 */
+      ((r.hadiah || []).some(function (h) { return h.jenis === 'papan' && Number(h.peringkat_dari) > 1; }) ? '' :
+        '<div class="kb-tingkat-usul"><button type="button" class="btn dua" data-kb="tingkat3">' + esc(t('tingkat3')) + '</button><small class="ket-alat">' + esc(t('tingkat3Ket')) + '</small></div>') + '</section>';
     return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + '<div class="kb-kpis">' + kpi + '</div>' + acara + hadiah;
   }
   function htmlHadiah(h) {
@@ -449,6 +456,18 @@
       if (!r.ok) { A.pesan = r.pesan; A.draf[k] = h; bunyi('scanTolak'); gambar(); return; }
       bunyi('scanOk'); A.draf = {}; A.simpanOk = {}; A.simpanOk[h.id] = 1; return muatRingkas();
     }, function (e) { A.pesan = e.message; gambar(); });
+  }
+  /* ID yang sudah ada dilewati: hadiah yang sudah diisi (voucher, nominal) tidak boleh tertimpa */
+  function pasangTingkat3() {
+    var ada = {}; ((A.ringkas && A.ringkas.hadiah) || []).forEach(function (h) { ada[h.id] = 1; });
+    var L = TINGKAT3.filter(function (x) { return !ada[x[0]]; }), i = 0;
+    var lanjut = function () {
+      if (i >= L.length) return muatRingkas();
+      var x = L[i++];
+      return panggil('hadiah', { hadiah: { id: x[0], judul: '', jenis: 'papan', peringkat_dari: x[1], angka: x[2], kuota: x[3], saluran: 'semua', hadiah: 'Voucher Shopee', nominal: '', min_belanja: '', voucher: null, aktif: false } })
+        .then(function (r) { if (r && r.ok === false) { A.pesan = r.pesan; gambar(); return; } return lanjut(); }, function (e) { A.pesan = e.message; gambar(); });
+    };
+    lanjut();
   }
   function pasangUsulan() {
     var i = 0;
@@ -827,6 +846,7 @@
     else if (a === 'acara') simpanAcara();
     else if (a === 'hadiah') simpanHadiah(x.getAttribute('data-id'));
     else if (a === 'usulan') pasangUsulan();
+    else if (a === 'tingkat3') pasangTingkat3();
     else if (a === 'buatPaket') buatPaket();
     else if (a === 'cetakPaketLagi') cetakA4();
     else if (a === 'pngPaket') pngPaket();
