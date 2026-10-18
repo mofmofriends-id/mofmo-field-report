@@ -16,13 +16,18 @@
  *  - kartu dipasang padahal laporan gagal tersimpan;
  *  - setor ulang berkas yang sama ditampilkan sebagai galat;
  *  - bentrok (kartu dipakai dua pesanan) tidak disebut, gudang tidak tahu.
+ * Tambahan 18 Okt (mockup disetujui Ferdy): kotak hasil menyebut "N dari 50 terpasang" untuk edisi
+ * aktif dan pesanan dikemas selama edisi yang tidak punya kartu. Yang mahal kalau salah: pesanan yang
+ * kartunya dipasang lewat halaman Pasang kartu ikut dituduh kelewat (gudang menyelipkan kartu kedua);
+ * pesanan di luar tanggal edisi atau batal ikut disebut; daftar tetap muncul sesudah 50 kartu penuh;
+ * server lama yang belum kenal paketEdisi membuat kotak hasil mati.
  * Edge Function dijawab inti.js yang sama dengan yang dipasang, basis data
  * tiruan, tiket WMS buatan crypto node. Tanpa jaringan, tanpa data nyata.
  */
 const fs = require('fs'), path = require('path'), vm = require('vm'), http = require('http'), { execFileSync } = require('child_process'), { createHmac } = require('crypto');
 const AKAR = process.env.AKAR || process.env.WMS_AKAR || path.resolve(__dirname, '..');
 const SRV = process.env.KITAB_SERVER || '/home/claude/wms-supabase';
-const DIHARAPKAN = 12;
+const DIHARAPKAN = 17;
 const cek = []; const c = (n, ok, k) => cek.push([n, !!ok, k]);
 const SEMENTARA = fs.mkdtempSync('/tmp/uji-kartu-qr-setor-');
 
@@ -108,7 +113,7 @@ elif mode == 'isi':
   const PORT = srv.address().port;
   const b = await chromium.launch({ executablePath: '/opt/pw-browsers/chromium' }).catch(() => chromium.launch());
   const galat = [], panggil = [], kitab = [];
-  let setorGagal = false, isiDitolak = false;
+  let setorGagal = false, isiDitolak = false, edisiLama = false, paketPenuh = false;
   const jeda = (ms) => new Promise((x) => setTimeout(x, ms));
   try {
     const ctx = await b.newContext({ viewport: { width: 1360, height: 900 }, acceptDownloads: true });
@@ -136,7 +141,8 @@ elif mode == 'isi':
     await ctx.route('**/functions/v1/kitab', async (r) => {
       const m = JSON.parse(r.request().postData() || 'null'); kitab.push(m);
       /* server lama (Edge Function sebelum tahap 3) tidak kenal isiPesanan */
-      const h = isiDitolak && m.aksi === 'isiPesanan' ? { ok: false, pesan: 'Aksi tidak dikenal.' } : await tangani(m, db, Date.now(), { ip: '1.1.1.1' });
+      const h = (isiDitolak && m.aksi === 'isiPesanan') || (edisiLama && m.aksi === 'paketEdisi') ? { ok: false, pesan: 'Aksi admin tidak dikenal.' } : await tangani(m, db, Date.now(), { ip: '1.1.1.1' });
+      if (paketPenuh && m.aksi === 'paketEdisi' && h.paket) h.paket.terpasang = h.paket.target;
       await r.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify(h) });
     });
     const p = await ctx.newPage();
@@ -190,6 +196,7 @@ elif mode == 'isi':
       JSON.stringify(isiK).slice(0, 700));
     c('K5 hasil tampil: jumlah terpasang, dan bentrok disebut dengan pesanannya (kartu yang sama di pesanan lain) beserta arahan membetulkan',
       /2 kartu terpasang/i.test(h1.teks) && h1.teks.includes('261105QQQQQQQQ') && h1.teks.includes('261105PPPPPPPP') && /Kitabku > Pasang kartu/.test(h1.teks), JSON.stringify(h1));
+    c('K13 kotak hasil menyebut kartu edisi aktif: "Kartu edisi 11.11: 2 dari 50 terpasang"', /Kartu edisi 11\.11: 2 dari 50 terpasang/.test(h1.teks), JSON.stringify(h1.teks));
     const h2 = await setor();
     c('K6 setor ulang berkas yang sama: kartu yang sudah terpasang dibilang sudah terpasang sebelumnya, bukan galat; tidak ada yang berubah',
       /2 sudah terpasang sebelumnya/i.test(h2.teks) && !/2 kartu terpasang/i.test(h2.teks) && pesananDari(K[0]) === '261105PPPPPPPP', JSON.stringify(h2));
@@ -212,6 +219,40 @@ elif mode == 'isi':
     c('K12 server menolak isi pesanan: kartu tetap terpasang, kotak hasil bilang isi pesanan belum terkirim',
       pesananDari(K[2]) === '261105UUUUUUUU' && /1 kartu terpasang/i.test(h4) && /isi pesanan belum terkirim/i.test(h4), JSON.stringify([pesananDari(K[2]), h4]));
     isiDitolak = false;
+
+    /* ---- 18 Okt: pesanan yang kelewat kartu ----
+       V berkartu; W dan X dikemas selama edisi tanpa kartu (W sudah diserahkan, X belum); Y tanpa kartu di Excel
+       tapi kartunya sudah dipasang lewat halaman Pasang kartu; Z dikemas sebelum edisi mulai; B batal. */
+    const K2 = (await adm({ aksi: 'cetakPaket', jumlah: 1, voucherSampai: '2030-12-31', voucherKode: 'MOFMO11NOV' })).kode.map((x) => x.kode);
+    await adm({ aksi: 'pasangKartu', item: [{ kode: K2[0], pesanan: '261106YYYYYYYY' }] });
+    const kel = (no, o) => Object.assign({ 'No Pesanan': no, Barcode: TIGER, Qty: 1, 'Waktu Pesan': '2026-11-06 08:00', 'Waktu Kemas': '2026-11-06 10:00', 'Lokasi Ambil (rak)': 'R1-4B', 'Dikemas Oleh': 'Armand', 'Link Foto Kirim': FK }, o);
+    const KELEWAT = [kel('261106VVVVVVVV', { 'Kode Kartu QR': QR(K[3]) }),
+      kel('261106WWWWWWWW', { Qty: 2, 'Dikemas Oleh': 'Budi', 'Waktu Serah Kurir': '2026-11-06 15:00', 'Jasa Kirim': 'SPX Standard', 'No Resi': 'SPXID1', 'Nama Kurir': 'Joko', 'Link Foto Serah': FS }),
+      kel('261106XXXXXXXX', { 'Waktu Kemas': '2026-11-06 16:02' }),
+      kel('261106YYYYYYYY', {}),
+      kel('261020ZZZZZZZZ', { 'Waktu Pesan': '2026-10-20 08:00', 'Waktu Kemas': '2026-10-20 10:00' }),
+      kel('261106BBBBBBBB', { Batal: 'YA' })];
+    const fKel = path.join(SEMENTARA, 'kelewat.xlsx'); py('isi', mf, fKel, JSON.stringify(KELEWAT));
+    const setorKel = async () => {
+      await p.setInputFiles('#lsBerkas', fKel); await p.waitForSelector('#lsPrat [data-ls=setor]', { timeout: 10000 }); await p.click('#lsPrat [data-ls=setor]');
+      await p.waitForFunction(() => !!document.querySelector('#lsPrat [data-ls-kartu-hasil]'), null, { timeout: 15000 }).catch(() => {}); await jeda(900);
+      return p.evaluate(() => { const x = document.querySelector('#lsPrat [data-ls-kartu-hasil]'); return x ? x.innerText.replace(/\s+/g, ' ') : ''; });
+    };
+    const nE = kitab.length;
+    const h5 = await setorKel();
+    const minta = kitab.slice(nE).filter((x) => x.aksi === 'paketEdisi');
+    c('K14 pesanan dikemas selama edisi tanpa kartu disebut (W sudah diserahkan oleh Budi, X belum), Y (kartu dari halaman Pasang kartu), Z (sebelum edisi), B (batal), dan V (berkartu) tidak',
+      /2 pesanan di setoran ini tidak punya kartu/.test(h5) && /261106WWWWWWWW/.test(h5) && /261106XXXXXXXX/.test(h5) && /Budi/.test(h5) && /sudah diserahkan/.test(h5) && /belum diserahkan/.test(h5) &&
+      !/261106YYYYYYYY|261020ZZZZZZZZ|261106BBBBBBBB|261106VVVVVVVV/.test(h5), h5);
+    c('K15 yang ditanyakan ke server cuma pesanan dikemas tanpa kartu di Excel (bukan V yang berkartu, bukan B yang batal), sekali kirim',
+      minta.length === 1 && JSON.stringify((minta[0].pesanan || []).slice().sort()) === JSON.stringify(['261020ZZZZZZZZ', '261106WWWWWWWW', '261106XXXXXXXX', '261106YYYYYYYY']), JSON.stringify(minta));
+    paketPenuh = true;
+    const h6 = await setorKel();
+    c('K16 kalau 50 kartu sudah terpasang: tertulis penuh, daftar pesanan kelewat tidak lagi muncul', /50 dari 50 terpasang/.test(h6) && /penuh/i.test(h6) && !/261106XXXXXXXX/.test(h6), h6);
+    paketPenuh = false; edisiLama = true;
+    const h7 = await setorKel();
+    c('K17 server lama yang belum kenal paketEdisi: kotak hasil tetap tampil seperti dulu, tanpa progres dan tanpa daftar', /sudah terpasang sebelumnya/.test(h7) && !/Kartu edisi/.test(h7) && !/tidak punya kartu/.test(h7), h7);
+    edisiLama = false;
     await ctx.close();
   } catch (e) { c('B MATI di tengah jalan', false, e.stack); }
   c('K9 tidak ada galat JavaScript', galat.length === 0, galat.join(' | '));
