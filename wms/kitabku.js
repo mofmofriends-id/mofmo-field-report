@@ -195,6 +195,12 @@
       psPindah: 'Move card to this order', psGanti: 'Replace with this card', ps_cek: function (k, p) { return p ? 'Card ' + k + ' is linked to order ' + p + '.' : 'Card ' + k + ' is not linked to any order yet.'; },
       ps_cekBuka: ' The buyer has opened it.', ps_cekLama: 'This is a per-product card (the old kind).',
       kamera: 'Camera', kamTutup: 'Close camera', kamArahKartu: 'Point the camera at the card QR.', kamArahPesanan: 'Point the camera at the order number barcode on the label.', kamMuat: 'Opening the camera…',
+      fn_judul: 'Campaign funnel {cap}', fn_dicetak: 'QR cards printed', fn_discan: 'Scanned in Mofmo Collection', fn_pembeli: 'Buyer books', fn_mainPembeli: 'Buyers who played a game',
+      fn_dari: '{p} of the previous step', fn_latihan: '{n} books played practice mode (never bought, scores stay off the leaderboard).', fn_ket: 'Test cards and test vouchers (TES/UJI) are not counted.',
+      v_judul: 'Voucher reconciliation', v_ket: 'Given = vouchers buyers received through QR cards and Kitab rewards. Used = from the Shopee report, or typed in. Typed numbers are kept on this device, per edition.',
+      v_kode: 'Code', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
+      v_kosong: 'No vouchers given out in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
+      v_lewat: 'Skipped, not Kitab vouchers: {d}.', v_gagal: 'No voucher code column found in {f}. Use the Shopee voucher report or an order export that lists voucher codes.', v_gagalBaca: 'The file could not be read: {e}',
       kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.'
     },
     id: {
@@ -245,6 +251,12 @@
       psPindah: 'Pindahkan ke pesanan ini', psGanti: 'Ganti dengan kartu ini', ps_cek: function (k, p) { return p ? 'Kartu ' + k + ' terpasang ke pesanan ' + p + '.' : 'Kartu ' + k + ' belum terpasang ke pesanan mana pun.'; },
       ps_cekBuka: ' Sudah dibuka pembeli.', ps_cekLama: 'Ini kartu per produk (cara lama).',
       kamera: 'Kamera', kamTutup: 'Tutup kamera', kamArahKartu: 'Arahkan kamera ke QR kartu.', kamArahPesanan: 'Arahkan kamera ke barcode No Pesanan di label.', kamMuat: 'Membuka kamera…',
+      fn_judul: 'Funnel kampanye {cap}', fn_dicetak: 'Kartu QR dicetak', fn_discan: 'Discan di Mofmo Collection', fn_pembeli: 'Buku pembeli', fn_mainPembeli: 'Pembeli yang main game',
+      fn_dari: '{p} dari langkah sebelumnya', fn_latihan: '{n} buku main mode latihan (belum pernah beli, skornya tidak masuk papan).', fn_ket: 'Kartu dan voucher uji (TES/UJI) tidak dihitung.',
+      v_judul: 'Rekonsiliasi voucher', v_ket: 'Dibagikan = voucher yang diterima pembeli lewat kartu QR dan hadiah Kitab. Dipakai = dari laporan Shopee, atau isi sendiri. Isian disimpan di perangkat ini, per edisi.',
+      v_kode: 'Kode', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
+      v_kosong: 'Belum ada voucher yang dibagikan di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
+      v_lewat: 'Dilewati, bukan voucher Kitab: {d}.', v_gagal: 'Kolom kode voucher tidak ditemukan di {f}. Pakai laporan voucher Shopee atau ekspor pesanan yang memuat kode voucher.', v_gagalBaca: 'Berkas tidak bisa dibaca: {e}',
       kamGagal: 'Kamera tidak bisa dibuka. Beri izin kamera untuk situs ini di pengaturan browser, atau pakai scanner atau ketik kodenya.'
     }
   };
@@ -270,7 +282,135 @@
   }
   function muatRingkas() {
     A.galat = ''; A.sibuk = true; gambar();
-    return panggil('ringkas').then(function (h) { A.sibuk = false; if (!h.ok) throw new Error(h.pesan || t('gagal')); A.ringkas = h; gambar(); }, function (e) { A.sibuk = false; A.galat = e.message; gambar(); });
+    return panggil('ringkas').then(function (h) { A.sibuk = false; if (!h.ok) throw new Error(h.pesan || t('gagal')); A.ringkas = h; gambar(); if (h.acara) muatFunnel(); }, function (e) { A.sibuk = false; A.galat = e.message; gambar(); });
+  }
+  /* ---------- Funnel kampanye dan rekonsiliasi voucher (19 Okt 2026, Ferdy: "semua gas") ----------
+     Funnel dari aksi admin 'funnel' (server kitab v14): kartu dicetak, discan, buku pembeli, pembeli yang main.
+     Server lama tanpa aksi itu: bagiannya tidak tampil, Ringkas lain tetap jalan.
+     Dipakai = isian tangan atau laporan Shopee (laporan voucher berkolom jumlah penggunaan, atau ekspor pesanan
+     satu baris per barang yang dihitung per nomor pesanan). Disimpan di localStorage per edisi: tidak ada tabel
+     server untuk ini, dan angkanya selalu bisa diisi ulang dari laporan yang sama. */
+  var KUNCI_PAKAI = 'wms-kitab-voucher-dipakai-';
+  function muatFunnel() {
+    return panggil('funnel').then(function (h) {
+      A.funnel = h && h.ok && h.funnel && h.acara ? h : null;
+      if (A.funnel) A.vpakai = bacaPakai(h.acara.id);
+      if (A.tab === 'ringkas') gambar();
+    }, function () { A.funnel = null; });
+  }
+  function bacaPakai(aid) { try { var o = JSON.parse(W.localStorage.getItem(KUNCI_PAKAI + aid) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
+  function simpanPakai() { try { W.localStorage.setItem(KUNCI_PAKAI + A.funnel.acara.id, JSON.stringify(A.vpakai || {})); } catch (e) {} }
+  function persen(a, b) { return b > 0 ? Math.round(a / b * 100) + '%' : '–'; }
+  function angkaPakai(k) { var v = (A.vpakai || {})[k]; return v === '' || v == null || !isFinite(Number(v)) ? null : Number(v); }
+  function htmlFunnel() {
+    var F = A.funnel; if (!F) return '';
+    var f = F.funnel, L = [['dicetak', f.dicetak], ['discan', f.discan], ['pembeli', f.pembeli], ['mainPembeli', f.mainPembeli]], maks = Math.max(1, f.dicetak, f.discan, f.pembeli);
+    var langkah = L.map(function (x, i) {
+      return '<li data-funnel="' + x[0] + '"><div class="kb-fn-label"><span>' + esc(t('fn_' + x[0])) + '</span>' + (i ? '<small>' + esc(teksIsi('fn_dari', { p: persen(x[1], L[i - 1][1]) })) + '</small>' : '') + '</div>' +
+        '<div class="kb-fn-batang" aria-hidden="true"><i style="width:' + Math.max(x[1] ? 2 : 0, Math.round(x[1] / maks * 100)) + '%"></i></div><b>' + nf(x[1]) + '</b></li>';
+    }).join('');
+    var V = F.voucher || [], baris = V.map(function (v) {
+      var n = angkaPakai(v.kode), awas = n != null && n > v.dibagi;
+      return '<tr data-voucher="' + esc(v.kode) + '"' + (awas ? ' class="awas"' : '') + '><td><code>' + esc(v.kode) + '</code><small class="kb-vawas">' + esc(t('v_awas')) + '</small></td><td class="num" data-k="dibagi">' + nf(v.dibagi) + '</td>' +
+        '<td class="num"><input type="number" min="0" step="1" inputmode="numeric" data-vpakai="' + esc(v.kode) + '" value="' + (n == null ? '' : n) + '" aria-label="' + esc(t('v_dipakai') + ' ' + v.kode) + '"></td><td class="num" data-k="laju">' + (n == null ? '–' : persen(n, v.dibagi)) + '</td></tr>';
+    }).join('');
+    var tot = totalPakai();
+    var tabel = V.length ? '<div class="hpp-gulung"><table class="kb-vtabel"><thead><tr><th>' + esc(t('v_kode')) + '</th><th class="num">' + esc(t('v_dibagi')) + '</th><th class="num">' + esc(t('v_dipakai')) + '</th><th class="num">' + esc(t('v_laju')) + '</th></tr></thead><tbody>' + baris +
+      '</tbody><tfoot><tr><th>' + esc(t('v_total')) + '</th><td class="num">' + nf(tot.dibagi) + '</td><td class="num" data-k="totPakai">' + (tot.ada ? nf(tot.pakai) : '–') + '</td><td class="num" data-k="totLaju">' + (tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–') + '</td></tr></tfoot></table></div>' +
+      '<label class="btn dua kb-vunggah">' + esc(t('v_unggah')) + '<input type="file" id="kbVoucherBerkas" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>' +
+      (A.vhasil ? '<p class="ket-alat kb-vhasil' + (A.vhasil.galat ? ' tolak-alat' : '') + '" role="status">' + esc(A.vhasil.teks) + '</p>' : '')
+      : '<p class="ket-alat">' + esc(t('v_kosong')) + '</p>';
+    return '<section class="kb-kotak kb-funnel" id="kbFunnel"><h3>' + esc(teksIsi('fn_judul', { cap: F.acara.cap || F.acara.nama || '' })) + '</h3><ol class="kb-fn">' + langkah + '</ol>' +
+      '<p class="ket-alat" data-funnel-latihan>' + esc(teksIsi('fn_latihan', { n: nf(f.mainLatihan) })) + ' ' + esc(t('fn_ket')) + '</p>' +
+      '<h3>' + esc(t('v_judul')) + '</h3><p class="ket-alat">' + esc(t('v_ket')) + '</p>' + tabel + '</section>';
+  }
+  /* tingkat pakai total hanya dari voucher yang angka dipakainya sudah diisi, supaya baris kosong tidak menurunkan persennya */
+  function totalPakai() {
+    var o = { dibagi: 0, dibagiTerisi: 0, pakai: 0, ada: false };
+    ((A.funnel && A.funnel.voucher) || []).forEach(function (v) { var n = angkaPakai(v.kode); o.dibagi += v.dibagi; if (n != null) { o.ada = true; o.pakai += n; o.dibagiTerisi += v.dibagi; } });
+    return o;
+  }
+  /* mengetik tidak menggambar ulang (fokus dan kursor tetap); hanya sel tingkat pakai, tanda, dan total yang diperbarui */
+  function ketikPakai(x) {
+    var k = x.getAttribute('data-vpakai'), v = String(x.value).trim();
+    A.vpakai = A.vpakai || {}; if (v === '') delete A.vpakai[k]; else A.vpakai[k] = String(Math.max(0, Math.floor(Number(v) || 0)));
+    simpanPakai(); segarkanVoucher();
+  }
+  function segarkanVoucher() {
+    ((A.funnel && A.funnel.voucher) || []).forEach(function (v) {
+      var tr = document.querySelector('#kbFunnel tr[data-voucher="' + v.kode.replace(/"/g, '') + '"]'); if (!tr) return;
+      var n = angkaPakai(v.kode), inp = tr.querySelector('input');
+      if (inp && document.activeElement !== inp) inp.value = n == null ? '' : n;
+      tr.querySelector('[data-k=laju]').textContent = n == null ? '–' : persen(n, v.dibagi);
+      tr.classList.toggle('awas', n != null && n > v.dibagi);
+    });
+    var tot = totalPakai(), a = document.querySelector('#kbFunnel [data-k=totPakai]'), b = document.querySelector('#kbFunnel [data-k=totLaju]');
+    if (a) a.textContent = tot.ada ? nf(tot.pakai) : '–'; if (b) b.textContent = tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–';
+  }
+  function uraiCsv(s) {
+    s = String(s).replace(/^﻿/, '');
+    var contoh = s.split(/\r?\n/).slice(0, 10).join('\n');
+    var pisah = [';', ',', '\t'].sort(function (a, b) { return contoh.split(b).length - contoh.split(a).length; })[0];
+    var rows = [], row = [], sel = '', kutip = false;
+    for (var i = 0; i < s.length; i++) {
+      var ch = s[i];
+      if (kutip) { if (ch === '"') { if (s[i + 1] === '"') { sel += '"'; i++; } else kutip = false; } else sel += ch; }
+      else if (ch === '"') kutip = true;
+      else if (ch === pisah) { row.push(sel); sel = ''; }
+      else if (ch === '\n' || ch === '\r') { if (ch === '\r' && s[i + 1] === '\n') i++; row.push(sel); rows.push(row); row = []; sel = ''; }
+      else sel += ch;
+    }
+    if (sel !== '' || row.length) { row.push(sel); rows.push(row); }
+    return rows;
+  }
+  /* rows: larik baris sel dari satu lembar. kenal: kode voucher Kitab. Hasil: {ok, per:{KODE:n}, lain:[kode bukan Kitab], cara} */
+  function uraiVoucher(rows, kenal) {
+    var K = {}; (kenal || []).forEach(function (k) { K[String(k).toUpperCase()] = k; });
+    var norm = function (x) { return String(x == null ? '' : x).trim().toLowerCase().replace(/\s+/g, ' '); };
+    var kepala = -1, kk = -1, kp = -1, ko = -1, i, j, r;
+    for (i = 0; i < Math.min(rows.length, 30) && kepala < 0; i++) {
+      r = rows[i] || [];
+      for (j = 0; j < r.length; j++) if (/(kode|code).*(voucher|promo)|(voucher|promo).*(kode|code)/.test(norm(r[j]))) { kk = j; break; }
+      if (kk < 0) continue;
+      kepala = i;
+      for (j = 0; j < r.length; j++) {
+        var h = norm(r[j]);
+        if (kp < 0 && /penggunaan|pemakaian|dipakai|terpakai|digunakan|redeem|usage|used/.test(h) && !/\brp\b|nilai|biaya|amount|\(rp\)/.test(h)) kp = j;
+        if (ko < 0 && /^(no\.?|nomor) ?pesanan$|^order ?(id|sn|no\.?)$/.test(h)) ko = j;
+      }
+    }
+    if (kk < 0) return { ok: false };
+    var per = {}, lain = {}, sudah = {}, cara = kp >= 0 ? 'jumlah' : ko >= 0 ? 'pesanan' : 'baris';
+    for (i = kepala + 1; i < rows.length; i++) {
+      r = rows[i] || [];
+      String(r[kk] == null ? '' : r[kk]).split(/[,;\s]+/).forEach(function (kode) {
+        if (!kode) return;
+        var U = kode.toUpperCase(), n = 1;
+        if (cara === 'jumlah') n = typeof r[kp] === 'number' ? r[kp] : Number(String(r[kp] == null ? '' : r[kp]).replace(/[^\d]/g, '')) || 0;
+        else if (cara === 'pesanan') { var kunci = U + '|' + String(r[ko] == null ? '' : r[ko]).trim(); if (sudah[kunci]) return; sudah[kunci] = 1; }
+        if (K[U]) per[K[U]] = (per[K[U]] || 0) + n; else lain[U] = 1;
+      });
+    }
+    return { ok: true, per: per, lain: Object.keys(lain).sort(), cara: cara };
+  }
+  function lembarDari(file) {
+    if (/\.(csv|txt)$/i.test(file.name) || /csv|text\/plain/.test(file.type)) return file.text().then(function (s) { return [uraiCsv(s)]; });
+    if (!W.WmsLapShopee || !W.WmsLapShopee._bacaBuku) return Promise.reject(new Error('lapshopee.js'));
+    return file.arrayBuffer().then(function (buf) { return muatZip().then(function (Z) { return Z.loadAsync(buf); }); }).then(function (z) {
+      return W.WmsLapShopee._bacaBuku(function (n) { var f = z.file(n); return f ? f.async('string') : Promise.resolve(''); });
+    }).then(function (buku) { return Object.keys(buku).map(function (k) { return buku[k]; }); });
+  }
+  function unggahVoucher(file) {
+    var kenal = ((A.funnel && A.funnel.voucher) || []).map(function (v) { return v.kode; });
+    return lembarDari(file).then(function (lembar) {
+      var h = null; lembar.some(function (rows) { var x = uraiVoucher(rows || [], kenal); if (x.ok) { h = x; return true; } return false; });
+      if (!h) { A.vhasil = { galat: true, teks: teksIsi('v_gagal', { f: file.name }) }; gambar(); return; }
+      A.vpakai = A.vpakai || {};
+      kenal.forEach(function (k) { A.vpakai[k] = String(h.per[k] || 0); });
+      simpanPakai();
+      A.vhasil = { teks: teksIsi('v_hasil', { n: kenal.length, f: file.name, c: t('v_c_' + h.cara) }) + (h.lain.length ? ' ' + teksIsi('v_lewat', { d: h.lain.slice(0, 12).join(', ') + (h.lain.length > 12 ? ', …' : '') }) : '') };
+      gambar();
+    }).catch(function (e) { A.vhasil = { galat: true, teks: teksIsi('v_gagalBaca', { e: e && e.message || String(e) }) }; gambar(); });
   }
   function muatStruk() {
     A.galat = ''; A.struk = null; gambar();
@@ -414,7 +554,7 @@
       /* tombol tingkat cuma muncul selama belum ada hadiah papan yang mulai di bawah peringkat 1 */
       ((r.hadiah || []).some(function (h) { return h.jenis === 'papan' && Number(h.peringkat_dari) > 1; }) ? '' :
         '<div class="kb-tingkat-usul"><button type="button" class="btn dua" data-kb="tingkat3">' + esc(t('tingkat3')) + '</button><small class="ket-alat">' + esc(t('tingkat3Ket')) + '</small></div>') + '</section>';
-    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + htmlSiap(r) + '<div class="kb-kpis">' + kpi + '</div>' + acara + hadiah;
+    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + htmlSiap(r) + '<div class="kb-kpis">' + kpi + '</div>' + htmlFunnel() + acara + hadiah;
   }
   /* ---------- Siap edisi (18 Okt 2026, mockup disetujui Ferdy) ----------
      Cek kesiapan edisi sebelum dan selama edisi: tanggal, tingkat papan, kode voucher, hadiah menyala,
@@ -972,6 +1112,8 @@
       A.p[{ kbPJml: 'jumlah', kbPVKode: 'kode', kbPVTeks: 'teks', kbPVSampai: 'sampai' }[x.id]] = x.value;
       var bp = document.querySelector('[data-kb=buatPaket]'); if (bp) bp.disabled = !paketSiap();
     }
+    if (x.getAttribute && x.getAttribute('data-vpakai') != null) ketikPakai(x);
+    if (x.id === 'kbVoucherBerkas' && e.type === 'change' && x.files && x.files[0]) unggahVoucher(x.files[0]);
     if (x.id === 'kbTpAcara') A.tp.acara = x.value;
     if (x.id === 'kbTpCatatan') A.tp.catatan = x.value;
     if (x.id === 'kbPsPesanan') A.ps.pesanan = x.value;
@@ -995,5 +1137,5 @@
       h.angka = h.jenis === 'bab' ? 0 : h.jenis === 'bintang' ? 3 : h.jenis === 'papan' ? 10 : h.angka || 3; box.outerHTML = htmlHadiah(h);
     }
   }
-  W.WmsKitabku = { buka: buka, tutup: tutup, qrMatriks: qrMatriks, qrSvg: qrSvg, panggil: panggil };
+  W.WmsKitabku = { buka: buka, tutup: tutup, qrMatriks: qrMatriks, qrSvg: qrSvg, panggil: panggil, _uraiVoucher: uraiVoucher, _uraiCsv: uraiCsv };
 })();
