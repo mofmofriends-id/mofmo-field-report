@@ -203,12 +203,13 @@ button{cursor:pointer;border:0;background:none;padding:0}
     return Promise.all([a, b]).catch(function (e) { toast(e.message); }).then(gambar);
   }
   function utas() { return (S.surel && S.surel.utas) || []; }
-  var GILIRAN = { disiapkan: 1, draft: 1, revisi: 1 };
+  var GILIRAN = { disiapkan: 1, draft: 1, revisi: 1, lanjutan: 1 };
   function itemSurel(u) {
     var depan = String(u.pengirim || '').split(/\s+/)[0];
     var judul, sub, warna = 'red';
     if (u.status === 'draft') { judul = 'Segera balas ' + u.mitra; sub = (depan ? depan + ' · ' : '') + 'draft balasan siap'; }
     else if (u.status === 'disiapkan') { judul = u.mitra + ' membalas'; sub = (depan ? depan + ' · ' : '') + 'draft sedang disiapkan'; }
+    else if (u.status === 'lanjutan') { var sus = u.hariKerja >= 3; judul = (sus ? 'Kirim susulan ke ' : 'Kirim kabar ke ') + u.mitra; sub = (sus ? u.hariKerja + ' hari kerja belum dibalas · ' : '') + 'draft siap'; }
     else if (u.status === 'revisi') { judul = 'Revisi draft ' + u.mitra; sub = 'sedang ditulis ulang'; }
     else { judul = u.mitra + ' belum membalas'; sub = u.hariKerja + ' hari kerja · ' + (u.subjek || ''); warna = u.tingkat === 'merah' ? 'red' : 'amb'; }
     var baru = GILIRAN[u.status] && u.waktuPesan && Date.now() - u.waktuPesan < HARI;
@@ -272,10 +273,11 @@ button{cursor:pointer;border:0;background:none;padding:0}
     var h = '<button class="back" data-buka="#mitra">‹ Mitra</button><h1 class="mt">' + esc(u.subjek) + '</h1><div class="meta">' + esc(u.mitra) + (u.pengirim ? ' · ' + esc(u.pengirim) : '') + '</div>';
     if (u.status === 'menunggu') return h + '<div class="bub">Surel terakhir dari kamu. Menunggu balasan ' + esc(u.mitra) + ', sudah ' + u.hariKerja + ' hari kerja.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Buka di Gmail</a>';
     h += bagianJanji((S.janji || []).filter(function (j) { return j.utas === u.id; }));
-    h += '<div class="bub"><div class="w"><span>' + esc(u.pengirim) + '</span><span>' + (u.waktuPesan ? lalu(u.waktuPesan) : '') + '</span></div>' + esc(u.isiPesan || u.cuplikan) + '</div>';
+    if (u.lanjutan) h += '<div class="bub">Surel terakhir dari kamu' + (u.waktuPesan ? ', ' + lalu(u.waktuPesan) : '') + '. ' + (u.hariKerja >= 3 ? 'Sudah ' + u.hariKerja + ' hari kerja belum dibalas ' + esc(u.mitra) + '.' : '') + '</div>';
+    else h += '<div class="bub"><div class="w"><span>' + esc(u.pengirim) + '</span><span>' + (u.waktuPesan ? lalu(u.waktuPesan) : '') + '</span></div>' + esc(u.isiPesan || u.cuplikan) + '</div>';
     if (u.status === 'disiapkan') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang disiapkan</span></div>Draft dibuat otomatis, biasanya siap dalam satu jam. Notif masuk begitu siap.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Balas sendiri di Gmail</a>';
     if (u.status === 'revisi') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang direvisi</span></div>Permintaan revisi sudah diteruskan. Notif "draft revisi siap" masuk begitu selesai.</div>';
-    return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>' + (u.draftT ? 'disiapkan ' + lalu(u.draftT) : '') + '</span></div>' + esc(bersihDraft(u.draftIsi)) + '</div>' +
+    return h + '<div class="bub dr"><div class="w"><span>' + (u.lanjutan ? (u.hariKerja >= 3 ? 'Draft susulan' : 'Draft kabar') : 'Draft balasan') + '</span><span>' + (u.draftT ? 'disiapkan ' + lalu(u.draftT) : '') + '</span></div>' + esc(bersihDraft(u.draftIsi)) + '</div>' +
       '<textarea class="ta" id="catRevisi" placeholder="Tulis revisi, misal: jangan sebut jam, tanya SIK dulu" maxlength="500"></textarea>' +
       '<div class="act"><button class="bt" data-revisi="' + esc(u.id) + '">Minta revisi</button><button class="bt p" data-kirim="' + esc(u.id) + '">Kirim balasan</button></div>' +
       '<a class="bt" style="margin-top:8px" href="' + esc(u.urlDraft || u.url) + '" target="_blank" rel="noopener">Edit sendiri di Gmail</a><div class="cat">Kirim tetap kamu yang tekan. Draft yang sama ada di Gmail.</div>';
