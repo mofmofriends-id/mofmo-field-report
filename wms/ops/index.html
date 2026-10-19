@@ -42,6 +42,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .chk{width:24px;height:24px;border-radius:8px;border:2px solid #D0D5DD;display:flex;align-items:center;justify-content:center;flex:none;background:#fff}
 .chk.ok{background:var(--grn);border-color:var(--grn);color:#fff}
 .chk svg{width:14px;height:14px}
+.jb{display:flex;gap:6px;margin-top:8px}.mini{font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:10px;background:#F0F2F5}.mini.p{background:var(--ink);color:#fff}
 .kosong{text-align:center;color:var(--mut2);font-size:13px;padding:22px 10px}
 .nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(10px + env(safe-area-inset-bottom,0px));z-index:5}
 .nav button{font-size:11px;font-weight:600;color:var(--mut2);display:flex;flex-direction:column;align-items:center;gap:3px;min-width:70px;position:relative}
@@ -158,6 +159,12 @@ button{cursor:pointer;border:0;background:none;padding:0}
     if (s > 1 && s < 7) return HR[d.getUTCDay()];
     return d.getUTCDate() + ' ' + BLN[d.getUTCMonth()];
   }
+  function hariJam(ms) { var d = wib(ms); return HR[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + BLN[d.getUTCMonth()] + ' ' + jam(ms); }
+  function kartuJanji(j) {
+    return '<div class="c" data-janji="' + j.id + '" role="button"><div class="ic" style="background:var(--accbg)">' + IK.kalender + '</div><div><span class="tt">' + esc(j.mitra + ': ' + j.judul) + '</span><span class="ss">' + esc(hariJam(j.mulai) + (j.lokasi ? ' · ' + j.lokasi : '')) + '</span>' +
+      '<div class="jb"><span class="mini p">Jadikan agenda</span><button class="mini" data-abaikan="' + j.id + '">Abaikan</button></div></div><span></span></div>';
+  }
+  function bagianJanji(daftar) { return daftar.length ? '<div class="sec">Agenda dari surel</div>' + daftar.map(kartuJanji).join('') : ''; }
   function lalu(ms) {
     var m = Math.round((Date.now() - ms) / 60e3);
     if (m < 1) return 'baru saja'; if (m < 60) return m + ' menit lalu';
@@ -172,6 +179,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
     centang: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg>',
     rumah: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
     mitra: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    kalender: '<svg viewBox="0 0 24 24" fill="none" stroke="#F08A4B" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
     daftar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>'
   };
 
@@ -187,7 +195,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
   /* ---------- data ---------- */
   function muatSemua() {
     if (!S.tiket) return Promise.resolve();
-    var a = api('beranda').then(function (h) { if (h.ok) S.surel = h.surel || { utas: [] }; });
+    var a = api('beranda').then(function (h) { if (h.ok) { S.surel = h.surel || { utas: [] }; S.janji = h.janji || []; } });
     var b = api('tugas').then(function (h) { S.tugas = h.ok ? h : { galat: h.pesan || 'Tugas belum terbaca.' }; });
     return Promise.all([a, b]).catch(function (e) { toast(e.message); }).then(gambar);
   }
@@ -238,6 +246,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
       '<div style="background:var(--grnbg);color:var(--grn)"><b>' + s.filter(function (x) { return x.tingkat === 'aman'; }).length + '</b><span>Surel aman</span></div></div>' +
       '<div class="chips"><button class="chip' + (f === 'semua' ? ' on' : '') + '" data-filter="semua">Semua</button><button class="chip' + (f === 'mitra' ? ' on' : '') + '" data-filter="mitra">Mitra<em>' + nM + '</em></button><button class="chip' + (f === 'tugas' ? ' on' : '') + '" data-filter="tugas">ClickUp<em>' + nT + '</em></button></div>';
     if (!S.surel && !S.tugas) return h + '<div class="kosong">Memuat…</div>';
+    if (f !== 'tugas') h += bagianJanji(S.janji || []);
     h += bagian('Hari ini', saring(hari), 'Tidak ada yang mendesak hari ini.') + bagian('Minggu ini', saring(minggu), 'Kosong.');
     if (S.tugas && S.tugas.galat) h += '<div class="kosong">ClickUp: ' + esc(S.tugas.galat) + '</div>';
     if (S.surel && S.surel.waktu) h += '<div class="cat">Surel dicek ' + lalu(S.surel.waktu) + '</div>';
@@ -259,6 +268,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
     if (!u) return '<button class="back" data-buka="#mitra">‹ Mitra</button><div class="kosong">Utas tidak ditemukan. Mungkin labelnya sudah dicopot.</div>';
     var h = '<button class="back" data-buka="#mitra">‹ Mitra</button><h1 class="mt">' + esc(u.subjek) + '</h1><div class="meta">' + esc(u.mitra) + (u.pengirim ? ' · ' + esc(u.pengirim) : '') + '</div>';
     if (u.status === 'menunggu') return h + '<div class="bub">Surel terakhir dari kamu. Menunggu balasan ' + esc(u.mitra) + ', sudah ' + u.hariKerja + ' hari kerja.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Buka di Gmail</a>';
+    h += bagianJanji((S.janji || []).filter(function (j) { return j.utas === u.id; }));
     h += '<div class="bub"><div class="w"><span>' + esc(u.pengirim) + '</span><span>' + (u.waktuPesan ? lalu(u.waktuPesan) : '') + '</span></div>' + esc(u.isiPesan || u.cuplikan) + '</div>';
     if (u.status === 'disiapkan') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang disiapkan</span></div>Draft dibuat otomatis, biasanya siap dalam satu jam. Notif masuk begitu siap.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Balas sendiri di Gmail</a>';
     if (u.status === 'revisi') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang direvisi</span></div>Permintaan revisi sudah diteruskan. Notif "draft revisi siap" masuk begitu selesai.</div>';
@@ -401,13 +411,42 @@ button{cursor:pointer;border:0;background:none;padding:0}
       '<div class="lbl">Prioritas</div>' + opsi('prioritas', [['biasa', 'Biasa'], ['penting', 'Penting'], ['mendesak', 'Mendesak']], BARU.prioritas) +
       '<button class="bt p" style="margin-top:14px" data-simpanbaru>Tambah ke ClickUp</button>');
   }
+  function bukaJanji(id) {
+    var j = (S.janji || []).filter(function (x) { return x.id === id; })[0]; if (!j) return;
+    tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="kosong">Memuat list ClickUp…</div>');
+    (S.meta ? Promise.resolve({ ok: true }) : api('tugasMeta').then(function (h) { if (h.ok) S.meta = h; return h; })).then(function (h) {
+      if (!h.ok) { tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
+      var ada = S.meta.daftar.map(function (l) { return l.id; });
+      if (ada.indexOf(S.janjiList) < 0) S.janjiList = ada.indexOf(ambil('ops_list_agenda')) > -1 ? ambil('ops_list_agenda') : ada[0];
+      tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="bub" style="box-shadow:none;background:#F7F8FA"><b>' + esc(j.mitra + ': ' + j.judul) + '</b><br>' + esc(hariJam(j.mulai)) + (j.lokasi ? '<br>' + esc(j.lokasi) : '') + '</div>' +
+        '<div class="cat" style="text-align:left;margin:0 0 6px">Jadi tugas ClickUp untuk kamu (nama Indra di judul) dan event di kalender Agenda Mitra.</div>' +
+        '<div class="lbl">List ClickUp</div><div class="ops">' + S.meta.daftar.map(function (l) { return '<button class="' + (l.id === S.janjiList ? 'on' : '') + '" data-janjilist="' + esc(l.id) + '">' + esc(l.nama) + '</button>'; }).join('') + '</div>' +
+        '<button class="bt p" style="margin-top:12px" data-janjiok="' + j.id + '">Jadikan agenda</button>');
+      S.janjiBuka = id;
+    }).catch(function (e) { toast(e.message); tutupSheet(); });
+  }
   function tampilSheet(h) { $('sheet').innerHTML = h; $('sheet').classList.add('on'); $('dim').classList.add('on'); }
   function tutupSheet() { $('sheet').classList.remove('on'); $('dim').classList.remove('on'); }
 
   document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru]');
+    var el = e.target.closest('[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru]');
     if (!el) return;
     var d = el.dataset;
+    if (d.abaikan) {
+      e.stopPropagation(); var ia = Number(d.abaikan);
+      api('janjiAbaikan', { id: ia }).then(function (h) { S.janji = (S.janji || []).filter(function (x) { return x.id !== ia; }); gambar(); toast(h.ok ? 'Diabaikan' : (h.pesan || 'Gagal')); });
+      return;
+    }
+    if (d.janji) { bukaJanji(Number(d.janji)); return; }
+    if (d.janjilist) { S.janjiList = d.janjilist; bukaJanji(S.janjiBuka); return; }
+    if (d.janjiok) {
+      var ij = Number(d.janjiok); el.disabled = true; taruh('ops_list_agenda', S.janjiList);
+      api('janjiTerima', { id: ij, daftar: S.janjiList }).then(function (h) {
+        el.disabled = false; toast(h.pesan || (h.ok ? 'Jadi agenda' : 'Gagal'));
+        if (h.ok || /sudah/.test(h.pesan || '')) { S.janji = (S.janji || []).filter(function (x) { return x.id !== ij; }); tutupSheet(); gambar(); muatSemua(); }
+      }).catch(function (er) { el.disabled = false; toast(er.message); });
+      return;
+    }
     if (d.selesai) { e.stopPropagation(); selesai(d.selesai); return; }
     if (d.buka) { buka(d.buka); return; }
     if (d.filter) { S.filter = d.filter; gambar(); return; }
