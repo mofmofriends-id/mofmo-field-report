@@ -160,11 +160,14 @@ button{cursor:pointer;border:0;background:none;padding:0}
     return d.getUTCDate() + ' ' + BLN[d.getUTCMonth()];
   }
   function hariJam(ms) { var d = wib(ms); return HR[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + BLN[d.getUTCMonth()] + ' ' + jam(ms); }
+  function agendaJanji(j) { return !!(j.berjam && j.mulai); }
+  function kapanJanji(j) { if (!j.mulai) return 'tanpa tenggat'; return agendaJanji(j) ? hariJam(j.mulai) : 'tenggat ' + hariJam(j.mulai).split(' ').slice(0, 3).join(' '); }
   function kartuJanji(j) {
-    return '<div class="c" data-janji="' + j.id + '" role="button"><div class="ic" style="background:var(--accbg)">' + IK.kalender + '</div><div><span class="tt">' + esc(j.mitra + ': ' + j.judul) + '</span><span class="ss">' + esc(hariJam(j.mulai) + (j.lokasi ? ' · ' + j.lokasi : '')) + '</span>' +
-      '<div class="jb"><span class="mini p">Jadikan agenda</span><button class="mini" data-abaikan="' + j.id + '">Abaikan</button></div></div><span></span></div>';
+    var ag = agendaJanji(j);
+    return '<div class="c" data-janji="' + j.id + '" role="button"><div class="ic" style="background:' + (ag ? 'var(--accbg)' : 'var(--purbg)') + '">' + (ag ? IK.kalender : IK.tugas) + '</div><div><span class="tt">' + esc(j.mitra + ': ' + j.judul) + '</span><span class="ss">' + esc(kapanJanji(j) + (j.pic ? ' · ' + j.pic : '') + (j.lokasi ? ' · ' + j.lokasi : '')) + '</span>' +
+      '<div class="jb"><span class="mini p">' + (ag ? 'Jadikan agenda' : 'Jadikan tugas') + '</span><button class="mini" data-abaikan="' + j.id + '">Abaikan</button></div></div><span></span></div>';
   }
-  function bagianJanji(daftar) { return daftar.length ? '<div class="sec">Agenda dari surel</div>' + daftar.map(kartuJanji).join('') : ''; }
+  function bagianJanji(daftar) { return daftar.length ? '<div class="sec">Dari surel mitra</div>' + daftar.map(kartuJanji).join('') : ''; }
   function lalu(ms) {
     var m = Math.round((Date.now() - ms) / 60e3);
     if (m < 1) return 'baru saja'; if (m < 60) return m + ' menit lalu';
@@ -413,15 +416,16 @@ button{cursor:pointer;border:0;background:none;padding:0}
   }
   function bukaJanji(id) {
     var j = (S.janji || []).filter(function (x) { return x.id === id; })[0]; if (!j) return;
-    tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="kosong">Memuat list ClickUp…</div>');
+    var ag = agendaJanji(j), judulSheet = ag ? 'Jadikan agenda' : 'Jadikan tugas';
+    tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2><div class="kosong">Memuat list ClickUp…</div>');
     (S.meta ? Promise.resolve({ ok: true }) : api('tugasMeta').then(function (h) { if (h.ok) S.meta = h; return h; })).then(function (h) {
-      if (!h.ok) { tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
+      if (!h.ok) { tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
       var ada = S.meta.daftar.map(function (l) { return l.id; });
       if (ada.indexOf(S.janjiList) < 0) S.janjiList = ada.indexOf(ambil('ops_list_agenda')) > -1 ? ambil('ops_list_agenda') : ada[0];
-      tampilSheet('<div class="grab"></div><h2>Jadikan agenda</h2><div class="bub" style="box-shadow:none;background:#F7F8FA"><b>' + esc(j.mitra + ': ' + j.judul) + '</b><br>' + esc(hariJam(j.mulai)) + (j.lokasi ? '<br>' + esc(j.lokasi) : '') + '</div>' +
-        '<div class="cat" style="text-align:left;margin:0 0 6px">Jadi tugas ClickUp untuk kamu (nama Indra di judul) dan event di kalender Agenda Mitra.</div>' +
+      tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2><div class="bub" style="box-shadow:none;background:#F7F8FA"><b>' + esc(j.mitra + ': ' + j.judul) + '</b><br>' + esc(kapanJanji(j)) + (j.lokasi ? '<br>' + esc(j.lokasi) : '') + '</div>' +
+        '<div class="cat" style="text-align:left;margin:0 0 6px">' + (ag ? 'Jadi tugas ClickUp untuk kamu dan event di kalender Agenda Mitra.' : 'Jadi tugas ClickUp untuk kamu.') + '</div>' +
         '<div class="lbl">List ClickUp</div><div class="ops">' + S.meta.daftar.map(function (l) { return '<button class="' + (l.id === S.janjiList ? 'on' : '') + '" data-janjilist="' + esc(l.id) + '">' + esc(l.nama) + '</button>'; }).join('') + '</div>' +
-        '<button class="bt p" style="margin-top:12px" data-janjiok="' + j.id + '">Jadikan agenda</button>');
+        '<button class="bt p" style="margin-top:12px" data-janjiok="' + j.id + '">' + judulSheet + '</button>');
       S.janjiBuka = id;
     }).catch(function (e) { toast(e.message); tutupSheet(); });
   }
