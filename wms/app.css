@@ -1134,6 +1134,15 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 #kbHu .kb-hu-yakin{display:flex;gap:8px;align-items:center;font-weight:800;margin:10px 0}
 #kbHu .kb-hu-hapus{background:#a3333d;color:#fff;border-color:#a3333d}
 #kbHu .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
+/* 19 Okt: panel Hapus semua kartu edisi (mode tes) */
+#kbHs{border-color:#a3333d}
+#kbHs .kb-hu-label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:800;color:var(--mut);margin:8px 0 10px}
+#kbHs input[type=text]{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:15px;padding:10px 12px;border-radius:14px;border:1.5px solid var(--line);background:var(--card,#fff);color:inherit;letter-spacing:1px}
+#kbHs .kb-hu-yakin{display:flex;gap:8px;align-items:center;font-weight:800;margin:10px 0}
+#kbHs .kb-hu-hapus{background:#a3333d;color:#fff;border-color:#a3333d}
+#kbHs .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
+#kbHs .kb-hs-angka{margin:12px 0 6px;padding:12px 14px;border-radius:14px;background:#fbe9e9;color:#8f2a33;border:1.5px solid #e7b9bd;font-weight:800}
+html[data-theme="dark"] #kbHs .kb-hs-angka{background:#3a2023;color:#f3c2c6;border-color:#6b3238}
 /* Siap edisi di Kitabku (18 Okt 2026) */
 .kb-siap-kepala{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .kb-siap-kepala h3{margin:0}.kb-siap-kepala .ket-alat{margin:4px 0 0}
