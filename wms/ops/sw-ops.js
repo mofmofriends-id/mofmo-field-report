@@ -1,6 +1,6 @@
 /* Service worker WMS Ops (19 Okt 2026): notif HP dan kerangka aplikasi tanpa sinyal.
- * Jaringan dulu, simpanan cuma cadangan. Hanya GET di /ops/ sendiri; Supabase tidak pernah disimpan. */
-var SIMPAN = 'ops-kerangka-1';
+ * Jaringan dulu, simpanan cuma cadangan. Hanya GET di /ops/ dan /img/ (logo, boneka SKU); Supabase tidak pernah disimpan. */
+var SIMPAN = 'ops-kerangka-2';
 self.addEventListener('install', function () { self.skipWaiting(); });
 self.addEventListener('activate', function (e) {
   e.waitUntil(caches.keys().then(function (k) {
@@ -10,7 +10,7 @@ self.addEventListener('activate', function (e) {
 self.addEventListener('fetch', function (e) {
   var q = e.request, u;
   try { u = new URL(q.url); } catch (er) { return; }
-  if (q.method !== 'GET' || u.origin !== self.location.origin || u.pathname.indexOf('/ops/') !== 0) return;
+  if (q.method !== 'GET' || u.origin !== self.location.origin || (u.pathname.indexOf('/ops/') !== 0 && u.pathname.indexOf('/img/') !== 0)) return;
   e.respondWith(fetch(q).then(function (r) {
     if (r && r.ok && r.type === 'basic') { var salin = r.clone(); caches.open(SIMPAN).then(function (c) { return c.put(q, salin); }); }
     return r;
