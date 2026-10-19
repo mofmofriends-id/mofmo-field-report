@@ -567,6 +567,14 @@ body.alat-terbuka{overflow:hidden}
 #lembarKitab .kk-bawah.vou{background:var(--kk-krem);border:.3mm dashed var(--kk-segel)}
 #lembarKitab .kk-bawah.vou b{font-weight:900;font-size:8pt;color:var(--kk-segel)}
 #lembarKitab .kk-bawah.vou span{font-weight:700;font-size:7.6pt;color:var(--kk-tinta2)}
+/* Bleed 3 mm untuk PDF vendor (19 Okt 2026, Ferdy pilih A: tanpa bingkai tepi). Latar krem dan hijau diteruskan sampai
+   146 x 66 mm; kartu 140 x 60 mm di tengah tanpa bingkai emas tepi supaya potongan yang meleset tidak terlihat miring. */
+#lembarKitab .kk-bleed{position:relative;width:146mm;height:66mm;overflow:hidden}
+#lembarKitab .kk-bl-kiri{position:absolute;left:0;top:0;width:73mm;height:66mm;background:radial-gradient(110% 90% at 45% 45%,#FBF4E2 0%,#F2E6CC 55%,#EADCBD 100%)}
+#lembarKitab .kk-bl-kanan{position:absolute;left:73mm;top:0;width:73mm;height:66mm;box-sizing:border-box;background:linear-gradient(160deg,#2D5040,#1F3B2D 60%,#16291F);border-left:.5mm solid #C9A24B}
+#lembarKitab .kk-bleed .kartu-kitab{position:absolute;left:3mm;top:3mm;border:0;border-radius:0;background:transparent}
+#lembarKitab .kk-bleed .kk-kiri,#lembarKitab .kk-bleed .kk-kanan{background:transparent;border-left-color:transparent}
+#lembarKitab .kk-bleed .kartu-kitab:after{display:none}
 /* Kartu umum per paket (16 Okt 2026): kiri logo + ajakan + foto karakter, kanan QR. Dicetak sendiri di A4. */
 #lembarKitab .kk-p-logo{position:absolute;top:3.4mm;left:28mm;width:14mm;height:14mm;border-radius:50%;background:#F6ECD6;border:.35mm solid var(--kk-emas);padding:.8mm;object-fit:contain}
 #lembarKitab .kk-p-nama{position:absolute;top:18.4mm;left:0;right:0;text-align:center;font-family:'KK Cinzel Deco',serif;font-weight:900;font-size:13pt;line-height:1;color:var(--kk-tinta)}
@@ -1135,6 +1143,9 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 #kbHu .kb-hu-hapus{background:#a3333d;color:#fff;border-color:#a3333d}
 #kbHu .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
 .kb-vtabel .kb-vhadiah{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--mut)}
+.kb-hasil .kb-pdf-uk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--mut)}
+.kb-hasil .kb-pdf-uk select{height:40px;padding:0 10px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font:700 14px Nunito,sans-serif}
+.kb-hasil .kb-pdf-ket{display:block;flex-basis:100%;margin-top:6px;font-size:12px;font-weight:700;color:var(--mut)}
 /* 19 Okt: panel Hapus semua kartu edisi (mode tes) */
 #kbHs{border-color:#a3333d}
 #kbHs .kb-hu-label{display:flex;flex-direction:column;gap:4px;font-size:12.5px;font-weight:800;color:var(--mut);margin:8px 0 10px}
