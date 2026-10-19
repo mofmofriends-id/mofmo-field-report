@@ -278,14 +278,17 @@
 
   /* Foto produk per nama SKU. Nama panjang ("MofmoFriends Key Ring - Tiger")
      dan nama pendek gudang ("KR Tiger", "Ruck NDR") sama-sama dikenali.
-     S Netherland Dwarf belum punya foto: dibiarkan tanpa gambar. */
+     19 Okt: foto yang sejak 9 Okt dipasang sebagai Angora ternyata S Netherland Dwarf (Ferdy,
+     dari foto listing Angora asli: telinga panjang turun berdalaman pink). Foto lama jadi ndr_s,
+     angora diganti foto listing. Aturan plush NDR ditaruh SESUDAH aturan aksesori, supaya
+     key charm, key ring, rucksack, dan cap Netherland Dwarf tetap ke fotonya sendiri. */
   var FOTO = [
     ['(backpack|\\bbp\\b) ivory', 'bp_ivory'], ['(backpack|\\bbp\\b) pink', 'bp_pink'], ['(backpack|\\bbp\\b) green', 'bp_green'], ['(backpack|\\bbp\\b) blue', 'bp_blue'],
     ['ruck.*(dwarf|rabbit|ndr)', 'rs_rabbit'], ['ruck.*(british|bsh)', 'rs_bsh'], ['cap.*banana', 'cap_banana'], ['cap.*melon', 'cap_melon'], ['cap.*tomato', 'cap_tomato'], ['cap.*(dwarf|rabbit|ndr)', 'cap_rabbit'],
     ['(charm|\\bkc\\b).*bear', 'kc_bear'], ['(charm|\\bkc\\b).*bichon', 'kc_bichon'], ['(charm|\\bkc\\b).*(british|bsh)', 'kc_bsh'], ['(charm|\\bkc\\b).*cow', 'kc_cow'], ['(charm|\\bkc\\b).*lamb', 'kc_lamb'], ['(charm|\\bkc\\b).*(dwarf|rabbit|ndr)', 'kc_rabbit'], ['(charm|\\bkc\\b).*shiba', 'kc_shiba'], ['(charm|\\bkc\\b).*tiger', 'kc_tiger'],
     ['(ring|\\bkr\\b).*bear', 'kr_bear'], ['(ring|\\bkr\\b).*bichon', 'kr_bichon'], ['(ring|\\bkr\\b).*(british|bsh)', 'kr_bsh'], ['(ring|\\bkr\\b).*(dwarf|rabbit|ndr)', 'kr_rabbit'], ['(ring|\\bkr\\b).*tiger', 'kr_tiger'],
     ['ball.*panda', 'mb_panda'], ['ball.*tiger', 'mb_tiger'], ['ball.*collie', 'mb_collie'], ['ball.*lamb', 'mb_lamb'],
-    ['angora', 'angora'], ['reindeer', 'reindeer'], ['red panda', 'redpanda'], ['rac+oon', 'racoon'], ['panda', 'panda'], ['elephant', 'elephant'], ['koala', 'koala'], ['otter', 'otter'], ['pekingese', 'pekingese_s'], ['bi[cs]h?on', 'bichon_s'], ['collie', 'collie'], ['lamb', 'lamb'], ['shiba', 'shiba'], ['\\bbear\\b', 'bear']
+    ['angora', 'angora'], ['netherland|dwarf|\\bndr\\b', 'ndr_s'], ['reindeer', 'reindeer'], ['red panda', 'redpanda'], ['rac+oon', 'racoon'], ['panda', 'panda'], ['elephant', 'elephant'], ['koala', 'koala'], ['otter', 'otter'], ['pekingese', 'pekingese_s'], ['bi[cs]h?on', 'bichon_s'], ['collie', 'collie'], ['lamb', 'lamb'], ['shiba', 'shiba'], ['\\bbear\\b', 'bear']
   ];
   /* Teks yang memang nama produk: memuat kata merek/kategori, atau nama
      pendek gudang (S, M, KC, KR, Ball, BP, Ruck, Cap di depan). */

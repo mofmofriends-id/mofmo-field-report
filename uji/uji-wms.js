@@ -246,8 +246,9 @@ const AUDIO_PALSU = () => {
     await tungguBingkai(() => !!document.getElementById('smrKotak').shadowRoot.querySelector('#tdSku1 img.l4-sku'), 4000);
     const sku = await diBingkai(() => { const r = document.getElementById('smrKotak').shadowRoot; const s = id => { const i = r.querySelector('#' + id + ' img.l4-sku'); return i ? i.getAttribute('src') : ''; };
       return { reindeer: s('tdSku1'), dwarf: s('tdSku2'), bukan: s('tdBukan'), sel: s('selSku'), teks: r.getElementById('tdSku1').textContent }; });
-    c('W40 foto produk di nama SKU: tabel (S - Reindeer) dan sel peta gudang (KC Bear) berfoto, Netherland Dwarf yang belum punya foto dan nama gerai tidak, teks nama tetap',
-      /img\/sku\/reindeer\.webp$/.test(sku.reindeer) && /img\/sku\/kc_bear\.webp$/.test(sku.sel) && !sku.dwarf && !sku.bukan && sku.teks === 'MofmoFriends S - Reindeer', JSON.stringify(sku));
+    /* 19 Okt: S Netherland Dwarf sekarang berfoto (foto yang dulu salah dipasang sebagai Angora), lihat uji-foto-angora-ndr.js */
+    c('W40 foto produk di nama SKU: tabel (S - Reindeer, S - netherland dwarf) dan sel peta gudang (KC Bear) berfoto, nama gerai tidak, teks nama tetap',
+      /img\/sku\/reindeer\.webp$/.test(sku.reindeer) && /img\/sku\/kc_bear\.webp$/.test(sku.sel) && /img\/sku\/ndr_s\.webp$/.test(sku.dwarf) && !sku.bukan && sku.teks === 'MofmoFriends S - Reindeer', JSON.stringify(sku));
     /* Ferdy 10 Okt: "ganti field op dg Operational PIC". */
     const fieldOp = await diBingkai(() => ({ t: document.getElementById('navField').textContent.replace(/\s+/g, ' ').trim(), lencana: !!document.querySelector('#navField .pnlLcn') }));
     c('W41 menu "Field Op" di papan tampil sebagai "Operational PIC", lencananya tetap', fieldOp.t === 'Operational PIC 1' && fieldOp.lencana, JSON.stringify(fieldOp));
