@@ -47,7 +47,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .jdmn button{font-size:13px;font-weight:600;color:var(--blu);padding:6px 4px}.jdmn b{font-size:15px}
 .jdinfo{font-size:12px;color:var(--mut);margin:0 2px 4px}
 .jdh{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:9px 10px;margin-bottom:6px;box-shadow:0 1px 2px rgba(16,24,40,.05)}
-.jdh.lewat{opacity:.45}.jdh.kini{box-shadow:inset 0 0 0 2px var(--acc)}
+.jdh.lewat{opacity:.45}.jdh.sorot{box-shadow:inset 0 0 0 2px var(--blu)}.jdinfo2{font-size:12px;color:var(--ink);background:#F2F4F7;border-radius:10px;padding:7px 9px;margin-top:8px}.jdh.kini{box-shadow:inset 0 0 0 2px var(--acc)}
 .jdt{text-align:center;line-height:1.1}.jdt b{display:block;font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase}.jdt span{font-size:19px;font-weight:700}
 .jdg{display:flex;flex-wrap:wrap;gap:6px}
 .jchip{font-size:13px;font-weight:600;padding:7px 11px;border-radius:10px;background:var(--blubg);color:var(--blu)}
@@ -199,7 +199,24 @@ button{cursor:pointer;border:0;background:none;padding:0}
   function kartuJanji(j) {
     var ag = agendaJanji(j);
     return '<div class="c" data-janji="' + j.id + '" role="button"><div class="ic" style="background:' + (ag ? 'var(--accbg)' : 'var(--purbg)') + '">' + (ag ? IK.kalender : IK.tugas) + '</div><div><span class="tt">' + esc(j.mitra + ': ' + j.judul) + '</span><span class="ss">' + esc(kapanJanji(j) + (j.pic ? ' · ' + j.pic : '') + (j.lokasi ? ' · ' + j.lokasi : '')) + '</span>' +
+      jadwalIndraJanji(j) +
       '<div class="jb"><span class="mini p">' + (ag ? 'Jadikan agenda' : 'Jadikan tugas') + '</span><button class="mini" data-abaikan="' + j.id + '">Abaikan</button></div></div><span></span></div>';
+  }
+  /* Jadwal kunjungan Indra di hari agenda mitra yang berjam, dari lembar Jadwal Kunjungan (geseran yang belum terbit ikut dihitung). */
+  function isiJadwalBulan(b) { if (S.jd.D && S.jd.bulan === b) return S.jd.isi; var c = S.jdCache[b]; return c ? (c.terbit && c.terbit.isi) || c.jadwal || {} : null; }
+  function jadwalIndraJanji(j) {
+    if (!agendaJanji(j)) return '';
+    var t = kunciHari(j.mulai), isi = isiJadwalBulan(t.slice(0, 7));
+    if (!isi) return '';
+    var g = (isi[t] || []).map(pendekGerai);
+    return '<div class="jdinfo2">' + (g.length ? 'Indra hari itu: ' + esc(g.join(', ')) : 'Indra hari itu tidak ada kunjungan') + ' <button class="mini" style="margin-left:4px;padding:4px 8px" data-jd-ke-tgl="' + t + '">Atur jadwal</button></div>';
+  }
+  function muatCacheJadwal() {
+    var bln = {};
+    (S.janji || []).forEach(function (j) { if (agendaJanji(j)) bln[kunciHari(j.mulai).slice(0, 7)] = 1; });
+    return Promise.all(Object.keys(bln).map(function (b) {
+      return jalanGas('ambilJadwalPic', ['WMS-TIKET', b]).then(function (D) { if (D && D.ok !== false) { S.jdCache[b] = D; if (!S.jd.D || S.jd.bulan !== b) { /* kode gerai butuh nama */ S.jdGerai = D.gerai; } } }, function () {});
+    }));
   }
   function bagianJanji(daftar) { return daftar.length ? '<div class="sec">Dari surel mitra</div>' + daftar.map(kartuJanji).join('') : ''; }
   function lalu(ms) {
@@ -235,7 +252,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
     if (!S.tiket) return Promise.resolve();
     var a = api('beranda').then(function (h) { if (h.ok) { S.surel = h.surel || { utas: [] }; S.janji = h.janji || []; } });
     var b = api('tugas').then(function (h) { S.tugas = h.ok ? h : { galat: h.pesan || 'Tugas belum terbaca.' }; });
-    return Promise.all([a, b]).catch(function (e) { toast(e.message); }).then(gambar);
+    return Promise.all([a, b]).catch(function (e) { toast(e.message); }).then(function () { gambar(); return muatCacheJadwal(); }).then(function () { segarJadwal(); gambar(); });
   }
   function utas() { return (S.surel && S.surel.utas) || []; }
   var GILIRAN = { disiapkan: 1, draft: 1, revisi: 1, lanjutan: 1 };
@@ -344,6 +361,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
   /* ---------- jadwal Operational PIC ---------- */
   var HR3 = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
   var PENDEK = { 'T305': 'Alam Sutera', 'T311': 'Margo City', 'T317': 'Artha Gading', 'T390': 'Kota Wisata', 'KIY-GI': 'Kino GI', 'KIY-PIK': 'Kino PIK', 'MAA-SGI': 'Seibu GI', 'MAA-PIM2': 'Seibu PIM 2' };
+  S.jdCache = {}; S.jdGerai = null;
   S.jd = { bulan: '', D: null, isi: {}, asli: {}, pilih: null, hasil: null, ringkas: [], galat: '', muat: false, sibuk: false };
   function dua(n) { return (n < 10 ? '0' : '') + n; }
   function bulanDari(ms) { return kunciHari(ms).slice(0, 7); }
@@ -353,7 +371,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
   function namaBln(b) { return ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][+b.slice(5, 7) - 1] + ' ' + b.slice(0, 4); }
   function tglHari(t) { return HR[hariDari(t)] + ' ' + (+t.slice(8, 10)) + ' ' + BLN[+t.slice(5, 7) - 1]; }
   function salinIsi(x) { var o = {}; Object.keys(x || {}).forEach(function (t) { if ((x[t] || []).length) o[t] = x[t].slice(); }); return o; }
-  function geraiJd(kode) { return ((S.jd.D && S.jd.D.gerai) || []).filter(function (g) { return g.kode === kode; })[0] || { kode: kode, nama: kode, retailer: '' }; }
+  function geraiJd(kode) { return ((S.jd.D && S.jd.D.gerai) || S.jdGerai || []).filter(function (g) { return g.kode === kode; })[0] || { kode: kode, nama: kode, retailer: '' }; }
   function pendekGerai(kode) { if (PENDEK[kode]) return PENDEK[kode]; var w = String(geraiJd(kode).nama || kode).toLowerCase().split(' ').slice(-2).join(' '); return w.replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
   function tglGerai(isi, kode) { return Object.keys(isi).filter(function (t) { return (isi[t] || []).indexOf(kode) > -1; }).sort(); }
   function perubahanJd() {
@@ -390,6 +408,16 @@ button{cursor:pointer;border:0;background:none;padding:0}
       gambar();
     }).catch(function (e) { J.muat = false; J.galat = e.message; gambar(); });
   }
+  /* Baca ulang jadwal diam-diam (perubahan dari WMS ikut masuk) selama tidak ada geseran yang belum terbit. */
+  function segarJadwal() {
+    var J = S.jd; if (!J.D || J.sibuk || perubahanJd().length) return;
+    jalanGas('ambilJadwalPic', ['WMS-TIKET', J.bulan]).then(function (D) {
+      if (!D || D.ok === false || perubahanJd().length || J.bulan !== D.bulan) return;
+      J.D = D; var dasar = D.draf && D.draf.isi ? D.draf.isi : D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {};
+      J.asli = salinIsi(D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {}); J.isi = salinIsi(dasar); S.jdCache[J.bulan] = D;
+      if (S.rute.indexOf('#jadwal') === 0) gambar();
+    }, function () {});
+  }
   function vJadwal() {
     var J = S.jd;
     if (!J.bulan) J.bulan = bulanDari(Date.now());
@@ -420,7 +448,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
         h += '<div class="sec">' + (sen === seninIni ? 'Pekan ini · ' : 'Pekan ') + (+sen.slice(8, 10)) + (sen.slice(5, 7) !== jum.slice(5, 7) ? ' ' + BLN[+sen.slice(5, 7) - 1] : '') + ' sampai ' + (+jum.slice(8, 10)) + ' ' + BLN[+jum.slice(5, 7) - 1] + '</div>';
       }
       var gs = J.isi[t] || [];
-      h += '<div class="jdh' + (t < hariIni ? ' lewat' : '') + (t === hariIni ? ' kini' : '') + '" data-jd-hari="' + t + '"><div class="jdt"><b>' + HR3[hk] + '</b><span>' + d + '</span></div><div class="jdg">' +
+      h += '<div class="jdh' + (t < hariIni ? ' lewat' : '') + (t === hariIni ? ' kini' : '') + (t === J.sorot ? ' sorot' : '') + '" data-jd-hari="' + t + '"><div class="jdt"><b>' + HR3[hk] + '</b><span>' + d + '</span></div><div class="jdg">' +
         (gs.length ? gs.map(function (k) { var baru = (J.asli[t] || []).indexOf(k) < 0; return '<button class="jchip ' + esc(geraiJd(k).retailer) + (baru ? ' baru' : '') + '" data-jd-gerai="' + t + '|' + esc(k) + '">' + esc(pendekGerai(k)) + '</button>'; }).join('') : '<span class="jdkosong">Tanpa kunjungan</span>') + '</div></div>';
     }
     if (ubah.length) h += '<div style="height:70px"></div><div class="jdbar" data-jd-bar><div><span style="flex:1">' + ubah.length + ' perubahan</span><button data-jd-kembali>Kembalikan</button><button class="p" data-jd-terbit' + (J.sibuk ? ' disabled' : '') + '>' + (J.sibuk ? 'Menerbitkan…' : 'Terbitkan') + '</button></div></div>';
@@ -618,7 +646,7 @@ button{cursor:pointer;border:0;background:none;padding:0}
   function tutupSheet() { $('sheet').classList.remove('on'); $('dim').classList.remove('on'); }
 
   document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-jd-lalu],[data-jd-bulan],[data-jd-gerai],[data-jd-ke],[data-jd-batal-kunj],[data-jd-kembali],[data-jd-terbit],[data-jd-indra],[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru]');
+    var el = e.target.closest('[data-jd-ke-tgl],[data-jd-lalu],[data-jd-bulan],[data-jd-gerai],[data-jd-ke],[data-jd-batal-kunj],[data-jd-kembali],[data-jd-terbit],[data-jd-indra],[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru]');
     if (!el) return;
     var d = el.dataset;
     if (el.hasAttribute('data-jd-bulan')) {
@@ -628,6 +656,13 @@ button{cursor:pointer;border:0;background:none;padding:0}
     if (el.hasAttribute('data-jd-gerai')) { var pg = el.getAttribute('data-jd-gerai').split('|'); bukaGeser(pg[0], pg[1]); return; }
     if (el.hasAttribute('data-jd-ke')) { terapkanGeser(el.getAttribute('data-jd-ke')); return; }
     if (el.hasAttribute('data-jd-batal-kunj')) { if (confirm('Batalkan kunjungan ini?')) terapkanGeser(''); return; }
+    if (el.hasAttribute('data-jd-ke-tgl')) {
+      e.stopPropagation(); var tg = el.getAttribute('data-jd-ke-tgl');
+      if (S.jd.bulan !== tg.slice(0, 7)) { S.jd.bulan = tg.slice(0, 7); S.jd.D = null; S.jd.galat = ''; }
+      S.jd.sorot = tg; if (tg < kunciHari(Date.now())) S.jd.lalu = true; buka('#jadwal');
+      setTimeout(function () { var x = document.querySelector('[data-jd-hari="' + tg + '"]'); if (x && x.scrollIntoView) x.scrollIntoView({ block: 'center' }); }, 400);
+      return;
+    }
     if (el.hasAttribute('data-jd-lalu')) { S.jd.lalu = true; gambar(); return; }
     if (el.hasAttribute('data-jd-kembali')) { S.jd.isi = salinIsi(S.jd.asli); gambar(); return; }
     if (el.hasAttribute('data-jd-terbit')) { terbitJadwal(); return; }
