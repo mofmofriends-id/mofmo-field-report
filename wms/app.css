@@ -1167,3 +1167,23 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 .ls-tanpa li{display:flex;flex-wrap:wrap;gap:2px 10px;padding:6px 0;border-top:1px solid var(--wLine);min-width:0}
 .ls-tanpa code{font-family:ui-monospace,Menlo,monospace;font-weight:800}
 .ls-tanpa li span{flex:1 1 220px;min-width:0;overflow-wrap:anywhere}
+/* Funnel kampanye dan rekonsiliasi voucher, Kitabku Ringkas (19 Okt 2026) */
+.kb-fn{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.kb-fn li{display:grid;grid-template-columns:minmax(150px,1.1fr) 2fr auto;align-items:center;gap:10px}
+.kb-fn-label{display:flex;flex-direction:column;line-height:1.25}
+.kb-fn-label span{font-size:13.5px;font-weight:800;color:var(--ink)}
+.kb-fn-label small{font-size:12px;font-weight:700;color:var(--mut)}
+.kb-fn-batang{height:14px;border-radius:999px;background:var(--track);overflow:hidden}
+.kb-fn-batang i{display:block;height:100%;border-radius:999px;background:var(--acc)}
+.kb-fn li b{font-family:'Baloo 2',Nunito,sans-serif;font-size:22px;min-width:3ch;text-align:right;color:var(--ink)}
+.kb-vtabel{width:100%;border-collapse:collapse;font-size:13.5px}
+.kb-vtabel th,.kb-vtabel td{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:middle}
+.kb-vtabel .num{text-align:right}
+.kb-vtabel tfoot th,.kb-vtabel tfoot td{font-weight:800;border-bottom:0}
+.kb-vtabel input{width:90px;text-align:right;padding:6px 8px;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:var(--bg,#fff);color:var(--ink)}
+.kb-vtabel .kb-vawas{display:none;font-size:11.5px;font-weight:700;color:var(--accText);margin-top:2px}
+.kb-vtabel tr.awas .kb-vawas{display:block}
+.kb-vtabel tr.awas td[data-k=laju]{color:var(--accText);font-weight:800}
+.kb-vunggah{position:relative;align-self:flex-start;cursor:pointer}
+.kb-vunggah input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+@media (max-width:560px){.kb-fn li{grid-template-columns:1fr auto}.kb-fn-batang{grid-column:1/-1;order:3}}
