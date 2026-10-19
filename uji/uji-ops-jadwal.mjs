@@ -1,5 +1,5 @@
 /* Uji tab Jadwal di aplikasi WMS Ops (/ops/), 19 Okt 2026.
- * Harapan: "7 pemeriksaan, SEMUA LULUS".
+ * Harapan: "9 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Ferdy (19 Okt 22.03): "boleh ga ke link ke [jadwal] PIC Operasional yang visit schedule.
  * Biar gampang ubah jadwal? Dan kirim jadwal baru ke indra". Tab Jadwal memakai ulang jalur WMS yang sudah ada
@@ -17,7 +17,7 @@ import path from 'node:path';
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 7;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 9;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 700))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -74,7 +74,8 @@ await ctx.route('**/macros/s/**', async (route) => {
   else hasil = { ok: false, pesan: 'tidak dikenal' };
   await route.fulfill({ status: 200, contentType: 'application/json', body: JSON.stringify({ pintu: 'ok', hasil }) });
 });
-await ctx.route('**/functions/v1/ops', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, surel: { utas: [] }, janji: [], hariIni: [], minggu: [], nanti: [], timTelat: [] }) }));
+const JANJI = [{ id: 1, utas: 'u1', pesan: 'm4', mitra: 'MAA', judul: 'Opname dan penarikan stok', mulai: W('2026-10-22T08:30:00'), selesai: null, lokasi: 'Babyz Station Seibu Grand Indonesia', catatan: '', status: 'usul', dikabari: true, berjam: true, pic: 'Indra' }];
+await ctx.route('**/functions/v1/ops', (route) => route.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ ok: true, surel: { utas: [] }, janji: JANJI, hariIni: [], minggu: [], nanti: [], timTelat: [] }) }));
 const p = await ctx.newPage();
 await p.clock.setFixedTime(new Date(KINI));
 const errs = []; p.on('pageerror', (e) => errs.push(e.message));
@@ -128,6 +129,19 @@ await bagian('B. terbitkan dan kirim ke Indra', async () => {
   const lebar = await p.evaluate(() => document.documentElement.scrollWidth);
   c('B4 tanpa galat halaman dan tanpa geser ke samping di lebar 390', errs.length === 0 && lebar <= 390, JSON.stringify({ errs, lebar }));
   await p.screenshot({ path: '/tmp/claude-0/-home-claude/734637d7-4ef4-5392-8862-4843ea5b65c8/scratchpad/ops-jadwal.png' });
+});
+
+await bagian('C. agenda mitra dan jadwal Indra', async () => {
+  D.terbit.isi = JSON.parse(JSON.stringify(ISI)); D.jadwal = D.terbit.isi;
+  const sebelum = GAS.filter((x) => x.nama === 'ambilJadwalPic').length;
+  await p.goto(ASAL + '/ops/#beranda'); await p.reload();
+  await p.waitForSelector('[data-janji="1"] [data-jd-ke-tgl]', { timeout: 10000 });
+  const kartu = await p.innerText('[data-janji="1"]');
+  c('C1 kartu agenda MAA Kamis 22 08.30 menyebut jadwal Indra hari itu (Margo City, Kota Wisata) dari lembar Jadwal Kunjungan yang dibaca ulang',
+    /Indra hari itu: Margo City, Kota Wisata/.test(kartu) && GAS.filter((x) => x.nama === 'ambilJadwalPic').length > sebelum, kartu + ' sebelum=' + sebelum + ' sesudah=' + GAS.filter((x) => x.nama === 'ambilJadwalPic').length);
+  await p.click('[data-janji="1"] [data-jd-ke-tgl]');
+  await p.waitForSelector('[data-jd-hari="2026-10-22"]');
+  c('C2 tombol Atur jadwal membuka tab Jadwal bulan itu dan hari itu ditandai', /#jadwal/.test(p.url()) && !!(await p.$('[data-jd-hari="2026-10-22"].sorot')), p.url());
 });
 
 await b.close(); srv.close();
