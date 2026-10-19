@@ -1143,6 +1143,17 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 #kbHu .kb-hu-hapus{background:#a3333d;color:#fff;border-color:#a3333d}
 #kbHu .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
 .kb-vtabel .kb-vhadiah{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--mut)}
+/* 19 Okt: daftar kartu yang sudah dicetak di tab Cetak kartu QR */
+#kbRiwayat .kb-rw-atur{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 10px}
+#kbRiwayat .kb-pdf-uk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--mut)}
+#kbRiwayat .kb-pdf-uk select{height:40px;padding:0 10px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font:700 14px Nunito,sans-serif}
+.kb-rw-tabel{width:100%;border-collapse:collapse;font-size:14px}
+.kb-rw-tabel th{text-align:left;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--mut);padding:8px 10px;border-bottom:1.5px solid var(--line)}
+.kb-rw-tabel td{padding:10px;border-bottom:1px solid var(--line);vertical-align:middle}
+.kb-rw-tabel .num{text-align:right;font-variant-numeric:tabular-nums}
+.kb-rw-tabel .kb-rw-aksi{text-align:right;white-space:nowrap}
+.kb-rw-tabel .kb-rw-aksi .btn{min-height:36px;padding:0 14px;font-size:13px}
+.kb-rw-uji{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#fbe9e9;color:#8f2a33;text-transform:uppercase;letter-spacing:.05em}
 .kb-hasil .kb-pdf-uk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--mut)}
 .kb-hasil .kb-pdf-uk select{height:40px;padding:0 10px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font:700 14px Nunito,sans-serif}
 .kb-hasil .kb-pdf-ket{display:block;flex-basis:100%;margin-top:6px;font-size:12px;font-weight:700;color:var(--mut)}
