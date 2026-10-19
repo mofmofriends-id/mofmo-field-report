@@ -130,7 +130,8 @@
      Foto boneka Mofmofriends asli (dipotong dari foto katalog), bukan
      gambar karangan. Ferdy: "beruangnya kurang lucu", "pakai karakter asli
      Mofmo". Peran: Shiba menyapa dan bersorak, Koala malu saat ada yang
-     salah, Bichon menunggu papan dimuat, Angora menemani pesan memuat. */
+     salah, Bichon menunggu papan dimuat, Netherland Dwarf menemani pesan memuat
+     (dulu dikira Angora; berkasnya diganti nama jadi ndr_s 19 Okt, gambarnya sama). */
   function img(n) { return 'img/' + n + '.webp'; }
   function foto(n, kelas, alt) { return '<img class="' + (kelas || '') + '" src="' + img(n) + '" alt="' + esc(alt || '') + '" draggable="false">'; }
   var WAJAH = { diam: 'shiba', cek: 'shiba', senang: 'shiba', sedih: 'koala', mikir: 'shiba' };
@@ -782,7 +783,7 @@
       if (!PAPAN.bingkai || halamanSekarang !== 'papan') return;
       var gelap = PAPAN.tema === 'dark', K = window.KulitPapan;
       var id = bhs() === 'id';
-      var C = { cssBayang: K.cssBayang(), gelap: gelap, boneka: '<img class="l4-boneka" src="' + K.dasar + 'angora.webp" alt="">', teks: { keMalam: id ? 'Ganti ke malam' : 'Switch to night', keSiang: id ? 'Ganti ke siang' : 'Switch to day', keluar: t('logout'),
+      var C = { cssBayang: K.cssBayang(), gelap: gelap, boneka: '<img class="l4-boneka" src="' + K.dasar + 'ndr_s.webp" alt="">', teks: { keMalam: id ? 'Ganti ke malam' : 'Switch to night', keSiang: id ? 'Ganti ke siang' : 'Switch to day', keluar: t('logout'),
         scan: id ? 'Scan rak atau cari SKU' : 'Scan a rack or find a SKU', scanPendek: 'Scan', kitabku: id ? 'Kitabku: event, hadiah, kartu QR, klaim struk' : 'Kitabku: events, rewards, QR cards, receipt claims', katalog: id ? 'Katalog: semua SKU dan harga jual putus' : 'Catalog: every SKU with its outright sale price', katalogPendek: id ? 'Katalog' : 'Catalog', kontrol: id ? 'Kontrol: tutup bulan, rapor mitra, margin, rekonsiliasi' : 'Controls: month-end close, partner report cards, margins, reconciliation', kontrolPendek: id ? 'Kontrol' : 'Controls', laporan: id ? 'Laporan bulanan: sales, inventory, SKU, channel jadi PowerPoint' : 'Monthly report: sales, inventory, SKU and channels as PowerPoint', laporanPendek: id ? 'Laporan' : 'Report', jadwal: id ? 'Jadwal Operational PIC: susun bulan depan, PDF mitra, draf email, gambar staf' : 'Operational PIC schedule: next month, partner PDFs, email drafts, staff image', jadwalPendek: id ? 'Jadwal' : 'Schedule', tanya: id ? 'Tanya WMS: stok, penjualan, gerai, opname dalam bahasa sehari-hari' : 'Ask the WMS: stock, sales, stores, counts in plain words', tanyaPendek: id ? 'Tanya' : 'Ask', menu: 'Menu', alat: id ? 'Alat' : 'Tools', alatLabel: id ? 'Alat: laporan, kontrol, jadwal, katalog, Kitabku, Tanya WMS' : 'Tools: reports, controls, schedule, catalog, Kitabku, Ask WMS', jadwalMenu: id ? 'Jadwal PIC' : 'PIC schedule', tanyaMenu: id ? 'Tanya WMS' : 'Ask WMS', ketLaporan: id ? 'Bulanan, per mitra, Shopee' : 'Monthly, by partner, Shopee', ketKontrol: id ? 'Tutup bulan, HPP, rekonsiliasi' : 'Month-end close, COGS, reconciliation', ketJadwal: id ? 'Kunjungan dan rute' : 'Visits and routes', ketKatalog: id ? 'SKU dan harga jual' : 'SKUs and sale prices', ketKitabku: id ? 'Event, hadiah, kartu QR' : 'Events, rewards, QR cards', ketTanya: id ? 'Tanya stok, penjualan, jadwal' : 'Ask about stock, sales, schedules', paspor: id ? 'Buka paspor SKU' : 'Open the SKU passport' } };
       var html = K.ubahHtml(mentah, gelap);
       var kepala = '<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@500;600;700;800;900&display=swap" rel="stylesheet">' +
