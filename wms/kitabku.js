@@ -167,6 +167,9 @@
       jenis: 'Type', angka: 'Target', saluran: 'Counts', semua: 'All cards', online: 'Shopee cards only', isi: 'Reward', nominal: 'Value', minBelanja: 'Min. spend',
       voucher: 'Voucher code', kuota: 'Quota', terpakai: 'claimed', aktif: 'On', simpan: 'Save', tersimpan: 'Saved', usulan: 'Add the mockup rewards (switched off)',
       j_kartu: 'Cards collected', j_bab: 'Chapter complete', j_bintang: 'Game stars', j_edisi: 'Edition cards', j_papan: 'Total leaderboard', pemenang: 'Rank to', peringkatDari: 'Rank from', ketPapan: 'One reward = one rank tier, each with its own voucher. Example: #1 (1 to 1), #2-3 (2 to 3), #4-10 (4 to 10), up to rank 100. Buyers in this range on the Total leaderboard can claim it after the edition ends. Set the quota to the number of ranks in the range. The voucher can be filled in later.',
+      hsJudul: 'Delete all edition cards (test mode)', hsKet: 'Deletes ALL QR cards printed for the active edition (parcel and per-product cards), including their order links, whatever the voucher code. Books holding only these cards are deleted too. Only possible before the edition starts. Order contents from the warehouse upload are not touched.',
+      hsCek: 'Check', hsAngka: '{n} cards of edition {e} will be deleted: {p} linked to an order, {d} opened in Kitab.', hsKetik: 'Type HAPUS SEMUA to confirm', hsHapus: 'Permanently delete {n} cards',
+      hsHasil: '{k} edition cards deleted, {b} books deleted too.', hsTutup: 'Edition {e} has started, so its cards belong to real buyers. Delete all only works before the edition starts.', hsKosong: 'No cards in the active edition.',
       huJudul: 'Delete test data', huKet: 'For cleaning up cards printed for testing. Only cards whose voucher code starts with TES or UJI can be deleted, so real customer cards stay safe.', huKode: 'Test card codes (scan or type, one per line)', huCek: 'Check',
       huDaftar: 'Will be deleted', huBelum: 'not linked', huBuka: 'opened by book {n}', huTutup: 'not opened', huVoucher: 'voucher {v}', huLewat_bukan: '{k} skipped: its voucher code is {v} (not a test card).', huLewat_tidak: '{k} skipped: unknown code.', huLewat_salah: '{k} skipped: not a card code.',
       huBuku: 'Books deleted too: {d}. The order links of these cards disappear with them.', huBukuTetap: 'Books kept: {d} (they have real cards, scores, claims or receipts).', huYakin: 'I understand this cannot be undone', huHapus: 'Permanently delete {n} test cards', huKosong: 'No test cards in this list.', huHasil: '{k} test cards deleted, {b} books deleted too.',
@@ -223,6 +226,9 @@
       jenis: 'Jenis', angka: 'Target', saluran: 'Dihitung', semua: 'Semua kartu', online: 'Kartu Shopee saja', isi: 'Hadiah', nominal: 'Nilai', minBelanja: 'Min. belanja',
       voucher: 'Kode voucher', kuota: 'Kuota', terpakai: 'diambil', aktif: 'Nyala', simpan: 'Simpan', tersimpan: 'Tersimpan', usulan: 'Pasang hadiah dari mockup (nonaktif)',
       j_kartu: 'Jumlah kartu', j_bab: 'Bab lengkap', j_bintang: 'Bintang game', j_edisi: 'Kartu edisi', j_papan: 'Papan Total', pemenang: 'Peringkat sampai', peringkatDari: 'Peringkat dari', ketPapan: 'Satu hadiah = satu tingkat peringkat, masing-masing dengan voucher sendiri. Contoh: #1 (1 sampai 1), #2-3 (2 sampai 3), #4-10 (4 sampai 10), paling jauh sampai peringkat 100. Pembeli di rentang ini pada papan Total bisa klaim sesudah edisi selesai. Isi kuota sama dengan jumlah peringkat di rentang. Voucher boleh diisi belakangan.',
+      hsJudul: 'Hapus semua kartu edisi (mode tes)', hsKet: 'Menghapus SEMUA kartu QR yang dicetak untuk edisi aktif (kartu paket dan kartu per produk), termasuk pasangannya ke No Pesanan, apa pun kode vouchernya. Buku yang isinya hanya kartu-kartu tersebut ikut dihapus. Hanya bisa sebelum edisi mulai. Isi pesanan dari setoran gudang tidak disentuh.',
+      hsCek: 'Periksa', hsAngka: '{n} kartu edisi {e} akan dihapus: {p} sudah dipasang ke pesanan, {d} sudah dibuka di Kitab.', hsKetik: 'Ketik HAPUS SEMUA untuk konfirmasi', hsHapus: 'Hapus permanen {n} kartu',
+      hsHasil: '{k} kartu edisi dihapus, {b} buku ikut dihapus.', hsTutup: 'Edisi {e} sudah mulai, jadi kartunya milik pembeli sungguhan. Hapus semua hanya bisa sebelum edisi mulai.', hsKosong: 'Tidak ada kartu di edisi aktif.',
       huJudul: 'Hapus data uji', huKet: 'Untuk membersihkan kartu yang dicetak buat tes. Cuma kartu yang kode vouchernya diawali TES atau UJI yang bisa dihapus, jadi kartu asli untuk pembeli aman.', huKode: 'Kode kartu uji (scan atau ketik, satu per baris)', huCek: 'Periksa',
       huDaftar: 'Yang akan dihapus', huBelum: 'belum dipasang', huBuka: 'dibuka buku {n}', huTutup: 'belum dibuka', huVoucher: 'voucher {v}', huLewat_bukan: '{k} dilewati: kode vouchernya {v} (bukan kartu uji).', huLewat_tidak: '{k} dilewati: kode tidak dikenal.', huLewat_salah: '{k} dilewati: bukan kode kartu.',
       huBuku: 'Buku yang ikut dihapus: {d}. Pasangan kartu ke pesanan ikut hilang bersama kartunya.', huBukuTetap: 'Buku tetap ada: {d} (punya kartu asli, skor, klaim hadiah, atau struk).', huYakin: 'Saya paham ini tidak bisa dibatalkan', huHapus: 'Hapus permanen {n} kartu uji', huKosong: 'Tidak ada kartu uji di daftar ini.', huHasil: '{k} kartu uji dihapus, {b} buku ikut dihapus.',
@@ -273,7 +279,7 @@
   function kodeTampil(k) { return String(k).replace(/^(.{4})(.{4})(.*)$/, '$1 $2 $3'); }
 
   var A = { tab: 'ringkas', ringkas: null, galat: '', sibuk: false, struk: null, foto: {}, pilih: {}, tolakYakin: 0, p: { jumlah: '', kode: '', teks: '', sampai: '' }, hasilPaket: null, mencetak: false, simpanOk: {}, draf: {}, pesan: '', dari: null,
-    ps: { pesanan: '', kartu: '', hasil: null, tunda: null, log: [], sibuk: false }, hu: { teks: '', rencana: null, teksRencana: '', yakin: false, sibuk: false, hasil: null }, kam: { aliran: null, v: null, t: null, sasaran: '', det: null, gagal: false } };
+    ps: { pesanan: '', kartu: '', hasil: null, tunda: null, log: [], sibuk: false }, hu: { teks: '', rencana: null, teksRencana: '', yakin: false, sibuk: false, hasil: null }, hs: { rencana: null, yakin: false, ketik: '', sibuk: false, hasil: null }, kam: { aliran: null, v: null, t: null, sasaran: '', det: null, gagal: false } };
   function panggil(aksi, isi) {
     var badan = Object.assign({ fn: 'admin', aksi: aksi, tiket: (M().S && M().S.tiket) || '' }, isi || {});
     return fetch(KITAB, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(badan), credentials: 'omit', cache: 'no-store' })
@@ -884,11 +890,51 @@
       '<label>' + esc(t('psKartu')) + '<span class="kb-ps-isi"><input id="kbPsKartu" value="' + esc(ps.kartu) + '" autocomplete="off" autocapitalize="characters" spellcheck="false" enterkeyhint="done">' +
         (bisaVideo() ? tombolKamera('kamKartu') : '') + '</span></label>' +
       '<button type="button" class="btn" data-kb="pasang"' + (ps.sibuk ? ' disabled aria-busy="true"' : '') + '>' + esc(t('psTombol')) + '</button></div><div id="kbPsKamera" aria-live="polite">' + (A.kam.gagal ? '<p class="tolak-alat">' + esc(t('kamGagal')) + '</p>' : '') + '</div>' + hasil + '</section>' +
-      '<section class="kb-kotak"><h3>' + esc(t('psLog')) + '</h3>' + log + '</section>' + htmlHapusUji();
+      '<section class="kb-kotak"><h3>' + esc(t('psLog')) + '</h3>' + log + '</section>' + htmlHapusUji() + htmlHapusSemua();
   }
   /* ---------- hapus data uji (18 Okt 2026, Ferdy: tes cetak kartu QR lalu bersihkan) ----------
      Periksa dulu (server menghitung kartu dan buku yang ikut hilang), centang konfirmasi, baru hapus.
      Kalau kode diubah sesudah Periksa, rencananya dibuang supaya yang dihapus selalu yang tadi dilihat. */
+  /* Hapus semua kartu edisi aktif, mode tes (19 Okt 2026, Ferdy). Server menolak sesudah edisi mulai, tanpa centang dan
+     ketik HAPUS SEMUA, atau kalau jumlah kartu berubah sejak diperiksa; tombol di sini cuma lapis pertama. */
+  function siapHs() { var hs = A.hs, r = hs.rencana; return !!(r && r.boleh && r.kartu && hs.yakin && String(hs.ketik || '').trim().toUpperCase() === 'HAPUS SEMUA' && !hs.sibuk); }
+  function htmlHapusSemua() {
+    var hs = A.hs, r = hs.rencana, isi = '';
+    if (r) {
+      var cap = (r.acara && r.acara.cap) || '';
+      if (!r.boleh) isi = '<div class="tolak-alat">' + esc(t('hsTutup').replace('{e}', cap)) + '</div>';
+      else if (!r.kartu) isi = '<p class="ket-alat">' + esc(t('hsKosong')) + '</p>';
+      else {
+        var hapusBuku = (r.buku || []).filter(function (b) { return b.hapus; }), tetap = (r.buku || []).filter(function (b) { return !b.hapus; });
+        isi = '<div class="kb-hs-angka" id="kbHsAngka" role="alert">' + esc(t('hsAngka').replace('{n}', nf(r.kartu)).replace('{e}', cap).replace('{p}', nf(r.terpasang)).replace('{d}', nf(r.dibuka))) + '</div>' +
+          (hapusBuku.length ? '<p class="ket-alat">' + esc(t('huBuku').replace('{d}', hapusBuku.map(function (b) { return b.nama; }).join(', '))) + '</p>' : '') +
+          (tetap.length ? '<p class="ket-alat">' + esc(t('huBukuTetap').replace('{d}', tetap.map(function (b) { return b.nama; }).join(', '))) + '</p>' : '') +
+          '<label class="kb-hu-yakin"><input type="checkbox" id="kbHsYakin"' + (hs.yakin ? ' checked' : '') + '> ' + esc(t('huYakin')) + '</label>' +
+          '<label class="kb-hu-label">' + esc(t('hsKetik')) + '<input type="text" id="kbHsKetik" autocomplete="off" autocapitalize="characters" spellcheck="false" value="' + esc(hs.ketik) + '"></label>' +
+          '<button type="button" class="btn kb-hu-hapus" data-kb="hsHapus"' + (siapHs() ? '' : ' disabled') + '>' + esc(t('hsHapus').replace('{n}', nf(r.kartu))) + '</button>';
+      }
+    }
+    return '<section class="kb-kotak" id="kbHs"><h3>' + esc(t('hsJudul')) + '</h3><p class="ket-alat">' + esc(t('hsKet')) + '</p>' +
+      (hs.hasil ? '<div class="kb-hasil" role="status">' + esc(t('hsHasil').replace('{k}', nf(hs.hasil.kartu)).replace('{b}', nf(hs.hasil.buku))) + '</div>' : '') +
+      '<button type="button" class="btn dua" data-kb="hsCek"' + (hs.sibuk ? ' disabled' : '') + '>' + esc(t('hsCek')) + '</button><div id="kbHsRencana">' + isi + '</div></section>';
+  }
+  function cekSemua() {
+    var hs = A.hs; hs.sibuk = true; hs.hasil = null; A.pesan = '';
+    panggil('cekSemua', {}).then(function (r) {
+      hs.sibuk = false;
+      if (!r || !r.ok) { A.pesan = (r && r.pesan) || t('gagal'); hs.rencana = null; gambar(); return; }
+      hs.rencana = r; hs.yakin = false; hs.ketik = ''; gambar();
+    }, function (e) { hs.sibuk = false; A.pesan = e.message; gambar(); });
+  }
+  function hapusSemua() {
+    var hs = A.hs; if (!siapHs()) return;
+    hs.sibuk = true; A.pesan = '';
+    panggil('hapusSemua', { yakin: true, ketik: hs.ketik, jumlah: hs.rencana.kartu }).then(function (r) {
+      hs.sibuk = false;
+      if (!r || !r.ok) { A.pesan = (r && r.pesan) || t('gagal'); hs.rencana = null; gambar(); return; }
+      bunyi('scanOk'); hs.hasil = r; hs.rencana = null; hs.yakin = false; hs.ketik = ''; gambar();
+    }, function (e) { hs.sibuk = false; A.pesan = e.message; gambar(); });
+  }
   function htmlHapusUji() {
     var hu = A.hu, r = hu.rencana, isi = '';
     if (r) {
@@ -1094,6 +1140,8 @@
     else if (a === 'pasangGanti') pasangKartu(true);
     else if (a === 'huCek') cekUji();
     else if (a === 'huHapus') hapusUji();
+    else if (a === 'hsCek') cekSemua();
+    else if (a === 'hsHapus') hapusSemua();
     else if (a === 'acara') simpanAcara();
     else if (a === 'hadiah') simpanHadiah(x.getAttribute('data-id'));
     else if (a === 'usulan') pasangUsulan();
@@ -1122,6 +1170,10 @@
       A.hu.teks = x.value;
       /* kode berubah sesudah Periksa: rencana dibuang, tombol hapus hilang sampai diperiksa ulang */
       if (A.hu.rencana && x.value !== A.hu.teksRencana) { A.hu.rencana = null; A.hu.yakin = false; var kr = document.getElementById('kbHuRencana'); if (kr) kr.innerHTML = ''; }
+    }
+    if (x.id === 'kbHsYakin' || x.id === 'kbHsKetik') {
+      if (x.id === 'kbHsYakin') A.hs.yakin = x.checked; else A.hs.ketik = x.value;
+      var bs = document.querySelector('[data-kb=hsHapus]'); if (bs) bs.disabled = !siapHs();
     }
     if (x.id === 'kbHuYakin') { A.hu.yakin = x.checked; var bh = document.querySelector('[data-kb=huHapus]'); if (bh) bh.disabled = !x.checked || A.hu.sibuk; }
     if (x.hasAttribute('data-pilih')) { var sid = x.getAttribute('data-pilih'); A.pilih[sid] = A.pilih[sid] || {}; A.pilih[sid][x.value] = x.checked; }
