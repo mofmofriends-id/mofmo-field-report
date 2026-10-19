@@ -1,5 +1,5 @@
 /* Uji aplikasi WMS Ops di /ops/ (HP Ferdy), 19 Okt 2026.
- * Harapan: "11 pemeriksaan, SEMUA LULUS".
+ * Harapan: "12 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Ferdy (19 Okt): mau bentuk "kayak apk": notif balasan mitra dengan draft yang bisa
  * direvisi atau dikirim, tugas ClickUp yang dicentang jadi Done di ClickUp, tambah tugas dan isi progres untuk
@@ -21,7 +21,7 @@ const T = await import(SRV + '/ops-tiruan.mjs');
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 11;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 12;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 600))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -35,8 +35,9 @@ db.st.surel = { waktu: KINI - 4 * 60e3, utas: [
     draft: 'd1', draftT: KINI - 17 * 3600e3, draftIsi: 'Dear Bu Desy,\n\nBaik, Operational PIC kami hadir Selasa pukul 08.30.\n\nWarm regards,\nFerdy\n\nOn Mon, Oct 19, 2026 Deasyana wrote:\n> RAHASIA-KUTIPAN-LAMA', url: 'https://mail.google.com/mail/u/0/#all/u1', urlDraft: 'https://mail.google.com/mail/u/0/#drafts?compose=d1' },
   { id: 'u2', subjek: 'Evaluasi Gerai Margo City', mitra: 'TGI', status: 'menunggu', tingkat: 'kuning', hariKerja: 4, url: 'https://mail.google.com/mail/u/0/#all/u2' }] };
 const ENV = { OPS_RAHASIA: 'x', CLICKUP_TOKEN: 'pk_palsu' };
-db.st.janji.push({ id: 1, utas: 'u1', pesan: 'm4', mitra: 'MAA', judul: 'Opname dan penarikan stok', mulai: T.W('2026-10-20T08:30:00'), selesai: null, lokasi: 'Babyz Station Seibu Grand Indonesia', catatan: '', status: 'usul', dikabari: true },
-  { id: 2, utas: 'u3', pesan: 'k1', mitra: 'KIY', judul: 'Pasang fixture', mulai: T.W('2026-10-21T10:00:00'), selesai: null, lokasi: 'Kinokuniya GI', catatan: '', status: 'usul', dikabari: true });
+db.st.janji.push({ id: 1, utas: 'u1', pesan: 'm4', mitra: 'MAA', judul: 'Opname dan penarikan stok', mulai: T.W('2026-10-20T08:30:00'), selesai: null, lokasi: 'Babyz Station Seibu Grand Indonesia', catatan: '', status: 'usul', dikabari: true, berjam: true, pic: 'Indra' },
+  { id: 3, utas: 'u2', pesan: 't9', mitra: 'TGI', judul: 'Kirim daftar stok Margo untuk dipindah', mulai: null, selesai: null, lokasi: '', catatan: '', status: 'usul', dikabari: true, berjam: false, pic: null },
+  { id: 2, utas: 'u3', pesan: 'k1', mitra: 'KIY', judul: 'Pasang fixture', mulai: T.W('2026-10-21T10:00:00'), selesai: null, lokasi: 'Kinokuniya GI', catatan: '', status: 'usul', dikabari: true, berjam: true, pic: null });
 
 const AKAR = process.env.WMS_AKAR || path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 const srv = http.createServer((q, s) => {
@@ -85,11 +86,20 @@ await bagian('A2. agenda dari surel', async () => {
   const post = cu.panggil.filter((x) => x[0] === 'POST' && x[1] === '/list/L1/task');
   const sisa = await p.$$eval('[data-janji]', (a) => a.length);
   c('A3 kartu agenda MAA Selasa 20 Okt 08.30 tampil di Beranda; Jadikan agenda (pilih list Konten) membuat tugas ClickUp dan antrean kalender, kartunya hilang',
-    kart.some((t) => /MAA.*Opname/.test(t) && /Selasa 20 Okt 08\.30/.test(t)) && post.length === 1 && post[0][2].due_date === T.W('2026-10-20T08:30:00') && db.st.antrean.some((x) => x.jenis === 'agenda' && x.janji === 1) && sisa === 1,
+    kart.some((t) => /MAA.*Opname/.test(t) && /Selasa 20 Okt 08\.30/.test(t)) && post.length === 1 && post[0][2].due_date === T.W('2026-10-20T08:30:00') && db.st.antrean.some((x) => x.jenis === 'agenda' && x.janji === 1) && sisa === 2,
     JSON.stringify({ kart, post, sisa }));
   await p.click('[data-abaikan="2"]');
-  await tunggu(() => !document.querySelector('[data-janji]'));
-  c('A4 Abaikan menandai janji KIY diabaikan dan kartunya hilang', db.st.janji[1].status === 'diabaikan', JSON.stringify(db.st.janji[1]));
+  await tunggu(() => !document.querySelector('[data-janji="2"]'));
+  const j2 = db.st.janji.find((x) => x.id === 2);
+  c('A4 Abaikan menandai janji KIY diabaikan dan kartunya hilang', j2.status === 'diabaikan' && !(await p.$('[data-janji="2"]')), JSON.stringify(j2));
+  const kk = await teks('[data-janji="3"]');
+  await p.click('[data-janji="3"]'); await p.waitForSelector('[data-janjiok="3"]');
+  const tombol = await p.innerText('[data-janjiok="3"]');
+  await p.click('[data-janjiok="3"]');
+  await tunggu(() => /sebagai tugas/.test(document.getElementById('toastTeks').innerText));
+  const pt = cu.panggil.filter((x) => x[0] === 'POST' && /Margo/.test((x[2] || {}).name || ''));
+  c('A5 kesepakatan TGI tanpa tanggal: kartu bertulis "Jadikan tugas" dan "tanpa tenggat", jadi satu tugas ClickUp tanpa tenggat, tanpa antrean kalender',
+    /Jadikan tugas/.test(kk.join()) && /tanpa tenggat/.test(kk.join()) && /Jadikan tugas/.test(tombol) && pt.length === 1 && pt[0][2].due_date === undefined && !db.st.antrean.some((x) => x.jenis === 'agenda' && x.janji === 3), JSON.stringify({ kk, tombol, pt }));
   db.st.antrean.length = 0;
 });
 
