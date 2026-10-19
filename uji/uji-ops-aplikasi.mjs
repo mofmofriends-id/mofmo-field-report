@@ -1,5 +1,5 @@
 /* Uji aplikasi WMS Ops di /ops/ (HP Ferdy), 19 Okt 2026.
- * Harapan: "12 pemeriksaan, SEMUA LULUS".
+ * Harapan: "13 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Ferdy (19 Okt): mau bentuk "kayak apk": notif balasan mitra dengan draft yang bisa
  * direvisi atau dikirim, tugas ClickUp yang dicentang jadi Done di ClickUp, tambah tugas dan isi progres untuk
@@ -21,7 +21,7 @@ const T = await import(SRV + '/ops-tiruan.mjs');
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 12;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 13;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 600))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -33,7 +33,9 @@ db.st.surel = { waktu: KINI - 4 * 60e3, utas: [
   { id: 'u1', subjek: 'Permohonan Izin Penarikan Stok Tidak Terpajang', mitra: 'MAA', status: 'draft', tingkat: 'merah', hariKerja: 0, pesan: 'm4', pengirim: 'Deasyana Wulandari',
     cuplikan: 'Mohon dibuatkan SIK revisi Selasa 20 Oktober', isiPesan: 'Mohon dibuatkan SIK revisi hari Selasa 20 Oktober 2026, Seibu GI pukul 08.30 WIB.', waktuPesan: KINI - 18 * 3600e3,
     draft: 'd1', draftT: KINI - 17 * 3600e3, draftIsi: 'Dear Bu Desy,\n\nBaik, Operational PIC kami hadir Selasa pukul 08.30.\n\nWarm regards,\nFerdy\n\nOn Mon, Oct 19, 2026 Deasyana wrote:\n> RAHASIA-KUTIPAN-LAMA', url: 'https://mail.google.com/mail/u/0/#all/u1', urlDraft: 'https://mail.google.com/mail/u/0/#drafts?compose=d1' },
-  { id: 'u2', subjek: 'Evaluasi Gerai Margo City', mitra: 'TGI', status: 'menunggu', tingkat: 'kuning', hariKerja: 4, url: 'https://mail.google.com/mail/u/0/#all/u2' }] };
+  { id: 'u2', subjek: 'Evaluasi Gerai Margo City', mitra: 'TGI', status: 'menunggu', tingkat: 'kuning', hariKerja: 4, url: 'https://mail.google.com/mail/u/0/#all/u2' },
+  { id: 'u4', subjek: 'Listing ruparupa 11 SKU', mitra: 'TGI', status: 'lanjutan', lanjutan: true, tingkat: 'merah', hariKerja: 3, pesan: 't7', waktuPesan: KINI - 5 * 864e5,
+    draft: 'ds', draftT: KINI - 3600e3, draftIsi: 'Dear Bu Novi,\n\nMenindaklanjuti email kami tanggal 15 Oktober terkait listing 11 SKU.\n\nWarm regards', url: 'https://mail.google.com/mail/u/0/#all/u4', urlDraft: 'x' }] };
 const ENV = { OPS_RAHASIA: 'x', CLICKUP_TOKEN: 'pk_palsu' };
 db.st.janji.push({ id: 1, utas: 'u1', pesan: 'm4', mitra: 'MAA', judul: 'Opname dan penarikan stok', mulai: T.W('2026-10-20T08:30:00'), selesai: null, lokasi: 'Babyz Station Seibu Grand Indonesia', catatan: '', status: 'usul', dikabari: true, berjam: true, pic: 'Indra' },
   { id: 3, utas: 'u2', pesan: 't9', mitra: 'TGI', judul: 'Kirim daftar stok Margo untuk dipindah', mulai: null, selesai: null, lokasi: '', catatan: '', status: 'usul', dikabari: true, berjam: false, pic: null },
@@ -148,6 +150,19 @@ await bagian('D. tugas', async () => {
   await p.waitForSelector('.tl');
   c('D2 detail: tombol status sesuai list Finance (open, selesai), centang langkah sampai ke ClickUp, catatan progres tersimpan dan tampil',
     st.join().toLowerCase() === 'open,selesai' && cu.tugas.find((x) => x.id === 'a1').checklists[0].items[1].resolved === true && /pakai SO dulu/.test(await p.innerText('.tl')), st.join());
+});
+
+await bagian('D2. susulan', async () => {
+  await p.click('.nav [data-buka="#beranda"]'); await p.waitForSelector('.sum');
+  const sec = await p.$$eval('.sec', (a) => a.map((s) => { const out = []; let n = s.nextElementSibling; while (n && !n.classList.contains('sec')) { out.push(n.innerText.replace(/\s+/g, ' ')); n = n.nextElementSibling; } return s.innerText + ' => ' + out.join(' ## '); }));
+  const hari = sec.find((x) => /^HARI INI/i.test(x)) || '';
+  await p.click('[data-buka="#surel/u4"]'); await p.waitForSelector('[data-kirim="u4"]');
+  const isi = await p.innerText('#app');
+  db.st.antrean.length = 0;
+  await p.click('[data-kirim="u4"]');
+  await tunggu(() => /satu menit/.test(document.getElementById('toastTeks').innerText));
+  c('D3 susulan 3 hari kerja tampil di Hari ini sebagai "Kirim susulan ke TGI", layar surel menyebut surel terakhir dari kamu dan draftnya, Kirim masuk antrean',
+    /Kirim susulan ke TGI/.test(hari) && /3 hari kerja/.test(hari) && /Surel terakhir dari kamu/.test(isi) && /Menindaklanjuti email kami/.test(isi) && db.st.antrean.some((x) => x.jenis === 'kirim' && x.draft === 'ds'), JSON.stringify({ hari, isi: isi.slice(0, 300) }));
 });
 
 await bagian('E. layar HP', async () => {
