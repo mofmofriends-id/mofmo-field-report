@@ -201,8 +201,8 @@
       fn_judul: 'Campaign funnel {cap}', fn_dicetak: 'QR cards printed', fn_discan: 'Scanned in Mofmo Collection', fn_pembeli: 'Buyer books', fn_mainPembeli: 'Buyers who played a game',
       fn_dari: '{p} of the previous step', fn_latihan: '{n} books played practice mode (never bought, scores stay off the leaderboard).', fn_ket: 'Test cards and test vouchers (TES/UJI) are not counted.',
       v_judul: 'Voucher reconciliation', v_ket: 'Given = vouchers buyers received through QR cards and Kitab rewards. Used = from the Shopee report, or typed in. Typed numbers are kept on this device, per edition.',
-      v_kode: 'Code', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
-      v_kosong: 'No vouchers given out in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
+      v_kode: 'Code', v_cetak: 'Printed', v_pasang: 'Linked', v_hadiah: 'Reward', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
+      v_kosong: 'No vouchers in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
       v_lewat: 'Skipped, not Kitab vouchers: {d}.', v_gagal: 'No voucher code column found in {f}. Use the Shopee voucher report or an order export that lists voucher codes.', v_gagalBaca: 'The file could not be read: {e}',
       kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.'
     },
@@ -260,8 +260,8 @@
       fn_judul: 'Funnel kampanye {cap}', fn_dicetak: 'Kartu QR dicetak', fn_discan: 'Discan di Mofmo Collection', fn_pembeli: 'Buku pembeli', fn_mainPembeli: 'Pembeli yang main game',
       fn_dari: '{p} dari langkah sebelumnya', fn_latihan: '{n} buku main mode latihan (belum pernah beli, skornya tidak masuk papan).', fn_ket: 'Kartu dan voucher uji (TES/UJI) tidak dihitung.',
       v_judul: 'Rekonsiliasi voucher', v_ket: 'Dibagikan = voucher yang diterima pembeli lewat kartu QR dan hadiah Kitab. Dipakai = dari laporan Shopee, atau isi sendiri. Isian disimpan di perangkat ini, per edisi.',
-      v_kode: 'Kode', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
-      v_kosong: 'Belum ada voucher yang dibagikan di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
+      v_kode: 'Kode', v_cetak: 'Dicetak', v_pasang: 'Terpasang', v_hadiah: 'Hadiah', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
+      v_kosong: 'Belum ada voucher di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
       v_lewat: 'Dilewati, bukan voucher Kitab: {d}.', v_gagal: 'Kolom kode voucher tidak ditemukan di {f}. Pakai laporan voucher Shopee atau ekspor pesanan yang memuat kode voucher.', v_gagalBaca: 'Berkas tidak bisa dibaca: {e}',
       kamGagal: 'Kamera tidak bisa dibuka. Beri izin kamera untuk situs ini di pengaturan browser, atau pakai scanner atau ketik kodenya.'
     }
@@ -317,12 +317,16 @@
     }).join('');
     var V = F.voucher || [], baris = V.map(function (v) {
       var n = angkaPakai(v.kode), awas = n != null && n > v.dibagi;
-      return '<tr data-voucher="' + esc(v.kode) + '"' + (awas ? ' class="awas"' : '') + '><td><code>' + esc(v.kode) + '</code><small class="kb-vawas">' + esc(t('v_awas')) + '</small></td><td class="num" data-k="dibagi">' + nf(v.dibagi) + '</td>' +
+      /* dicetak dan terpasang (19 Okt 2026): voucher hadiah tidak punya kartu; server lama belum mengirim angkanya */
+      var cetak = v.hadiah ? '<span class="kb-vhadiah">' + esc(t('v_hadiah')) + '</span>' : (v.dicetak == null ? '–' : nf(v.dicetak)), pasang = v.hadiah || v.terpasang == null ? '–' : nf(v.terpasang);
+      return '<tr data-voucher="' + esc(v.kode) + '"' + (awas ? ' class="awas"' : '') + '><td><code>' + esc(v.kode) + '</code><small class="kb-vawas">' + esc(t('v_awas')) + '</small></td>' +
+        '<td class="num" data-k="dicetak">' + cetak + '</td><td class="num" data-k="terpasang">' + pasang + '</td><td class="num" data-k="dibagi">' + nf(v.dibagi) + '</td>' +
         '<td class="num"><input type="number" min="0" step="1" inputmode="numeric" data-vpakai="' + esc(v.kode) + '" value="' + (n == null ? '' : n) + '" aria-label="' + esc(t('v_dipakai') + ' ' + v.kode) + '"></td><td class="num" data-k="laju">' + (n == null ? '–' : persen(n, v.dibagi)) + '</td></tr>';
     }).join('');
-    var tot = totalPakai();
-    var tabel = V.length ? '<div class="hpp-gulung"><table class="kb-vtabel"><thead><tr><th>' + esc(t('v_kode')) + '</th><th class="num">' + esc(t('v_dibagi')) + '</th><th class="num">' + esc(t('v_dipakai')) + '</th><th class="num">' + esc(t('v_laju')) + '</th></tr></thead><tbody>' + baris +
-      '</tbody><tfoot><tr><th>' + esc(t('v_total')) + '</th><td class="num">' + nf(tot.dibagi) + '</td><td class="num" data-k="totPakai">' + (tot.ada ? nf(tot.pakai) : '–') + '</td><td class="num" data-k="totLaju">' + (tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–') + '</td></tr></tfoot></table></div>' +
+    var tot = totalPakai(), totCetak = 0, totPasang = 0;
+    V.forEach(function (v) { if (!v.hadiah) { totCetak += v.dicetak || 0; totPasang += v.terpasang || 0; } });
+    var tabel = V.length ? '<div class="hpp-gulung"><table class="kb-vtabel"><thead><tr><th>' + esc(t('v_kode')) + '</th><th class="num">' + esc(t('v_cetak')) + '</th><th class="num">' + esc(t('v_pasang')) + '</th><th class="num">' + esc(t('v_dibagi')) + '</th><th class="num">' + esc(t('v_dipakai')) + '</th><th class="num">' + esc(t('v_laju')) + '</th></tr></thead><tbody>' + baris +
+      '</tbody><tfoot><tr><th>' + esc(t('v_total')) + '</th><td class="num" data-k="totCetak">' + nf(totCetak) + '</td><td class="num" data-k="totPasang">' + nf(totPasang) + '</td><td class="num">' + nf(tot.dibagi) + '</td><td class="num" data-k="totPakai">' + (tot.ada ? nf(tot.pakai) : '–') + '</td><td class="num" data-k="totLaju">' + (tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–') + '</td></tr></tfoot></table></div>' +
       '<label class="btn dua kb-vunggah">' + esc(t('v_unggah')) + '<input type="file" id="kbVoucherBerkas" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>' +
       (A.vhasil ? '<p class="ket-alat kb-vhasil' + (A.vhasil.galat ? ' tolak-alat' : '') + '" role="status">' + esc(A.vhasil.teks) + '</p>' : '')
       : '<p class="ket-alat">' + esc(t('v_kosong')) + '</p>';
