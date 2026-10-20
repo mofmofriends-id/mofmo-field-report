@@ -99,6 +99,21 @@ button{cursor:pointer;border:0;background:none;padding:0}
 .tl small{display:block;color:var(--mut2);font-size:11px}
 .lbl{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--mut2);text-transform:uppercase;margin:12px 0 7px}
 .kirimbaris{display:flex;gap:8px;margin-top:6px}
+.memo{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px 12px 4px;margin-bottom:4px}
+.memo .tulis{display:flex;gap:8px;align-items:flex-end;padding-bottom:8px}
+.memo textarea{flex:1;min-width:0;border:1.5px solid var(--line);border-radius:12px;padding:9px 11px;font-size:15px;line-height:1.4;resize:none;min-height:42px;max-height:150px;background:#fff}
+.memo textarea:focus{outline:none;border-color:var(--acc)}
+.memo .simpan{flex:none;height:42px;padding:0 14px;border:0;border-radius:12px;background:var(--ink);color:#fff;font-weight:600}
+.mrow{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-top:1px solid var(--line)}
+.mrow .chk{margin-top:1px}
+.mrow .chk.ok{background:var(--grn);border-color:var(--grn);color:#fff}
+.mrow .mi{flex:1;min-width:0}
+.mrow .mt{display:block;white-space:pre-wrap;overflow-wrap:anywhere;font-size:14px;font-weight:400}
+.mrow.sls .mt{color:var(--mut);text-decoration:line-through}
+.mrow small{display:block;color:var(--mut2);font-size:11.5px;margin-top:2px}
+.mrow .ma{flex:none;border:0;background:var(--purbg);color:var(--pur);font-size:12px;font-weight:600;border-radius:9px;padding:5px 9px}
+.mrow .mh{flex:none;border:0;background:none;color:var(--red);font-size:12px;font-weight:600;padding:5px 4px}
+.mlink{display:block;width:100%;border:0;border-top:1px solid var(--line);background:none;color:var(--mut);font-size:12.5px;font-weight:600;padding:9px 0;text-align:left}
 .kirimbaris .inp{flex:1}
 .inp{width:100%;border:1.5px solid var(--line);border-radius:13px;padding:11px 12px;font-size:15px;background:#fff}
 .dim{position:fixed;inset:0;background:rgba(16,24,40,.38);z-index:8;display:none}
@@ -436,7 +451,7 @@ body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-event
   function muatSemua() {
     if (!S.tiket) return Promise.resolve();
     var awal = !S.surel && !S.tugas;
-    var a = api('beranda').then(function (h) { if (h.ok) { S.surel = h.surel || { utas: [] }; S.janji = h.janji || []; if (h.koleksi) S.koleksi = h.koleksi; S.wa = h.wa || {}; S.kontakWa = h.kontakWa || {}; } });
+    var a = api('beranda').then(function (h) { if (h.ok) { S.surel = h.surel || { utas: [] }; S.janji = h.janji || []; if (h.koleksi) S.koleksi = h.koleksi; S.wa = h.wa || {}; S.kontakWa = h.kontakWa || {}; if (h.memo) S.memo = h.memo.daftar || []; } });
     var w = api('wms').then(function (h) { S.wms = h; }, function () {});
     var b = api('tugas').then(function (h) { S.tugas = h.ok ? h : { galat: h.pesan || 'Tugas belum terbaca.', perluClickup: !!h.perluClickup }; });
     return Promise.all([a, b, w]).catch(function (e) { toast(e.message); }).then(function () { if (awal && (S.surel || S.tugas)) S.anim = true; gambar(); return muatCacheJadwal(); }).then(function () { segarJadwal(); gambar(); });
@@ -498,6 +513,7 @@ body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-event
       '<div class="sum"><div style="background:var(--redbg);color:var(--red)"><b>' + hari.length + '</b><span>Hari ini</span>' + imgBoneka('kr_tiger') + '</div><div style="background:var(--ambbg);color:var(--ambtx)"><b>' + minggu.length + '</b><span>Minggu ini</span>' + imgBoneka('shiba') + '</div>' +
       '<div style="background:var(--grnbg);color:var(--grn)"><b>' + s.filter(function (x) { return x.tingkat === 'aman'; }).length + '</b><span>Surel aman</span>' + imgBoneka('mb_panda') + '</div></div>' +
       '<div class="chips"><button class="chip' + (f === 'semua' ? ' on' : '') + '" data-filter="semua">Semua</button><button class="chip' + (f === 'mitra' ? ' on' : '') + '" data-filter="mitra">Mitra<em>' + nM + '</em></button><button class="chip' + (f === 'tugas' ? ' on' : '') + '" data-filter="tugas">ClickUp<em>' + nT + '</em></button></div>';
+    if (f !== 'mitra') h += aman(bagianMemo);
     if (!S.surel && !S.tugas) return h + memuat();
     if (f === 'semua') h += aman(barisIndra);
     if (f !== 'tugas') h += bagianJanji(S.janji || []);
@@ -1035,8 +1051,45 @@ body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-event
   var BARU = null;
   function hariIniStr(geser) { return kunciHari(Date.now() + (geser || 0) * HARI); }
   function jumatStr() { var h = wib(Date.now()).getUTCDay(), g = (5 - h + 7) % 7; return hariIniStr(g === 0 && h === 5 ? 7 : g); }
-  function bukaTambah() {
-    BARU = { judul: '', untuk: [], daftar: '', tenggat: '', prioritas: 'biasa' };
+  /* ---------- catatan cepat (20 Okt): ditulis di Beranda, disimpan di server, bisa jadi tugas ClickUp ---------- */
+  function kapanMemo(ms) {
+    var h = kunciHari(ms), ini = kunciHari(Date.now()), kmrn = kunciHari(Date.now() - HARI);
+    return (h === ini ? '' : h === kmrn ? 'kemarin ' : tglId(h) + ' ') + jam(ms);
+  }
+  function barisMemo(m) {
+    var sls = !!m.selesai, baris = String(m.teks || '');
+    return '<div class="mrow' + (sls ? ' sls' : '') + '"><button class="chk' + (sls ? ' ok' : '') + '" data-memo-selesai="' + esc(m.id) + '" aria-label="' + (sls ? 'Kembalikan jadi belum selesai' : 'Tandai selesai') + '">' + (sls ? IK.centang : '') + '</button>' +
+      '<div class="mi"><span class="mt">' + esc(baris) + '</span><small>' + esc(kapanMemo(m.waktu)) + (m.tugas ? ' · jadi tugas ClickUp' : '') + '</small></div>' +
+      (sls ? '<button class="mh" data-memo-hapus="' + esc(m.id) + '">Hapus</button>' : '<button class="ma" data-memo-tugas="' + esc(m.id) + '">Jadikan tugas</button>') + '</div>';
+  }
+  function bagianMemo() {
+    var D = S.memo || [], aktif = D.filter(function (m) { return !m.selesai; }), sls = D.filter(function (m) { return m.selesai; });
+    var tampil = S.memoSemua ? aktif : aktif.slice(0, 5);
+    var h = '<div class="sec">Catatan cepat</div><div class="memo"><div class="tulis"><textarea id="memoBaru" rows="1" maxlength="1000" placeholder="Tulis catatan, misal: tanya Bu Desy soal SIK" aria-label="Catatan baru"></textarea>' +
+      '<button class="simpan" data-memo-simpan>Simpan</button></div>' + tampil.map(barisMemo).join('');
+    if (aktif.length > tampil.length) h += '<button class="mlink" data-memo-semua>Lihat semua (' + aktif.length + ')</button>';
+    if (sls.length) h += '<button class="mlink" data-memo-lihat-selesai aria-expanded="' + (S.memoSelesaiBuka ? 'true' : 'false') + '">Selesai (' + sls.length + ') ' + (S.memoSelesaiBuka ? '▴' : '▾') + '</button>' + (S.memoSelesaiBuka ? sls.map(barisMemo).join('') : '');
+    return h + '</div>';
+  }
+  function simpanMemo(el) {
+    var ta = $('memoBaru'), teks = ta ? ta.value : '';
+    if (!teks.trim()) { bunyi('galat'); toast('Catatan masih kosong.'); return; }
+    el.disabled = true;
+    api('memoTambah', { teks: teks }).then(function (h) {
+      el.disabled = false;
+      if (!h.ok) { bunyi('galat'); toast(h.pesan); return; }
+      if ($('memoBaru')) $('memoBaru').value = '';
+      S.memo = (h.memo && h.memo.daftar) || S.memo; bunyi('pop'); toast('Catatan tersimpan'); gambar();
+    }).catch(function (er) { el.disabled = false; toast(er.message); });
+  }
+  function ubahMemo(aksi, data, kabar) {
+    api(aksi, data).then(function (h) { if (!h.ok) { bunyi('galat'); toast(h.pesan); } else if (kabar) toast(kabar); return muatMemo(); }).catch(function (er) { toast(er.message); });
+  }
+  function muatMemo() { return api('beranda').then(function (h) { if (h.ok && h.memo) { S.memo = h.memo.daftar || []; gambar(); } }); }
+
+  function bukaTambah(isi) {
+    isi = isi || {};
+    BARU = { judul: isi.judul || '', untuk: [], daftar: '', tenggat: '', prioritas: 'biasa', catatan: isi.catatan || '', memo: isi.memo || '' };
     tampilSheet('<div class="grab"></div><h2>Tugas baru</h2>' + memuat('Memuat anggota dan list…'));
     (S.meta ? Promise.resolve({ ok: true }) : api('tugasMeta').then(function (h) { if (h.ok) S.meta = h; return h; })).then(function (h) {
       if (!h.ok) { tampilSheet('<div class="grab"></div><h2>Tugas baru</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
@@ -1080,10 +1133,27 @@ body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-event
   function tutupSheet() { $('sheet').classList.remove('on'); $('dim').classList.remove('on'); }
 
   document.addEventListener('click', function (e) {
-    var el = e.target.closest('[data-jd-ke-tgl],[data-jd-lalu],[data-jd-bulan],[data-jd-gerai],[data-jd-ke],[data-jd-batal-kunj],[data-jd-kembali],[data-jd-terbit],[data-jd-indra],[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru],[data-suara],[data-wms],[data-indra],[data-cari],[data-koleksi],[data-wa],[data-wa-ke],[data-wa-simpan],[data-wa-buka],[data-cu-sambung]');
+    var el = e.target.closest('[data-memo-simpan],[data-memo-selesai],[data-memo-hapus],[data-memo-tugas],[data-memo-semua],[data-memo-lihat-selesai],[data-jd-ke-tgl],[data-jd-lalu],[data-jd-bulan],[data-jd-gerai],[data-jd-ke],[data-jd-batal-kunj],[data-jd-kembali],[data-jd-terbit],[data-jd-indra],[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru],[data-suara],[data-wms],[data-indra],[data-cari],[data-koleksi],[data-wa],[data-wa-ke],[data-wa-simpan],[data-wa-buka],[data-cu-sambung]');
     if (!el) return;
     var d = el.dataset;
     if (el.hasAttribute('data-cu-sambung')) { sambungClickup(el); return; }
+    if (el.hasAttribute('data-memo-simpan')) { simpanMemo(el); return; }
+    if (el.hasAttribute('data-memo-selesai')) {
+      var mid = el.getAttribute('data-memo-selesai'), mm = (S.memo || []).filter(function (x) { return x.id === mid; })[0]; if (!mm) return;
+      var jadi = !mm.selesai; mm.selesai = jadi ? Date.now() : null; bunyi(jadi ? 'sukses' : 'tap'); getar(); gambar();
+      ubahMemo('memoSelesai', { id: mid, selesai: jadi }); return;
+    }
+    if (el.hasAttribute('data-memo-hapus')) {
+      var hid = el.getAttribute('data-memo-hapus'); S.memo = (S.memo || []).filter(function (x) { return x.id !== hid; }); gambar();
+      ubahMemo('memoHapus', { id: hid }, 'Catatan dihapus'); return;
+    }
+    if (el.hasAttribute('data-memo-tugas')) {
+      var tm = (S.memo || []).filter(function (x) { return x.id === el.getAttribute('data-memo-tugas'); })[0]; if (!tm) return;
+      var bar = String(tm.teks).split('\n'), jd = bar.shift().trim().slice(0, 200);
+      bukaTambah({ judul: jd, catatan: bar.join('\n').trim(), memo: tm.id }); return;
+    }
+    if (el.hasAttribute('data-memo-semua')) { S.memoSemua = true; gambar(); return; }
+    if (el.hasAttribute('data-memo-lihat-selesai')) { S.memoSelesaiBuka = !S.memoSelesaiBuka; gambar(); return; }
     if (el.hasAttribute('data-wa')) { bukaWa(el.getAttribute('data-wa')); return; }
     if (el.hasAttribute('data-wa-ke')) { WA.teks = $('teksWa').value; WA.ke = el.getAttribute('data-wa-ke'); gambarWa(); return; }
     if (el.hasAttribute('data-wa-simpan')) { simpanNomorWa(el); return; }
@@ -1181,7 +1251,7 @@ body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-event
       var tg = ($('tglBaru') || {}).value; if (tg) BARU.tenggat = tg;
       if (!BARU.judul.trim()) { toast('Judulnya masih kosong.'); return; }
       el.disabled = true;
-      api('tugasBaru', BARU).then(function (h) { el.disabled = false; if (!h.ok) { bunyi('galat'); toast(h.pesan); return; } tutupSheet(); bunyi('sukses'); pestaTengah(); toast('Masuk ke ClickUp'); muatSemua(); }).catch(function (er) { el.disabled = false; toast(er.message); });
+      api('tugasBaru', BARU).then(function (h) { el.disabled = false; if (!h.ok) { bunyi('galat'); toast(h.pesan); return; } tutupSheet(); bunyi('sukses'); pestaTengah(); toast(BARU.memo ? 'Masuk ke ClickUp, catatan ditandai selesai' : 'Masuk ke ClickUp'); muatSemua(); }).catch(function (er) { el.disabled = false; toast(er.message); });
     }
   });
   var cariTm = null;
