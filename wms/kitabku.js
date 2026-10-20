@@ -182,7 +182,7 @@
       jumlah: 'Qty', total: 'Total', maks: 'max 500 per print', vJumlah: 'Cards with a bonus voucher', vKode: 'Voucher code', vTeks: 'Voucher text shown to the buyer',
       ketVoucher: 'Bonus vouchers are mixed randomly into the batch. The buyer only sees it after scanning.', buat: 'Create codes', buatCetak: 'Download PNG', cetakLagi: 'Download PNG again', bikinPng: 'Making PNG', gagalPng: 'Could not make the PNG files: ',
       paketJudul: 'Shopee parcel QR cards (print in-house)', ketPaket: 'One card per parcel. The card is not tied to a product: its contents are linked at packing, in the Kode Kartu QR column of the warehouse Excel or in the Link card tab. Every card carries a voucher. Print on A4, 4 cards per sheet (140 x 60 mm), then cut.',
-      pJumlah: 'Number of cards', pVKode: 'Shopee voucher code (required)', pVSampai: 'Valid until (required)', pVSampaiKet: 'Same as the voucher end date on Shopee. Buyers see it with the days left.', pVTeks: 'Voucher text shown to the buyer', pVTeksPh: 'e.g. Rp15,000 off, min. spend Rp150,000', buatPaket: 'Create codes & print A4', cetakA4Lagi: 'Print A4 again', unduhPng: 'Download PNG', siapCetak: 'Preparing the print sheet…',
+      pJumlah: 'Number of cards', pVKode: 'Shopee voucher code (required)', pVSampai: 'Valid until (required)', pVSampaiKet: 'Same as the voucher end date on Shopee. Buyers see it with the days left.', pVTeks: 'Voucher text shown to the buyer', pVTeksPh: 'e.g. Rp15,000 off, min. spend Rp150,000', buatPaket: 'Create codes & print A4', cetakA4Lagi: 'Print A4 again', unduhPng: 'Download PNG', unduhPdf: 'Download vendor PDF (A4, bleed)', ukKartu: 'Card size', ukStandar: 'standard', rwJudul: 'Cards already printed', rwKet: 'Download the vendor PDF or PNG again per print batch. Card order is the same as the first print. Do not send batches marked test to the vendor.', rwTgl: 'Created', rwVoucher: 'Voucher', rwJml: 'Cards', rwBuka: 'Opened', rwUji: 'test', rwPdf: 'Vendor PDF', rwKosong: 'No cards printed in this edition yet.', rwMuat: 'Loading print batches…', bikinPdf: 'Making PDF', gagalPdf: 'Could not make the PDF: ', ketPdf: 'For the print shop: A4, 3 mm bleed and crop marks. Cards per page follow the size: 105 x 45 fits 5, 126 x 54 and 140 x 60 fit 4, 175 x 75 fits 3.', siapCetak: 'Preparing the print sheet…',
       dibuat: 'codes created for', dariAcara: 'event', kartuUntuk: 'Collection card for', pindai: 'Scan to unlock your card in the Mofmofriends Book', atauKetik: 'or type the code at mofmofriends.id',
       strukJudul: 'Receipt claims', tanpaStruk: 'No receipts waiting.', lihatFoto: 'Show photo', setujui: 'Approve', tolak: 'Reject', yakinTolak: 'Reject for sure?', kartuDibuka: 'Cards to unlock',
       ketStruk: 'Check the store, date, and items on the photo. Untick items that are not on the receipt.', dibeli: 'bought', diputus: 'Done', pilihKartu: 'Pick at least one card.',
@@ -201,8 +201,8 @@
       fn_judul: 'Campaign funnel {cap}', fn_dicetak: 'QR cards printed', fn_discan: 'Scanned in Mofmo Collection', fn_pembeli: 'Buyer books', fn_mainPembeli: 'Buyers who played a game',
       fn_dari: '{p} of the previous step', fn_latihan: '{n} books played practice mode (never bought, scores stay off the leaderboard).', fn_ket: 'Test cards and test vouchers (TES/UJI) are not counted.',
       v_judul: 'Voucher reconciliation', v_ket: 'Given = vouchers buyers received through QR cards and Kitab rewards. Used = from the Shopee report, or typed in. Typed numbers are kept on this device, per edition.',
-      v_kode: 'Code', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
-      v_kosong: 'No vouchers given out in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
+      v_kode: 'Code', v_cetak: 'Printed', v_pasang: 'Linked', v_hadiah: 'Reward', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
+      v_kosong: 'No vouchers in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
       v_lewat: 'Skipped, not Kitab vouchers: {d}.', v_gagal: 'No voucher code column found in {f}. Use the Shopee voucher report or an order export that lists voucher codes.', v_gagalBaca: 'The file could not be read: {e}',
       kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.'
     },
@@ -241,7 +241,7 @@
       jumlah: 'Jml', total: 'Total', maks: 'maks. 500 sekali cetak', vJumlah: 'Kartu dengan bonus voucher', vKode: 'Kode voucher', vTeks: 'Teks voucher untuk pembeli',
       ketVoucher: 'Bonus voucher diselipkan acak di antara kartu. Pembeli baru tahu setelah memindai.', buat: 'Buat kode', buatCetak: 'Unduh PNG', cetakLagi: 'Unduh PNG lagi', bikinPng: 'Membuat PNG', gagalPng: 'PNG gagal dibuat: ',
       paketJudul: 'Kartu QR paket Shopee (cetak sendiri)', ketPaket: 'Satu kartu untuk satu paket. Kartu tidak terikat produk: isinya diikat saat packing, lewat kolom Kode Kartu QR di Excel gudang atau tab Pasang kartu. Semua kartu membawa voucher. Cetak di kertas A4, 4 kartu per lembar (14 x 6 cm), lalu potong.',
-      pJumlah: 'Jumlah kartu', pVKode: 'Kode voucher Shopee (wajib)', pVSampai: 'Berlaku sampai (wajib)', pVSampaiKet: 'Samakan dengan tanggal akhir voucher di Shopee. Pembeli melihatnya beserta sisa hari.', pVTeks: 'Teks voucher untuk pembeli', pVTeksPh: 'misal: Potongan Rp15.000, min. belanja Rp150.000', buatPaket: 'Buat kode & cetak A4', cetakA4Lagi: 'Cetak A4 lagi', unduhPng: 'Unduh PNG', siapCetak: 'Menyiapkan lembar cetak…',
+      pJumlah: 'Jumlah kartu', pVKode: 'Kode voucher Shopee (wajib)', pVSampai: 'Berlaku sampai (wajib)', pVSampaiKet: 'Samakan dengan tanggal akhir voucher di Shopee. Pembeli melihatnya beserta sisa hari.', pVTeks: 'Teks voucher untuk pembeli', pVTeksPh: 'misal: Potongan Rp15.000, min. belanja Rp150.000', buatPaket: 'Buat kode & cetak A4', cetakA4Lagi: 'Cetak A4 lagi', unduhPng: 'Unduh PNG', unduhPdf: 'Unduh PDF vendor (A4, bleed)', ukKartu: 'Ukuran kartu', ukStandar: 'standar', rwJudul: 'Kartu yang sudah dicetak', rwKet: 'Unduh ulang PDF vendor atau PNG per cetakan. Urutan kartu sama dengan cetakan pertama. Cetakan bertanda uji jangan dikirim ke vendor.', rwTgl: 'Dibuat', rwVoucher: 'Voucher', rwJml: 'Kartu', rwBuka: 'Dibuka', rwUji: 'uji', rwPdf: 'PDF vendor', rwKosong: 'Belum ada kartu yang dicetak di edisi ini.', rwMuat: 'Memuat daftar cetakan…', bikinPdf: 'Membuat PDF', gagalPdf: 'PDF gagal dibuat: ', ketPdf: 'Untuk percetakan: A4, bleed 3 mm dan tanda potong. Jumlah kartu per halaman mengikuti ukuran: 105 x 45 muat 5, 126 x 54 dan 140 x 60 muat 4, 175 x 75 muat 3.', siapCetak: 'Menyiapkan lembar cetak…',
       dibuat: 'kode dibuat untuk', dariAcara: 'event', kartuUntuk: 'Kartu koleksi untuk', pindai: 'Pindai untuk membuka kartumu di Kitab Mofmofriends', atauKetik: 'atau ketik kodenya di mofmofriends.id',
       strukJudul: 'Klaim struk', tanpaStruk: 'Tidak ada struk yang menunggu.', lihatFoto: 'Lihat foto', setujui: 'Setujui', tolak: 'Tolak', yakinTolak: 'Yakin tolak?', kartuDibuka: 'Kartu yang dibuka',
       ketStruk: 'Cek gerai, tanggal, dan barang di foto. Hapus centang barang yang tidak ada di struk.', dibeli: 'dibeli', diputus: 'Selesai', pilihKartu: 'Pilih minimal satu kartu.',
@@ -260,8 +260,8 @@
       fn_judul: 'Funnel kampanye {cap}', fn_dicetak: 'Kartu QR dicetak', fn_discan: 'Discan di Mofmo Collection', fn_pembeli: 'Buku pembeli', fn_mainPembeli: 'Pembeli yang main game',
       fn_dari: '{p} dari langkah sebelumnya', fn_latihan: '{n} buku main mode latihan (belum pernah beli, skornya tidak masuk papan).', fn_ket: 'Kartu dan voucher uji (TES/UJI) tidak dihitung.',
       v_judul: 'Rekonsiliasi voucher', v_ket: 'Dibagikan = voucher yang diterima pembeli lewat kartu QR dan hadiah Kitab. Dipakai = dari laporan Shopee, atau isi sendiri. Isian disimpan di perangkat ini, per edisi.',
-      v_kode: 'Kode', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
-      v_kosong: 'Belum ada voucher yang dibagikan di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
+      v_kode: 'Kode', v_cetak: 'Dicetak', v_pasang: 'Terpasang', v_hadiah: 'Hadiah', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
+      v_kosong: 'Belum ada voucher di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
       v_lewat: 'Dilewati, bukan voucher Kitab: {d}.', v_gagal: 'Kolom kode voucher tidak ditemukan di {f}. Pakai laporan voucher Shopee atau ekspor pesanan yang memuat kode voucher.', v_gagalBaca: 'Berkas tidak bisa dibaca: {e}',
       kamGagal: 'Kamera tidak bisa dibuka. Beri izin kamera untuk situs ini di pengaturan browser, atau pakai scanner atau ketik kodenya.'
     }
@@ -317,12 +317,16 @@
     }).join('');
     var V = F.voucher || [], baris = V.map(function (v) {
       var n = angkaPakai(v.kode), awas = n != null && n > v.dibagi;
-      return '<tr data-voucher="' + esc(v.kode) + '"' + (awas ? ' class="awas"' : '') + '><td><code>' + esc(v.kode) + '</code><small class="kb-vawas">' + esc(t('v_awas')) + '</small></td><td class="num" data-k="dibagi">' + nf(v.dibagi) + '</td>' +
+      /* dicetak dan terpasang (19 Okt 2026): voucher hadiah tidak punya kartu; server lama belum mengirim angkanya */
+      var cetak = v.hadiah ? '<span class="kb-vhadiah">' + esc(t('v_hadiah')) + '</span>' : (v.dicetak == null ? '–' : nf(v.dicetak)), pasang = v.hadiah || v.terpasang == null ? '–' : nf(v.terpasang);
+      return '<tr data-voucher="' + esc(v.kode) + '"' + (awas ? ' class="awas"' : '') + '><td><code>' + esc(v.kode) + '</code><small class="kb-vawas">' + esc(t('v_awas')) + '</small></td>' +
+        '<td class="num" data-k="dicetak">' + cetak + '</td><td class="num" data-k="terpasang">' + pasang + '</td><td class="num" data-k="dibagi">' + nf(v.dibagi) + '</td>' +
         '<td class="num"><input type="number" min="0" step="1" inputmode="numeric" data-vpakai="' + esc(v.kode) + '" value="' + (n == null ? '' : n) + '" aria-label="' + esc(t('v_dipakai') + ' ' + v.kode) + '"></td><td class="num" data-k="laju">' + (n == null ? '–' : persen(n, v.dibagi)) + '</td></tr>';
     }).join('');
-    var tot = totalPakai();
-    var tabel = V.length ? '<div class="hpp-gulung"><table class="kb-vtabel"><thead><tr><th>' + esc(t('v_kode')) + '</th><th class="num">' + esc(t('v_dibagi')) + '</th><th class="num">' + esc(t('v_dipakai')) + '</th><th class="num">' + esc(t('v_laju')) + '</th></tr></thead><tbody>' + baris +
-      '</tbody><tfoot><tr><th>' + esc(t('v_total')) + '</th><td class="num">' + nf(tot.dibagi) + '</td><td class="num" data-k="totPakai">' + (tot.ada ? nf(tot.pakai) : '–') + '</td><td class="num" data-k="totLaju">' + (tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–') + '</td></tr></tfoot></table></div>' +
+    var tot = totalPakai(), totCetak = 0, totPasang = 0;
+    V.forEach(function (v) { if (!v.hadiah) { totCetak += v.dicetak || 0; totPasang += v.terpasang || 0; } });
+    var tabel = V.length ? '<div class="hpp-gulung"><table class="kb-vtabel"><thead><tr><th>' + esc(t('v_kode')) + '</th><th class="num">' + esc(t('v_cetak')) + '</th><th class="num">' + esc(t('v_pasang')) + '</th><th class="num">' + esc(t('v_dibagi')) + '</th><th class="num">' + esc(t('v_dipakai')) + '</th><th class="num">' + esc(t('v_laju')) + '</th></tr></thead><tbody>' + baris +
+      '</tbody><tfoot><tr><th>' + esc(t('v_total')) + '</th><td class="num" data-k="totCetak">' + nf(totCetak) + '</td><td class="num" data-k="totPasang">' + nf(totPasang) + '</td><td class="num">' + nf(tot.dibagi) + '</td><td class="num" data-k="totPakai">' + (tot.ada ? nf(tot.pakai) : '–') + '</td><td class="num" data-k="totLaju">' + (tot.ada ? persen(tot.pakai, tot.dibagiTerisi) : '–') + '</td></tr></tfoot></table></div>' +
       '<label class="btn dua kb-vunggah">' + esc(t('v_unggah')) + '<input type="file" id="kbVoucherBerkas" accept=".xlsx,.csv,text/csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"></label>' +
       (A.vhasil ? '<p class="ket-alat kb-vhasil' + (A.vhasil.galat ? ' tolak-alat' : '') + '" role="status">' + esc(A.vhasil.teks) + '</p>' : '')
       : '<p class="ket-alat">' + esc(t('v_kosong')) + '</p>';
@@ -711,15 +715,45 @@
     if (A.ringkas && !ac) return '<div class="tolak-alat">' + esc(t('tanpaAcara')) + '</div>';
     var h = A.hasilPaket;
     var hasil = h ? '<div class="kb-hasil"><b>' + nf(h.kode.length) + '</b> ' + esc(t('dibuat')) + ' ' + esc(t('dariAcara')) + ' <span class="kb-cap">' + esc(h.acara.cap) + '</span> ' +
-      (A.mencetak ? '<span class="kb-cap">' + esc(t('siapCetak')) + '</span>' : A.unduh ? '<span class="kb-cap">' + esc(t('bikinPng')) + ' ' + A.unduh + '</span>' :
-        '<button type="button" class="btn" data-kb="cetakPaketLagi">' + esc(t('cetakA4Lagi')) + '</button> <button type="button" class="btn dua" data-kb="pngPaket">' + esc(t('unduhPng')) + '</button>') + '</div>' : '';
+      (A.mencetak ? '<span class="kb-cap">' + esc(t('siapCetak')) + '</span>' : A.unduh ? '<span class="kb-cap">' + esc(t(A.unduhPdf ? 'bikinPdf' : 'bikinPng')) + ' ' + A.unduh + '</span>' :
+        htmlUkuran('kbPdfUk') + ' ' +
+        '<button type="button" class="btn" data-kb="pdfVendor">' + esc(t('unduhPdf')) + '</button> <button type="button" class="btn dua" data-kb="cetakPaketLagi">' + esc(t('cetakA4Lagi')) + '</button> <button type="button" class="btn dua" data-kb="pngPaket">' + esc(t('unduhPng')) + '</button>' +
+        '<small class="kb-pdf-ket">' + esc(t('ketPdf')) + '</small>') + '</div>' : '';
     return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + hasil +
       '<section class="kb-kotak"><h3>' + esc(t('paketJudul')) + (ac ? ' <span class="kb-cap">' + esc(ac.cap) + '</span>' : '') + '</h3><p class="ket-alat">' + esc(t('ketPaket')) + '</p>' +
       '<div class="kb-form4"><label>' + esc(t('pJumlah')) + '<input id="kbPJml" type="number" min="1" max="500" inputmode="numeric" value="' + esc(A.p.jumlah) + '" placeholder="0"><small>' + esc(t('maks')) + '</small></label>' +
       '<label>' + esc(t('pVKode')) + '<input id="kbPVKode" value="' + esc(A.p.kode) + '" autocomplete="off"></label>' +
       '<label>' + esc(t('pVSampai')) + '<input id="kbPVSampai" type="date" min="' + hariIniWib() + '" value="' + esc(A.p.sampai) + '"><small>' + esc(t('pVSampaiKet')) + '</small></label>' +
       '<label class="lebar">' + esc(t('pVTeks')) + '<input id="kbPVTeks" value="' + esc(A.p.teks) + '" placeholder="' + esc(t('pVTeksPh')) + '"></label></div></section>' +
-      '<button type="button" class="btn" data-kb="buatPaket"' + (paketSiap() ? '' : ' disabled') + '>' + esc(t('buatPaket')) + '</button>';
+      '<button type="button" class="btn" data-kb="buatPaket"' + (paketSiap() ? '' : ' disabled') + '>' + esc(t('buatPaket')) + '</button>' + htmlRiwayat();
+  }
+  function htmlUkuran(id) {
+    return '<label class="kb-pdf-uk">' + esc(t('ukKartu')) + ' <select id="' + id + '">' + UKURAN.map(function (u) { return '<option value="' + u.w + '"' + (u.w === ukuranPdf().w ? ' selected' : '') + '>' + u.w + ' × ' + u.h + ' mm' + (u.w === 140 ? ' (' + esc(t('ukStandar')) + ')' : '') + '</option>'; }).join('') + '</select></label>';
+  }
+  /* Kartu yang sudah dicetak (19 Okt 2026, Ferdy): daftar cetakan edisi aktif dari server, tiap cetakan bisa diunduh ulang
+     sebagai PDF vendor atau PNG. Dimuat sekali tiap tab dibuka dan sesudah batch baru dibuat. */
+  function jamWib(s) { var d = new Date(s); if (!s || isNaN(d)) return '–'; var w = new Date(d.getTime() + 7 * 3600e3).toISOString(); return tgl(w.slice(0, 10)) + ' ' + w.slice(11, 16); }
+  function muatRiwayat() {
+    A.riwayatMuat = true;
+    panggil('daftarCetak', {}).then(function (r) {
+      A.riwayatMuat = false; A.riwayat = (r && r.ok && r.cetakan) || []; A.riwayatCap = r && r.acara ? r.acara.cap : ''; A.riwayatPesan = r && !r.ok ? r.pesan || t('gagal') : '';
+      if (A.tab === 'cetak') gambar();
+    }, function (e) { A.riwayatMuat = false; A.riwayat = []; A.riwayatPesan = e.message; if (A.tab === 'cetak') gambar(); });
+  }
+  function sumberRiwayat(i) { var c = (A.riwayat || [])[Number(i)]; return c ? { kode: c.kode.map(function (k) { return { kode: k }; }), acara: { cap: A.riwayatCap || 'event' } } : null; }
+  function htmlRiwayat() {
+    var kepala = '<section class="kb-kotak" id="kbRiwayat"><h3>' + esc(t('rwJudul')) + (A.riwayatCap ? ' <span class="kb-cap">' + esc(A.riwayatCap) + '</span>' : '') + '</h3><p class="ket-alat">' + esc(t('rwKet')) + '</p>';
+    if (A.riwayat == null) { if (!A.riwayatMuat) setTimeout(muatRiwayat, 0); return kepala + '<p class="ket-alat">' + esc(t('rwMuat')) + '</p></section>'; }
+    if (A.riwayatPesan) return kepala + '<div class="tolak-alat">' + esc(A.riwayatPesan) + '</div></section>';
+    var L = A.riwayat, sibuk = !!(A.unduh || A.mencetak);
+    if (!L.length) return kepala + '<p class="ket-alat">' + esc(t('rwKosong')) + '</p></section>';
+    var baris = L.map(function (c, i) {
+      return '<tr data-cetakan="' + i + '"><td>' + esc(jamWib(c.dibuat)) + '</td><td><code>' + esc(c.voucher || '–') + '</code>' + (c.uji ? ' <span class="kb-rw-uji">' + esc(t('rwUji')) + '</span>' : '') + '</td>' +
+        '<td class="num">' + nf(c.jumlah) + '</td><td class="num">' + nf(c.terpasang) + '</td><td class="num">' + nf(c.dibuka) + '</td>' +
+        '<td class="kb-rw-aksi"><button type="button" class="btn" data-kb="pdfUlang" data-i="' + i + '"' + (sibuk ? ' disabled' : '') + '>' + esc(t('rwPdf')) + '</button> <button type="button" class="btn dua" data-kb="pngUlang" data-i="' + i + '"' + (sibuk ? ' disabled' : '') + '>PNG</button></td></tr>';
+    }).join('');
+    return kepala + '<div class="kb-rw-atur">' + htmlUkuran('kbPdfUk2') + (A.unduh ? ' <span class="kb-cap kb-rw-status">' + esc(t(A.unduhPdf ? 'bikinPdf' : 'bikinPng')) + ' ' + A.unduh + '</span>' : '') + '</div>' +
+      '<div class="hpp-gulung"><table class="kb-rw-tabel"><thead><tr><th>' + esc(t('rwTgl')) + '</th><th>' + esc(t('rwVoucher')) + '</th><th class="num">' + esc(t('rwJml')) + '</th><th class="num">' + esc(t('v_pasang')) + '</th><th class="num">' + esc(t('rwBuka')) + '</th><th></th></tr></thead><tbody>' + baris + '</tbody></table></div></section>';
   }
   /* Kartu umum 14 x 6 cm: kiri logo, ajakan koleksi, enam foto karakter; kanan QR satu-satunya.
      Kode voucher TIDAK dicetak; pembeli melihatnya setelah memindai. */
@@ -759,11 +793,11 @@
     panggil('cetakPaket', { jumlah: Number(A.p.jumlah), voucherKode: String(A.p.kode).trim(), voucherTeks: A.p.teks, voucherSampai: A.p.sampai }).then(function (r) {
       A.sibuk = false;
       if (!r.ok) { A.pesan = r.pesan; bunyi('scanTolak'); gambar(); return; }
-      A.hasilPaket = r; A.p = { jumlah: '', kode: '', teks: '', sampai: '' }; bunyi('scanOk'); gambar(); cetakA4();
+      A.hasilPaket = r; A.riwayat = null; A.p = { jumlah: '', kode: '', teks: '', sampai: '' }; bunyi('scanOk'); gambar(); cetakA4();
     }, function (e) { A.sibuk = false; A.pesan = e.message; gambar(); });
   }
-  function pngPaket() {
-    var h = A.hasilPaket; if (!h || A.unduh || A.mencetak) return;
+  function pngPaket(sumber) {
+    var h = sumber || A.hasilPaket; if (!h || A.unduh || A.mencetak) return;
     return unduhPng(h.kode, htmlKartuPaket, function (i, r) { return String(i + 1).padStart(3, '0') + '_paket_' + r.kode + '.png'; }, 'kartu-paket-' + String(h.acara.cap || 'event').replace(/[^A-Za-z0-9.]+/g, '-') + '-' + h.kode.length + '.zip');
   }
   /* PNG cadangan (dulu untuk vendor cetak, Ferdy 15 Okt malam: "cetaknya bisa png high reso (cuma png)... vendor yg
@@ -818,21 +852,22 @@
     v.setUint32(17, crc32(c.subarray(4, 17)));
     var o = new Uint8Array(a.length + 21); o.set(a.subarray(0, 33)); o.set(c, 33); o.set(a.subarray(33), 54); return o;
   }
-  function kartuKePng(html, css) {
+  function kartuKePng(html, css, ukuran) {
+    var mmW = (ukuran && ukuran.w) || 140, mmH = (ukuran && ukuran.h) || 60, sk = (ukuran && ukuran.skala) || 1, pw = Math.round(mmW * sk * DPI / 25.4), ph = Math.round(mmH * sk * DPI / 25.4);
     var wadah = document.createElement('div'); wadah.innerHTML = html;
     var imgs = Array.prototype.slice.call(wadah.querySelectorAll('img'));
     return Promise.all(imgs.map(function (im) { return keDataUrl(new URL(im.getAttribute('src'), location.href).href).then(function (d) { im.setAttribute('src', d); }, function () { im.remove(); }); })).then(function () {
-      var w = 140 * MM, h = 60 * MM, isi = new XMLSerializer().serializeToString(wadah.firstChild);
-      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + PNG_W + '" height="' + PNG_H + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">' +
+      var w = mmW * MM, h = mmH * MM, isi = new XMLSerializer().serializeToString(wadah.firstChild);
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + pw + '" height="' + ph + '" viewBox="0 0 ' + w + ' ' + h + '"><foreignObject x="0" y="0" width="' + w + '" height="' + h + '">' +
         '<div xmlns="http://www.w3.org/1999/xhtml"><style>' + css.replace(/<\/style/gi, '') + '</style>' + isi + '</div></foreignObject></svg>';
       return new Promise(function (ok, gagal) {
         var gb = new Image();
         gb.onload = function () {
           /* gambar dua kali: huruf data URL di dalam SVG kadang baru siap sesudah gambar pertama */
-          var kv = document.createElement('canvas'); kv.width = PNG_W; kv.height = PNG_H; var cx = kv.getContext('2d');
-          cx.drawImage(gb, 0, 0, PNG_W, PNG_H);
+          var kv = document.createElement('canvas'); kv.width = pw; kv.height = ph; var cx = kv.getContext('2d');
+          cx.drawImage(gb, 0, 0, pw, ph);
           setTimeout(function () {
-            cx.clearRect(0, 0, PNG_W, PNG_H); cx.drawImage(gb, 0, 0, PNG_W, PNG_H);
+            cx.clearRect(0, 0, pw, ph); cx.drawImage(gb, 0, 0, pw, ph);
             kv.toBlob(function (b) { if (!b) return gagal(new Error('toBlob')); b.arrayBuffer().then(function (ab) { ok(pasangDpi(ab)); }, gagal); }, 'image/png');
           }, 60);
         };
@@ -849,7 +884,7 @@
       var r = urut[i];
       return kartuKePng(buat(r), css).then(function (png) {
         zip.file(nama(i, r), png); i++; A.unduh = i + '/' + urut.length;
-        var el = document.querySelector('#kbIsi .kb-hasil .kb-cap:last-child'); if (el) el.textContent = t('bikinPng') + ' ' + A.unduh;
+        Array.prototype.forEach.call(document.querySelectorAll('#kbIsi .kb-hasil .kb-cap:last-child, #kbRiwayat .kb-rw-status'), function (el) { el.textContent = t('bikinPng') + ' ' + A.unduh; });
         return lanjut();
       });
     }).then(function (blob) {
@@ -858,6 +893,87 @@
       document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(u); a.remove(); }, 4000);
       A.unduh = null; gambar();
     }, function (e) { A.unduh = null; A.pesan = t('gagalPng') + (e && e.message || e); gambar(); });
+  }
+
+  /* PDF untuk percetakan (19 Okt 2026, Ferdy: kartu dicetak vendor minggu ini, desain pilihan A tanpa bingkai tepi, A4).
+     Tiap kartu 140 x 60 mm digambar dengan bleed 3 mm (146 x 66 mm, latar krem dan hijau diteruskan), 4 per halaman A4,
+     tanda potong hitam di luar bleed, nomor halaman di kaki. Halaman digambar ke kanvas 300 dpi lalu ditulis sendiri
+     sebagai PDF berisi gambar JPEG, tanpa pustaka luar. */
+  /* 19 Okt sore, Ferdy: ukuran kartu bisa dipilih. Bentuk tetap 7:3, jadi desain 140 x 60 cukup diperbesar atau diperkecil;
+     bleed di desain dibagi skala supaya di kertas tetap 3 mm. Satu kolom per halaman, baris sebanyak yang muat. */
+  var A4_W = 210, A4_H = 297, BL = 3, KY = 10.5, JARAK_BARIS = 4;
+  var UKURAN = [{ w: 105, h: 45 }, { w: 126, h: 54 }, { w: 140, h: 60 }, { w: 175, h: 75 }];
+  function ukuranPdf() { var w = Number(A.ukuranPdf) || 140; return UKURAN.filter(function (u) { return u.w === w; })[0] || UKURAN[2]; }
+  function perHalaman(uk) { return Math.max(1, Math.floor((A4_H - 2 * KY + JARAK_BARIS) / (uk.h + 2 * BL + JARAK_BARIS))); }
+  function htmlBleed(r, f) {
+    var b = BL / f, mm = function (v) { return v.toFixed(3) + 'mm'; };
+    return '<div class="kk-bleed" style="width:' + mm(140 + 2 * b) + ';height:' + mm(60 + 2 * b) + '"><div class="kk-bl-kiri" style="width:' + mm(70 + b) + ';height:' + mm(60 + 2 * b) + '"></div>' +
+      '<div class="kk-bl-kanan" style="left:' + mm(70 + b) + ';width:' + mm(70 + b) + ';height:' + mm(60 + 2 * b) + ';border-left-width:' + mm(0.5 / f) + '"></div>' +
+      htmlKartuPaket(r).replace('<div class="kartu-kitab kk-paket"', '<div class="kartu-kitab kk-paket" style="left:' + mm(b) + ';top:' + mm(b) + '"') + '</div>';
+  }
+  function gambarHalaman(gb, iHal, nHal, mulai, total, cap, uk) {
+    var s = DPI / 25.4, kv = document.createElement('canvas'); kv.width = Math.round(A4_W * s); kv.height = Math.round(A4_H * s);
+    var KW = uk.w, KH = uk.h, KX = (A4_W - (KW + 2 * BL)) / 2, KJ = KH + 2 * BL + JARAK_BARIS;
+    var cx = kv.getContext('2d'), t0 = 0.25 * s, P = 8, J = 2;
+    cx.fillStyle = '#fff'; cx.fillRect(0, 0, kv.width, kv.height);
+    gb.forEach(function (g, i) { cx.drawImage(g, KX * s, (KY + i * KJ) * s, (KW + 2 * BL) * s, (KH + 2 * BL) * s); });
+    cx.fillStyle = '#000';
+    gb.forEach(function (g, i) {
+      [KY + i * KJ + BL, KY + i * KJ + BL + KH].forEach(function (y) {
+        cx.fillRect((KX - J - P) * s, y * s - t0 / 2, P * s, t0); cx.fillRect((KX + KW + 2 * BL + J) * s, y * s - t0 / 2, P * s, t0);
+      });
+    });
+    var akhir = KY + (gb.length - 1) * KJ + KH + 2 * BL;
+    [KX + BL, KX + BL + KW].forEach(function (x) { cx.fillRect(x * s - t0 / 2, (KY - J - 6) * s, t0, 6 * s); cx.fillRect(x * s - t0 / 2, (akhir + J) * s, t0, 6 * s); });
+    cx.fillStyle = '#444'; cx.textAlign = 'center'; cx.font = Math.round(2.4 * s) + 'px Arial, Helvetica, sans-serif';
+    cx.fillText('Mofmofriends · Kartu QR paket ' + cap + ' · ' + KW + ' × ' + KH + ' mm + bleed 3 mm', kv.width / 2, (A4_H - 6.6) * s);
+    cx.fillText('Halaman ' + iHal + ' dari ' + nHal + ' · kartu ' + mulai + ' sampai ' + (mulai + gb.length - 1) + ' dari ' + total, kv.width / 2, (A4_H - 3.4) * s);
+    return new Promise(function (ok, gagal) {
+      kv.toBlob(function (b) { if (!b) return gagal(new Error('toBlob')); b.arrayBuffer().then(function (ab) { ok({ jpeg: new Uint8Array(ab), w: kv.width, h: kv.height }); }, gagal); }, 'image/jpeg', 0.92);
+    });
+  }
+  function tulisPdf(hal) {
+    var enc = new TextEncoder(), bagian = [], pos = 0, off = [], n = hal.length, kids = [];
+    var tulis = function (x) { var b = typeof x === 'string' ? enc.encode(x) : x; bagian.push(b); pos += b.length; };
+    var obj = function (no, isi) { off[no] = pos; tulis(no + ' 0 obj\n'); isi(); tulis('\nendobj\n'); };
+    var PW = (A4_W / 25.4 * 72).toFixed(3), PH = (A4_H / 25.4 * 72).toFixed(3);
+    for (var i = 0; i < n; i++) kids.push((3 + i * 3) + ' 0 R');
+    tulis('%PDF-1.4\n%\u00e2\u00e3\u00cf\u00d3\n');
+    obj(1, function () { tulis('<< /Type /Catalog /Pages 2 0 R >>'); });
+    obj(2, function () { tulis('<< /Type /Pages /Kids [' + kids.join(' ') + '] /Count ' + n + ' >>'); });
+    hal.forEach(function (h, k) {
+      var p = 3 + k * 3, isi = 'q ' + PW + ' 0 0 ' + PH + ' 0 0 cm /Im0 Do Q';
+      obj(p, function () { tulis('<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ' + PW + ' ' + PH + '] /Resources << /XObject << /Im0 ' + (p + 1) + ' 0 R >> >> /Contents ' + (p + 2) + ' 0 R >>'); });
+      obj(p + 1, function () { tulis('<< /Type /XObject /Subtype /Image /Width ' + h.w + ' /Height ' + h.h + ' /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ' + h.jpeg.length + ' >>\nstream\n'); tulis(h.jpeg); tulis('\nendstream'); });
+      obj(p + 2, function () { tulis('<< /Length ' + isi.length + ' >>\nstream\n' + isi + '\nendstream'); });
+    });
+    var xref = pos, jml = 3 + n * 3;
+    tulis('xref\n0 ' + jml + '\n0000000000 65535 f \n');
+    for (var j = 1; j < jml; j++) tulis(String(off[j]).padStart(10, '0') + ' 00000 n \n');
+    tulis('trailer\n<< /Size ' + jml + ' /Root 1 0 R >>\nstartxref\n' + xref + '\n%%EOF\n');
+    return new Blob(bagian, { type: 'application/pdf' });
+  }
+  function pdfVendor(sumber) {
+    var h = sumber || A.hasilPaket; if (!h || A.unduh || A.mencetak) return;
+    var urut = h.kode, css, i = 0, isi = [], hal = [], uk = ukuranPdf(), f = uk.w / 140, per = perHalaman(uk), nHal = Math.ceil(urut.length / per), cap = String(h.acara.cap || 'event');
+    A.unduh = '0/' + urut.length; A.unduhPdf = true; A.pesan = ''; gambar();
+    var tampil = function () { Array.prototype.forEach.call(document.querySelectorAll('#kbIsi .kb-hasil .kb-cap:last-child, #kbRiwayat .kb-rw-status'), function (e) { e.textContent = t('bikinPdf') + ' ' + A.unduh; }); };
+    return cssKartu().then(function (x) { css = x; }).then(function lanjut() {
+      if (i >= urut.length) return;
+      return kartuKePng(htmlBleed(urut[i], f), css, { w: 140 + 2 * BL / f, h: 60 + 2 * BL / f, skala: f }).then(function (png) { return createImageBitmap(new Blob([png], { type: 'image/png' })); }).then(function (g) {
+        isi.push(g); i++; A.unduh = i + '/' + urut.length; tampil();
+        if (isi.length === per || i === urut.length) {
+          var mulai = hal.length * per + 1;
+          return gambarHalaman(isi, hal.length + 1, nHal, mulai, urut.length, cap, uk).then(function (pg) { hal.push(pg); isi.forEach(function (b) { if (b.close) b.close(); }); isi = []; return lanjut(); });
+        }
+        return lanjut();
+      });
+    }).then(function () {
+      var blob = tulisPdf(hal), a = document.createElement('a'), u = URL.createObjectURL(blob);
+      a.href = u; a.download = 'kartu-paket-' + cap.replace(/[^A-Za-z0-9.]+/g, '-') + '-' + urut.length + '-vendor-A4-' + uk.w + 'x' + uk.h + '.pdf';
+      document.body.appendChild(a); a.click(); setTimeout(function () { URL.revokeObjectURL(u); a.remove(); }, 4000);
+      A.unduh = null; A.unduhPdf = false; gambar();
+    }, function (e) { A.unduh = null; A.unduhPdf = false; A.pesan = t('gagalPdf') + (e && e.message || e); gambar(); });
   }
 
   /* ---------- pasang kartu ke pesanan (tahap 2, 16 Okt 2026) ----------
@@ -1149,6 +1265,9 @@
     else if (a === 'keHadiah') { var hd = el('kbHadiah'); if (hd && hd.scrollIntoView) hd.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
     else if (a === 'buatPaket') buatPaket();
     else if (a === 'cetakPaketLagi') cetakA4();
+    else if (a === 'pdfVendor') pdfVendor();
+    else if (a === 'pdfUlang') pdfVendor(sumberRiwayat(x.getAttribute('data-i')));
+    else if (a === 'pngUlang') pngPaket(sumberRiwayat(x.getAttribute('data-i')));
     else if (a === 'pngPaket') pngPaket();
     else if (a === 'foto') lihatFoto(id);
     else if (a === 'setujui') putus(id, true);
@@ -1164,6 +1283,7 @@
     if (x.id === 'kbVoucherBerkas' && e.type === 'change' && x.files && x.files[0]) unggahVoucher(x.files[0]);
     if (x.id === 'kbTpAcara') A.tp.acara = x.value;
     if (x.id === 'kbTpCatatan') A.tp.catatan = x.value;
+    if (x.id === 'kbPdfUk' || x.id === 'kbPdfUk2') A.ukuranPdf = Number(x.value);
     if (x.id === 'kbPsPesanan') A.ps.pesanan = x.value;
     if (x.id === 'kbPsKartu') A.ps.kartu = x.value;
     if (x.id === 'kbHuKode') {
