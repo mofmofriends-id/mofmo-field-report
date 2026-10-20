@@ -1,0 +1,1188 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="no-referrer">
+<meta name="theme-color" content="#F7F8FA">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="ikon-192.png">
+<link rel="apple-touch-icon" href="ikon-192.png">
+<title>WMS Ops</title>
+<!-- Aplikasi WMS Ops (19 Okt 2026): surel mitra dan tugas ClickUp di HP Ferdy.
+     Server: Edge Function "ops" (Supabase). Masuk memakai kode akses WMS yang sama. -->
+<style>
+:root{--bg:#F7F8FA;--card:#fff;--ink:#14171C;--mut:#6B7280;--mut2:#9AA1AC;--line:#ECEEF2;--red:#E5484D;--redbg:#FEF0F0;--amb:#E09B12;--ambtx:#A86F00;--ambbg:#FFF7E6;--grn:#2E9E6A;--grnbg:#EAF7F0;--blu:#3E63DD;--blubg:#EEF2FD;--pur:#7C5CDB;--purbg:#F3EFFD;--acc:#F08A4B;--accbg:#FFF4EC}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 Inter,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+button,input,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:0;background:none;padding:0}
+#app{max-width:560px;margin:0 auto;padding:calc(14px + env(safe-area-inset-top,0px)) 16px calc(96px + env(safe-area-inset-bottom,0px))}
+.hd{display:flex;justify-content:space-between;align-items:center;margin:4px 0 14px;gap:10px}
+.hd small{display:block;font-size:12.5px;color:var(--mut);font-weight:500}
+.hd h1{margin:0;font-size:23px;letter-spacing:-.5px;font-weight:700}
+.av{width:36px;height:36px;border-radius:12px;background:linear-gradient(135deg,#F08A4B,#E5484D);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.sum>div{border-radius:16px;padding:11px 12px}
+.sum b{display:block;font-size:22px;font-weight:700;letter-spacing:-.4px}
+.sum span{font-size:11.5px;font-weight:600}
+.chips{display:flex;gap:6px;margin:0 0 6px;overflow-x:auto;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{font-size:13px;font-weight:500;padding:7px 12px;border-radius:999px;background:#fff;border:1px solid var(--line);white-space:nowrap}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.chip em{font-style:normal;opacity:.55;margin-left:4px}
+.sec{font-size:11px;font-weight:600;letter-spacing:.1em;color:var(--mut2);text-transform:uppercase;margin:16px 2px 8px}
+.c{background:#fff;border-radius:16px;padding:12px;display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;margin-bottom:8px;box-shadow:0 1px 2px rgba(16,24,40,.05);width:100%;text-align:left}
+.ic{width:36px;height:36px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.ic svg{width:18px;height:18px}
+.c .tt{font-weight:600;font-size:14px;letter-spacing:-.1px;line-height:1.3;display:block}
+.c .ss{font-size:12px;color:var(--mut);display:block;margin-top:2px}
+.pill{font-size:10px;font-weight:700;letter-spacing:.05em;padding:3px 7px;border-radius:6px;white-space:nowrap}
+.chk{width:24px;height:24px;border-radius:8px;border:2px solid #D0D5DD;display:flex;align-items:center;justify-content:center;flex:none;background:#fff}
+.chk.ok{background:var(--grn);border-color:var(--grn);color:#fff}
+.chk svg{width:14px;height:14px}
+.jb{display:flex;gap:6px;margin-top:8px}.mini{font-size:12.5px;font-weight:600;padding:7px 11px;border-radius:10px;background:#F0F2F5}.mini.p{background:var(--ink);color:#fff}
+.jdmn{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 6px}
+.jdmn button{font-size:13px;font-weight:600;color:var(--blu);padding:6px 4px}.jdmn b{font-size:15px}
+.jdinfo{font-size:12px;color:var(--mut);margin:0 2px 4px}
+.jdh{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:center;background:#fff;border-radius:14px;padding:9px 10px;margin-bottom:6px;box-shadow:0 1px 2px rgba(16,24,40,.05)}
+.jdh.lewat{opacity:.45}.jdh.sorot{box-shadow:inset 0 0 0 2px var(--blu)}.jdinfo2{font-size:12px;color:var(--ink);background:#F2F4F7;border-radius:10px;padding:7px 9px;margin-top:8px}.jdh.kini{box-shadow:inset 0 0 0 2px var(--acc)}
+.jdt{text-align:center;line-height:1.1}.jdt b{display:block;font-size:11px;color:var(--mut);font-weight:600;text-transform:uppercase}.jdt span{font-size:19px;font-weight:700}
+.jdg{display:flex;flex-wrap:wrap;gap:6px}
+.jchip{font-size:13px;font-weight:600;padding:7px 11px;border-radius:10px;background:var(--blubg);color:var(--blu)}
+.jchip.TGI{background:#FDEDE4;color:#B4532A}.jchip.MAA{background:var(--purbg);color:var(--pur)}.jchip.KIY{background:var(--grnbg);color:var(--grn)}
+.jchip.baru{box-shadow:inset 0 0 0 2px var(--acc)}
+.jdkosong{font-size:12px;color:var(--mut2)}
+.jdcek{background:var(--ambbg);border-radius:14px;padding:10px 12px;font-size:12.5px;color:#7A5200;margin:10px 0;line-height:1.5}
+.jdcek.aman{background:var(--grnbg);color:var(--grn)}
+.jdbar{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:4;padding:0 12px}
+.jdbar>div{max-width:536px;margin:0 auto;background:var(--ink);color:#fff;border-radius:16px;padding:10px 10px 10px 14px;display:flex;align-items:center;gap:8px;font-size:13.5px}
+.jdbar button{font-size:13px;font-weight:600;padding:8px 11px;border-radius:10px;background:rgba(255,255,255,.14);color:#fff}
+.jdbar button.p{background:var(--acc)}
+.jdhasil{background:#fff;border-radius:16px;padding:14px;margin:6px 0 12px;box-shadow:0 1px 2px rgba(16,24,40,.05);font-size:13.5px}
+.jdhasil li{margin:4px 0}
+.jdke{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:6px}
+.jdke button{padding:9px 2px;border-radius:11px;background:#F2F4F7;font-size:12.5px;font-weight:600;line-height:1.2}
+.jdke button small{display:block;font-weight:500;font-size:10.5px;color:var(--mut)}
+.jdke button[disabled]{opacity:.35}
+.kosong{text-align:center;color:var(--mut2);font-size:13px;padding:22px 10px}
+.nav{position:fixed;bottom:0;left:0;right:0;background:rgba(255,255,255,.96);backdrop-filter:blur(10px);border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 0 calc(10px + env(safe-area-inset-bottom,0px));z-index:5}
+.nav button{font-size:11px;font-weight:600;color:var(--mut2);display:flex;flex-direction:column;align-items:center;gap:3px;min-width:70px;position:relative}
+.nav svg{width:22px;height:22px}
+.nav .on{color:var(--ink)}
+.nav i{position:absolute;top:-3px;right:16px;background:var(--red);color:#fff;font-style:normal;font-size:10px;font-weight:700;border-radius:8px;padding:0 5px;line-height:16px}
+.fab{position:fixed;right:18px;bottom:calc(84px + env(safe-area-inset-bottom,0px));width:56px;height:56px;border-radius:18px;background:var(--acc);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 22px -6px rgba(240,138,75,.7);z-index:4}
+.back{font-weight:600;color:var(--blu);margin:2px 0 12px;font-size:14px}
+.mt{font-size:19px;font-weight:700;letter-spacing:-.3px;line-height:1.3;margin:0}
+.meta{font-size:12.5px;color:var(--mut);margin:5px 0 14px}
+.bub{background:#fff;border-radius:16px;padding:12px 13px;font-size:13.5px;line-height:1.55;margin-bottom:10px;box-shadow:0 1px 2px rgba(16,24,40,.05);white-space:pre-wrap;word-wrap:break-word}
+.bub .w{font-size:12px;font-weight:600;color:var(--mut);margin-bottom:4px;display:flex;justify-content:space-between;white-space:normal}
+.dr{background:#FFFBF5;border:1.5px dashed #F2C49F}
+.dr .w{color:var(--acc)}
+.ta{width:100%;border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:#fff;min-height:64px;resize:vertical;font-size:14px;margin-bottom:10px}
+.ta:focus,.inp:focus{outline:2px solid var(--ink);outline-offset:-1px}
+.act{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.bt{text-align:center;font-weight:600;font-size:14px;padding:13px;border-radius:14px;background:#fff;border:1px solid var(--line);display:block;width:100%;text-decoration:none;color:var(--ink)}
+.bt.p{background:var(--ink);color:#fff;border-color:var(--ink)}
+.bt[disabled]{opacity:.45}
+.cat{font-size:11.5px;color:var(--mut2);text-align:center;margin-top:10px}
+.st{display:flex;gap:6px;margin:4px 0 16px;flex-wrap:wrap}
+.st button{flex:1;min-width:70px;text-align:center;font-size:12px;font-weight:600;padding:9px 6px;border-radius:11px;background:#F0F2F5;color:var(--mut);text-transform:capitalize}
+.st button.on{background:var(--blubg);color:var(--blu);box-shadow:inset 0 0 0 1.5px var(--blu)}
+.bar{height:8px;border-radius:8px;background:#EEF0F3;overflow:hidden;margin:6px 0 6px}
+.bar i{display:block;height:100%;background:var(--grn);border-radius:8px}
+.ck{display:flex;gap:11px;align-items:center;font-size:14px;padding:8px 0;width:100%;text-align:left}
+.tl{border-left:2px solid var(--line);margin:4px 0 0 9px;padding-left:15px}
+.tl div{font-size:13px;line-height:1.45;margin-bottom:12px;position:relative;white-space:pre-wrap}
+.tl div:before{content:"";position:absolute;left:-21px;top:4px;width:10px;height:10px;border-radius:50%;background:#fff;border:2px solid var(--mut2)}
+.tl small{display:block;color:var(--mut2);font-size:11px}
+.lbl{font-size:11px;font-weight:600;letter-spacing:.08em;color:var(--mut2);text-transform:uppercase;margin:12px 0 7px}
+.kirimbaris{display:flex;gap:8px;margin-top:6px}
+.kirimbaris .inp{flex:1}
+.inp{width:100%;border:1.5px solid var(--line);border-radius:13px;padding:11px 12px;font-size:15px;background:#fff}
+.dim{position:fixed;inset:0;background:rgba(16,24,40,.38);z-index:8;display:none}
+.sheet{position:fixed;left:0;right:0;bottom:0;background:#fff;border-radius:24px 24px 0 0;padding:10px 16px calc(18px + env(safe-area-inset-bottom,0px));z-index:9;max-height:90vh;overflow:auto;transform:translateY(105%);transition:transform .25s ease;max-width:560px;margin:0 auto}
+.sheet.on{transform:none}.dim.on{display:block}
+.grab{width:40px;height:4px;border-radius:4px;background:#D9DCE1;margin:0 auto 12px}
+.sheet h2{font-size:18px;margin:0 0 12px}
+.ops{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.ops button{font-size:13px;font-weight:500;padding:8px 12px;border-radius:11px;background:#F2F4F7}
+.ops button.on{background:var(--ink);color:#fff}
+.toast{position:fixed;left:16px;right:16px;bottom:calc(86px + env(safe-area-inset-bottom,0px));background:var(--ink);color:#fff;border-radius:14px;padding:13px 14px;font-size:13.5px;display:flex;justify-content:space-between;gap:12px;align-items:center;z-index:10;max-width:528px;margin:0 auto;opacity:0;transform:translateY(10px);transition:all .2s;pointer-events:none}
+.toast.on{opacity:1;transform:none;pointer-events:auto}
+.toast button{color:#9FE3BE;font-weight:600;white-space:nowrap}
+.masuk{max-width:360px;margin:16vh auto 0;text-align:center}
+.masuk .av{width:64px;height:64px;border-radius:20px;font-size:28px;margin:0 auto 16px}
+.masuk h1{font-size:24px;margin:0 0 6px}
+.masuk p{color:var(--mut);font-size:14px;margin:0 0 20px}
+.galat{color:var(--red);font-size:13px;min-height:20px;margin-top:8px}
+.notifbar{display:flex;gap:10px;align-items:center;background:var(--accbg);border-radius:14px;padding:11px 12px;margin-bottom:12px;font-size:13px}
+.notifbar b{display:block}
+.notifbar button{margin-left:auto;background:var(--acc);color:#fff;font-weight:600;font-size:12.5px;padding:8px 12px;border-radius:10px;white-space:nowrap}
+.muat{height:3px;background:linear-gradient(90deg,transparent,var(--acc),transparent);background-size:50% 100%;animation:muat 1s linear infinite;position:fixed;top:0;left:0;right:0;z-index:20;display:none}
+.muat.on{display:block}
+@keyframes muat{from{background-position:-50% 0}to{background-position:150% 0}}
+/* Wajah Mofmo (20 Okt): logo, boneka SKU, gerak, dan suara */
+.hd .kiri{display:flex;align-items:center;gap:10px;min-width:0}
+.hd .kanan{display:flex;gap:8px;flex:none}
+.hd img.logo{width:40px;height:40px;border-radius:13px;background:#FFF4EA;object-fit:contain;padding:3px;flex:none;box-shadow:inset 0 0 0 1px #F6E3D1}
+.sbt{width:36px;height:36px;border-radius:12px;background:#fff;border:1px solid var(--line);display:flex;align-items:center;justify-content:center;color:var(--ink)}
+.sbt svg{width:18px;height:18px}.sbt[aria-pressed="true"]{color:var(--mut2)}
+.sum>div{position:relative;overflow:hidden;min-height:64px}
+.sum b,.sum span{position:relative;z-index:1}
+.sum img{position:absolute;right:-9px;bottom:-11px;width:50px;height:50px;transform:rotate(-10deg);pointer-events:none}
+.kosong img{display:block;width:72px;height:72px;object-fit:contain;margin:0 auto 6px;animation:ayun 2.8s ease-in-out infinite}
+.kosong.memuat img{width:52px;height:52px;animation:lompat .7s cubic-bezier(.3,0,.4,1) infinite alternate}
+@keyframes ayun{0%,100%{transform:translateY(0) rotate(-4deg)}50%{transform:translateY(-6px) rotate(4deg)}}
+@keyframes lompat{from{transform:translateY(0) scaleY(.94)}to{transform:translateY(-12px) scaleY(1.03)}}
+#app.anim>*{animation:naik .42s cubic-bezier(.2,.85,.25,1) backwards;animation-delay:calc(var(--i,0) * 32ms - var(--lewat,0ms))}
+@keyframes naik{from{opacity:0;transform:translateY(14px) scale(.985)}to{opacity:1;transform:none}}
+.c,.bt,.chip,.mini,.jchip,.ops button,.st button,.sbt,.av,.fab,.nav button,.jdke button{transition:transform .14s ease,background-color .15s,box-shadow .15s}
+.c:active,.bt:active,.chip:active,.mini:active,.jchip:active,.ops button:active,.st button:active,.sbt:active,.av:active,.jdke button:active{transform:scale(.965)}
+.fab:active{transform:scale(.9) rotate(90deg)}
+.fab{transition:transform .25s cubic-bezier(.3,1.4,.5,1),opacity .2s}
+body.ada-toast .fab{transform:translateY(24px) scale(.4);opacity:0;pointer-events:none}
+.chk{transition:transform .18s cubic-bezier(.3,1.6,.5,1),background-color .15s}
+.chk.ok{transform:scale(1.18)}
+.c.pergi{animation:pergi .32s cubic-bezier(.5,0,.75,0) forwards}
+@keyframes pergi{to{opacity:0;transform:translateX(40px) scale(.96)}}
+.nav .on.loncat svg{animation:loncat .45s cubic-bezier(.3,1.7,.5,1)}
+@keyframes loncat{0%{transform:scale(.7) translateY(3px)}100%{transform:none}}
+.pesta{position:fixed;inset:0;pointer-events:none;z-index:30;overflow:hidden}
+.pesta img{position:absolute;width:30px;height:30px;margin:-15px 0 0 -15px;object-fit:contain;will-change:transform,opacity}
+.toast{justify-content:flex-start;transition:opacity .2s,transform .32s cubic-bezier(.2,1.3,.4,1)}
+.toast #toastTeks{flex:1}
+.toast img{width:30px;height:30px;object-fit:contain;flex:none;margin:-4px 0}
+.toast.on img{animation:loncat .5s cubic-bezier(.3,1.7,.5,1)}
+.sheet{transition:transform .34s cubic-bezier(.2,1.05,.3,1)}
+.masuk img.logo{width:96px;height:96px;border-radius:30px;background:#FFF4EA;object-fit:contain;padding:8px;display:block;margin:0 auto 14px;box-shadow:0 12px 30px -14px rgba(240,138,75,.55);animation:ayun 3.4s ease-in-out infinite}
+.parade{overflow:hidden;margin:28px -16px 0;-webkit-mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent);mask-image:linear-gradient(90deg,transparent,#000 14%,#000 86%,transparent)}
+.parade>div{display:flex;gap:10px;width:max-content;animation:parade 34s linear infinite}
+.parade img{width:52px;height:52px;object-fit:contain;flex:none}
+.parade img:nth-child(odd){animation:ayun 2.4s ease-in-out infinite}
+@keyframes parade{to{transform:translateX(-50%)}}
+/* Tahap 2 (20 Okt): data WMS, cek SKU, Indra, koleksi */
+.indra{display:grid;grid-template-columns:44px 1fr auto;gap:10px;align-items:center;background:#fff;border-radius:16px;padding:9px 12px;margin:0 0 10px;box-shadow:0 1px 2px rgba(16,24,40,.05);width:100%;text-align:left}
+.indra img{width:44px;height:44px;object-fit:contain}
+.indra b{display:block;font-size:13.5px}.indra span{display:block;font-size:12px;color:var(--mut)}
+.petak{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ptk{background:#fff;border-radius:16px;padding:11px 12px;text-align:left;box-shadow:0 1px 2px rgba(16,24,40,.05);position:relative;overflow:hidden;min-height:78px}
+.ptk small{display:block;font-size:11.5px;font-weight:600;color:var(--mut)}
+.ptk b{display:block;font-size:21px;letter-spacing:-.4px;margin:2px 0 1px}
+.ptk span{display:block;font-size:11.5px;color:var(--mut);line-height:1.3;padding-right:22px}
+.ptk.merah{background:var(--redbg)}.ptk.merah b{color:var(--red)}
+.ptk.kuning{background:var(--ambbg)}.ptk.kuning b{color:var(--ambtx)}
+.ptk.hijau b{color:var(--grn)}
+.ptk img{position:absolute;right:-6px;bottom:-8px;width:40px;height:40px;object-fit:contain;opacity:.95;pointer-events:none}
+.wrow{display:grid;grid-template-columns:40px 1fr auto;gap:10px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:13.5px}
+.wrow:last-child{border-bottom:0}
+.wrow img{width:40px;height:40px;object-fit:contain}
+.wrow b{display:block;font-weight:600;line-height:1.3}.wrow small{display:block;color:var(--mut);font-size:12px}
+.tag{font-size:10.5px;font-weight:700;padding:3px 7px;border-radius:6px;white-space:nowrap;background:#F0F2F5;color:var(--mut)}
+.tag.merah{background:var(--redbg);color:var(--red)}.tag.kuning{background:var(--ambbg);color:var(--ambtx)}.tag.hijau{background:var(--grnbg);color:var(--grn)}
+.hsku{margin-top:10px;min-height:120px}
+.sku{display:grid;grid-template-columns:48px 1fr auto;gap:10px;align-items:center;margin:12px 0 4px}
+.sku img{width:48px;height:48px;object-fit:contain}
+.sku b{display:block;font-size:14px;line-height:1.3}.sku small{display:block;font-size:12px;color:var(--mut)}
+.sku mark{background:var(--accbg);color:var(--acc);font-weight:700;border-radius:4px;padding:0 2px}
+.sku .tot{text-align:right}.sku .tot b{font-size:20px}
+.skul{display:flex;justify-content:space-between;gap:8px;font-size:13px;padding:6px 0 6px 58px;border-top:1px dashed var(--line)}
+.skul small{display:block;color:var(--mut2);font-size:11.5px}.skul em{font-style:normal;font-weight:700}
+.kol{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;align-items:center;background:linear-gradient(135deg,#FFF4EA,#FDEDE4);border-radius:16px;padding:9px 12px;margin:2px 0 10px;width:100%;text-align:left}
+.kol .tum{display:flex;padding-right:8px}.kol .tum img{width:34px;height:34px;object-fit:contain;margin-right:-8px}
+.kol .tum img.kunci{filter:brightness(0);opacity:.12}
+.kol b{display:block;font-size:13.5px}.kol span{display:block;font-size:12px;color:var(--mut)}
+.kolbar{grid-column:1/-1;height:6px;border-radius:6px;background:rgba(240,138,75,.18);overflow:hidden}.kolbar i{display:block;height:100%;background:var(--acc);border-radius:6px}
+.kgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kgrid>div{background:#F7F8FA;border-radius:14px;padding:8px 4px 6px;text-align:center;font-size:10.5px;color:var(--mut2);line-height:1.2}
+.kgrid img{width:52px;height:52px;object-fit:contain;display:block;margin:0 auto 4px;filter:brightness(0);opacity:.12}
+.kgrid>div.punya{background:#FFF4EA;color:var(--ink);font-weight:600}.kgrid>div.punya img{filter:none;opacity:1}
+.bonekabaru{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;background:rgba(16,24,40,.42);padding:24px}
+.bonekabaru>div{background:#fff;border-radius:26px;padding:22px 26px 20px;text-align:center;min-width:230px;animation:loncat .55s cubic-bezier(.3,1.7,.5,1)}
+.bonekabaru img{width:140px;height:140px;object-fit:contain;display:block;margin:0 auto 6px;animation:ayun 2.4s ease-in-out infinite}
+.bonekabaru small{display:block;font-size:11.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--acc)}
+.bonekabaru b{display:block;font-size:21px;margin:2px 0}.bonekabaru span{font-size:12.5px;color:var(--mut)}
+.bt.wa,.bt.waok{background:#1FAF54;color:#fff;border-color:#1FAF54;display:flex;align-items:center;justify-content:center;gap:8px}
+.bt.wa{margin-top:8px}.bt.wa svg,.bt.waok svg{width:18px;height:18px}
+.waform{display:grid;grid-template-columns:1fr 1fr auto;gap:6px;margin-top:4px}.waform .inp{min-width:0;font-size:14px;padding:10px}
+.bub.waok{background:#EAF7F0;color:#1B7A45;box-shadow:none}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="muat" id="muat"></div>
+<div id="app"></div>
+<nav class="nav" id="nav" hidden></nav>
+<div class="dim" id="dim"></div>
+<div class="sheet" id="sheet"></div>
+<div class="pesta" id="pesta"></div>
+<div class="toast" id="toast"><img id="toastBoneka" alt=""><span id="toastTeks"></span><button id="toastAksi" hidden></button></div>
+<script>
+(function () {
+  'use strict';
+  var OPS = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/ops';
+  var WMS = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
+  var GAS = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
+  var JAM = 3600e3, HARI = 24 * JAM, WIB = 7 * JAM;
+  var BLN = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+  var HR = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu'];
+
+  /* ---------- penyimpanan (kunci sama dengan WMS, jadi masuk sekali berlaku di keduanya) ---------- */
+  function ls() { try { return window.localStorage; } catch (e) { return null; } }
+  function ambil(k) { try { var a = ls() && ls().getItem(k); if (a === null && window.sessionStorage) a = sessionStorage.getItem(k); return a; } catch (e) { return null; } }
+  function taruh(k, v) { try { if (ls()) ls().setItem(k, v); } catch (e) {} }
+  function buang(k) { try { if (ls()) ls().removeItem(k); if (window.sessionStorage) sessionStorage.removeItem(k); } catch (e) {} }
+
+  var S = { tiket: ambil('wms_tiket') || '', surel: null, tugas: null, meta: null, rute: '', filter: 'semua', tugasFilter: 'punya', detail: null, sibuk: 0 };
+  var $ = function (id) { return document.getElementById(id); };
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]; }); }
+
+  /* ---------- server ---------- */
+  function sibuk(n) { S.sibuk = Math.max(0, S.sibuk + n); $('muat').classList.toggle('on', S.sibuk > 0); }
+  function kirimKe(url, badan) {
+    sibuk(1);
+    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(badan), cache: 'no-store', credentials: 'omit' })
+      .then(function (r) { return r.json(); })
+      .then(function (h) { sibuk(-1); return h; }, function (e) { sibuk(-1); throw new Error('Tidak ada sinyal atau server tidak menjawab.'); });
+  }
+  function api(aksi, data) {
+    var b = Object.assign({ aksi: aksi, tiket: S.tiket }, data || {});
+    return kirimKe(OPS, b).then(function (h) {
+      if (h && h.perluMasuk) { keluar(); throw new Error('Masuk dulu.'); }
+      return h || { ok: false, pesan: 'Jawaban server kosong.' };
+    });
+  }
+  /* Apps Script (papan WMS): jalur yang sama dengan WMS, tiket + kata pengganti WMS-TIKET */
+  function jalanGas(nama, args) {
+    return kirimKe(GAS, { aksi: 'wms', fn: 'panggil', tiket: S.tiket, nama: nama, args: args }).then(function (h) {
+      if (!h || typeof h !== 'object' || !h.pintu) throw new Error('Server papan belum menjawab dengan benar. Coba lagi.');
+      if (h.pintu === 'galat') throw new Error(h.pesan || 'Server galat.');
+      var x = h.hasil;
+      if (x && x.perluMasuk) { keluar(); throw new Error('Masuk dulu.'); }
+      return x;
+    });
+  }
+  function keluar() { buang('wms_tiket'); buang('wms_ingat'); S.tiket = ''; S.surel = S.tugas = S.meta = null; gambar(); }
+
+  /* ---------- waktu ---------- */
+  function wib(ms) { return new Date(Number(ms) + WIB); }
+  function kunciHari(ms) { return wib(ms).toISOString().slice(0, 10); }
+  function selisihHari(a, b) { return Math.round((Date.parse(kunciHari(b) + 'T00:00:00Z') - Date.parse(kunciHari(a) + 'T00:00:00Z')) / HARI); }
+  function tglPanjang(ms) { var d = wib(ms); return HR[d.getUTCDay()] + ', ' + d.getUTCDate() + ' ' + BLN[d.getUTCMonth()]; }
+  function jam(ms) { var d = wib(ms); return ('0' + d.getUTCHours()).slice(-2) + '.' + ('0' + d.getUTCMinutes()).slice(-2); }
+  function kapan(ms) {
+    if (!ms) return '';
+    var s = selisihHari(Date.now(), ms);
+    if (s === 0) return 'hari ini'; if (s === 1) return 'besok'; if (s === -1) return 'kemarin';
+    var d = wib(ms);
+    if (s > 1 && s < 7) return HR[d.getUTCDay()];
+    return d.getUTCDate() + ' ' + BLN[d.getUTCMonth()];
+  }
+  function hariJam(ms) { var d = wib(ms); return HR[d.getUTCDay()] + ' ' + d.getUTCDate() + ' ' + BLN[d.getUTCMonth()] + ' ' + jam(ms); }
+  function agendaJanji(j) { return !!(j.berjam && j.mulai); }
+  function kapanJanji(j) { if (!j.mulai) return 'tanpa tenggat'; return agendaJanji(j) ? hariJam(j.mulai) : 'tenggat ' + hariJam(j.mulai).split(' ').slice(0, 3).join(' '); }
+  function kartuJanji(j) {
+    var ag = agendaJanji(j);
+    return '<div class="c" data-janji="' + j.id + '" role="button"><div class="ic" style="background:' + (ag ? 'var(--accbg)' : 'var(--purbg)') + '">' + (ag ? IK.kalender : IK.tugas) + '</div><div><span class="tt">' + esc(j.mitra + ': ' + j.judul) + '</span><span class="ss">' + esc(kapanJanji(j) + (j.pic ? ' · ' + j.pic : '') + (j.lokasi ? ' · ' + j.lokasi : '')) + '</span>' +
+      jadwalIndraJanji(j) +
+      '<div class="jb"><span class="mini p">' + (ag ? 'Jadikan agenda' : 'Jadikan tugas') + '</span><button class="mini" data-abaikan="' + j.id + '">Abaikan</button></div></div><span></span></div>';
+  }
+  /* Jadwal kunjungan Indra di hari agenda mitra yang berjam, dari lembar Jadwal Kunjungan (geseran yang belum terbit ikut dihitung). */
+  function isiJadwalBulan(b) { if (S.jd.D && S.jd.bulan === b) return S.jd.isi; var c = S.jdCache[b]; return c ? (c.terbit && c.terbit.isi) || c.jadwal || {} : null; }
+  function jadwalIndraJanji(j) {
+    if (!agendaJanji(j)) return '';
+    var t = kunciHari(j.mulai), isi = isiJadwalBulan(t.slice(0, 7));
+    if (!isi) return '';
+    var g = (isi[t] || []).map(pendekGerai);
+    return '<div class="jdinfo2">' + (g.length ? 'Indra hari itu: ' + esc(g.join(', ')) : 'Indra hari itu tidak ada kunjungan') + ' <button class="mini" style="margin-left:4px;padding:4px 8px" data-jd-ke-tgl="' + t + '">Atur jadwal</button></div>';
+  }
+  function muatCacheJadwal() {
+    var bln = {};
+    (S.janji || []).forEach(function (j) { if (agendaJanji(j)) bln[kunciHari(j.mulai).slice(0, 7)] = 1; });
+    bln[kunciHari(Date.now()).slice(0, 7)] = 1; /* untuk baris "Indra hari ini" di Beranda */
+    return Promise.all(Object.keys(bln).map(function (b) {
+      return jalanGas('ambilJadwalPic', ['WMS-TIKET', b]).then(function (D) { if (D && D.ok !== false) { S.jdCache[b] = D; if (!S.jd.D || S.jd.bulan !== b) { /* kode gerai butuh nama */ S.jdGerai = D.gerai; } } }, function () {});
+    }));
+  }
+  function bagianJanji(daftar) { return daftar.length ? '<div class="sec">Dari surel mitra</div>' + daftar.map(kartuJanji).join('') : ''; }
+  function lalu(ms) {
+    var m = Math.round((Date.now() - ms) / 60e3);
+    if (m < 1) return 'baru saja'; if (m < 60) return m + ' menit lalu';
+    if (selisihHari(ms, Date.now()) === 0) return 'tadi ' + jam(ms);
+    return kapan(ms) + ' ' + jam(ms);
+  }
+
+  /* ---------- ikon ---------- */
+  var IK = {
+    surel: '<svg viewBox="0 0 24 24" fill="none" stroke="#3E63DD" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    tugas: '<svg viewBox="0 0 24 24" fill="none" stroke="#7C5CDB" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>',
+    centang: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 12l5 5L19 7"/></svg>',
+    rumah: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>',
+    mitra: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>',
+    kalender: '<svg viewBox="0 0 24 24" fill="none" stroke="#F08A4B" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+    jadwal: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>',
+    daftar: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6h11M9 12h11M9 18h11M4 6l1 1 2-2M4 12l1 1 2-2M4 18l1 1 2-2"/></svg>'
+  };
+
+  /* ---------- toast ---------- */
+  var toastTm = null;
+  function toast(teks, aksi, fn) {
+    $('toastBoneka').src = gbBoneka(BONEKA[Math.floor(Math.random() * BONEKA.length)]);
+    $('toast').classList.remove('on'); void $('toast').offsetWidth;
+    $('toastTeks').textContent = teks;
+    var b = $('toastAksi'); b.hidden = !aksi; b.textContent = aksi || ''; b.onclick = function () { tutupToast(); if (fn) fn(); };
+    $('toast').classList.add('on'); document.body.classList.add('ada-toast'); clearTimeout(toastTm);
+    toastTm = setTimeout(tutupToast, aksi ? 6000 : 3000);
+  }
+
+  /* Tombol + menyingkir selama kabar bawah tampil, supaya tidak menumpuk. */
+  function tutupToast() { $('toast').classList.remove('on'); document.body.classList.remove('ada-toast'); }
+
+  /* ---------- wajah Mofmo: boneka SKU, gerak, suara (20 Okt) ---------- */
+  var BONEKA = ['shiba', 'kc_shiba', 'angora', 'bear', 'kr_bear', 'kc_bear', 'panda', 'mb_panda', 'redpanda', 'otter', 'koala', 'lamb', 'mb_lamb', 'kc_lamb', 'reindeer', 'elephant',
+    'collie', 'mb_collie', 'kr_tiger', 'mb_tiger', 'kc_tiger', 'kr_rabbit', 'kc_rabbit', 'kr_bsh', 'kc_bsh', 'kr_bichon', 'kc_bichon', 'bichon_s', 'pekingese_s', 'racoon', 'ndr_s', 'kc_cow'];
+  /* Versi 220 px untuk boneka besar (bagian kosong); yang lain cukup versi 96 px. */
+  var BESAR = ['shiba', 'kc_shiba', 'angora', 'bear', 'kr_bear', 'kc_bear', 'panda', 'mb_panda', 'redpanda', 'otter', 'koala', 'lamb', 'mb_lamb', 'reindeer', 'elephant',
+    'mb_collie', 'kr_tiger', 'mb_tiger', 'kr_rabbit', 'kr_bsh', 'kr_bichon', 'ndr_s'];
+  var LOGO = '/img/logo-mofmo.png';
+  function gbBoneka(n, besar) { return (besar ? '/img/' : '/img/sku/') + n + '.webp'; }
+  function imgBoneka(n, besar) { return '<img src="' + gbBoneka(n, besar) + '" alt="" decoding="async">'; }
+  /* Pilihan tetap per teks per hari: gambar ulang tiap 90 detik tidak mengganti bonekanya. */
+  function pilihBoneka(kunci, daftar) {
+    var s = String(kunci) + kunciHari(Date.now()), h = 0;
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) | 0;
+    return daftar[Math.abs(h) % daftar.length];
+  }
+  function kosong(teks) { return '<div class="kosong">' + imgBoneka(pilihBoneka(teks, BESAR), true) + teks + '</div>'; }
+  function memuat(teks) { return '<div class="kosong memuat">' + imgBoneka(pilihBoneka('muat' + teks, BONEKA)) + (teks || 'Memuat…') + '</div>'; }
+  function kurangGerak() { return !!(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches); }
+
+  /* Konfeti boneka dari titik ketukan. Tidak menangkap ketukan, dan bersih sendiri. */
+  function pesta(x, y) {
+    if (kurangGerak()) return;
+    var wadah = $('pesta');
+    for (var i = 0; i < 8; i++) {
+      var im = document.createElement('img'); im.alt = ''; im.src = gbBoneka(BONEKA[Math.floor(Math.random() * BONEKA.length)]);
+      im.style.left = x + 'px'; im.style.top = y + 'px'; wadah.appendChild(im);
+      var sudut = -Math.PI / 2 + (i - 3.5) * 0.36 + (Math.random() - .5) * .25, jauh = 70 + Math.random() * 60;
+      var dx = Math.cos(sudut) * jauh, dy = Math.sin(sudut) * jauh, put = (Math.random() - .5) * 140;
+      (function (el) {
+        var buang = function () { if (el.parentNode) el.parentNode.removeChild(el); };
+        if (el.animate) {
+          el.animate([
+            { transform: 'translate(0,0) scale(.3) rotate(0deg)', opacity: 1 },
+            { transform: 'translate(' + dx + 'px,' + dy + 'px) scale(1) rotate(' + put + 'deg)', opacity: 1, offset: .55 },
+            { transform: 'translate(' + dx * 1.15 + 'px,' + (dy + 110) + 'px) scale(.85) rotate(' + put * 1.6 + 'deg)', opacity: 0 }
+          ], { duration: 950 + Math.random() * 300, easing: 'cubic-bezier(.2,.7,.35,1)', fill: 'forwards' }).onfinish = buang;
+        }
+        setTimeout(buang, 1400);
+      })(im);
+    }
+  }
+  function pestaTengah() { pesta(window.innerWidth / 2, window.innerHeight * .62); }
+  function getar(ms) { try { if (navigator.vibrate) navigator.vibrate(ms || 15); } catch (e) {} }
+
+  /* Suara dibuat langsung dengan Web Audio: tanpa berkas, tanpa unduhan. */
+  var AUD = null;
+  function suaraNyala() { return ambil('ops_suara') !== '0'; }
+  function bunyi(jenis) {
+    if (!suaraNyala()) return;
+    try {
+      var AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+      var a = AUD || (AUD = new AC()); if (a.state === 'suspended' && a.resume) a.resume();
+      var t = a.currentTime + .01, out = a.createGain(); out.gain.value = .2; out.connect(a.destination);
+      var nada = function (f1, f2, mulai, lama, bentuk, vol) {
+        var o = a.createOscillator(), g = a.createGain(); o.type = bentuk || 'sine';
+        o.frequency.setValueAtTime(f1, t + mulai); if (f2) o.frequency.exponentialRampToValueAtTime(f2, t + mulai + lama);
+        g.gain.setValueAtTime(.0001, t + mulai); g.gain.exponentialRampToValueAtTime(vol || .6, t + mulai + .01); g.gain.exponentialRampToValueAtTime(.0001, t + mulai + lama);
+        o.connect(g); g.connect(out); o.start(t + mulai); o.stop(t + mulai + lama + .03);
+      };
+      var desir = function (lama, dari, ke, vol) {
+        var n = Math.floor(a.sampleRate * lama), buf = a.createBuffer(1, n, a.sampleRate), d = buf.getChannelData(0);
+        for (var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+        var s = a.createBufferSource(), f = a.createBiquadFilter(), g = a.createGain(); s.buffer = buf;
+        f.type = 'bandpass'; f.Q.value = 1.2; f.frequency.setValueAtTime(dari, t); f.frequency.exponentialRampToValueAtTime(ke, t + lama);
+        g.gain.value = vol || .5; s.connect(f); f.connect(g); g.connect(out); s.start(t);
+      };
+      if (jenis === 'tap') nada(880, 660, 0, .05, 'sine', .3);
+      else if (jenis === 'pop') { nada(380, 900, 0, .09, 'sine', .9); nada(1320, 1760, .07, .14, 'triangle', .35); }
+      else if (jenis === 'sukses') { nada(1047, 0, 0, .16, 'triangle', .5); nada(1319, 0, .09, .16, 'triangle', .5); nada(1568, 0, .18, .32, 'sine', .45); }
+      else if (jenis === 'kirim') { desir(.28, 600, 3200, .45); nada(1175, 1568, .12, .18, 'sine', .3); }
+      else if (jenis === 'buka') nada(300, 560, 0, .1, 'sine', .25);
+      else if (jenis === 'galat') { nada(330, 0, 0, .12, 'square', .12); nada(247, 0, .12, .2, 'square', .12); }
+    } catch (e) {}
+  }
+  var IK_CARI = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+  var IK_SUARA = {
+    on: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+    off: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m16 9 5 6M21 9l-5 6"/></svg>'
+  };
+  /* Angka ringkasan dihitung naik dari nol, berhenti tepat di nilainya. */
+  function hitungNaik(lewat) {
+    [].forEach.call(document.querySelectorAll('.sum b'), function (b) {
+      var tuju = +b.textContent; if (!(tuju > 0)) return;
+      var awal = null; b.textContent = lewat ? String(Math.round(tuju * (1 - Math.pow(1 - Math.min(1, lewat / 520), 3)))) : '0';
+      var langkah = function (ts) {
+        if (awal === null) awal = ts - (lewat || 0);
+        var k = Math.min(1, (ts - awal) / 520); b.textContent = String(Math.round(tuju * (1 - Math.pow(1 - k, 3))));
+        if (k < 1 && b.isConnected) requestAnimationFrame(langkah); else b.textContent = String(tuju);
+      };
+      requestAnimationFrame(langkah);
+    });
+  }
+
+  /* ---------- data ---------- */
+  function muatSemua() {
+    if (!S.tiket) return Promise.resolve();
+    var awal = !S.surel && !S.tugas;
+    var a = api('beranda').then(function (h) { if (h.ok) { S.surel = h.surel || { utas: [] }; S.janji = h.janji || []; if (h.koleksi) S.koleksi = h.koleksi; S.wa = h.wa || {}; S.kontakWa = h.kontakWa || {}; } });
+    var w = api('wms').then(function (h) { S.wms = h; }, function () {});
+    var b = api('tugas').then(function (h) { S.tugas = h.ok ? h : { galat: h.pesan || 'Tugas belum terbaca.' }; });
+    return Promise.all([a, b, w]).catch(function (e) { toast(e.message); }).then(function () { if (awal && (S.surel || S.tugas)) S.anim = true; gambar(); return muatCacheJadwal(); }).then(function () { segarJadwal(); gambar(); });
+  }
+  function utas() { return (S.surel && S.surel.utas) || []; }
+  var GILIRAN = { disiapkan: 1, draft: 1, revisi: 1, lanjutan: 1 };
+  /* Sudah dikabari lewat WA untuk pesan terakhir mitra yang sama: bukan giliran kita lagi sampai mitra membalas. */
+  function waTerkini(u) { var w = S.wa && S.wa[u.id]; return !!(w && w.pesan === String(u.pesan || '')); }
+  function giliran(u) { return !!GILIRAN[u.status] && !waTerkini(u); }
+  function itemSurel(u) {
+    var depan = String(u.pengirim || '').split(/\s+/)[0];
+    if (GILIRAN[u.status] && waTerkini(u)) return { jenis: 'surel', id: u.id, judul: u.mitra + ' sudah dikabari lewat WA', sub: 'jam ' + jam(S.wa[u.id].waktu) + ' · menunggu balasan', tingkat: 'aman', baru: false, warna: 'amb', cuplikan: u.cuplikan };
+    var judul, sub, warna = 'red';
+    if (u.status === 'draft') { judul = 'Segera balas ' + u.mitra; sub = (depan ? depan + ' · ' : '') + 'draft balasan siap'; }
+    else if (u.status === 'disiapkan') { judul = u.mitra + ' membalas'; sub = (depan ? depan + ' · ' : '') + 'draft sedang disiapkan'; }
+    else if (u.status === 'lanjutan') { var sus = u.hariKerja >= 3; judul = (sus ? 'Kirim susulan ke ' : 'Kirim kabar ke ') + u.mitra; sub = (sus ? u.hariKerja + ' hari kerja belum dibalas · ' : '') + 'draft siap'; }
+    else if (u.status === 'revisi') { judul = 'Revisi draft ' + u.mitra; sub = 'sedang ditulis ulang'; }
+    else { judul = u.mitra + ' belum membalas'; sub = u.hariKerja + ' hari kerja · ' + (u.subjek || ''); warna = u.tingkat === 'merah' ? 'red' : 'amb'; }
+    var baru = GILIRAN[u.status] && u.waktuPesan && Date.now() - u.waktuPesan < HARI;
+    return { jenis: 'surel', id: u.id, judul: judul, sub: sub, tingkat: GILIRAN[u.status] || u.tingkat === 'merah' ? 'hari' : u.tingkat === 'kuning' ? 'minggu' : 'aman', baru: baru, warna: warna, cuplikan: u.cuplikan };
+  }
+  function itemTugas(t, tim) {
+    var sub = tim ? (t.orang || 'tim') + ' · telat ' + t.telat + ' hari' : [t.daftar, t.pemberi ? 'dari ' + t.pemberi : '', t.tenggat ? (t.telat ? 'telat ' + t.telat + ' hari' : kapan(t.tenggat)) : ''].filter(Boolean).join(' · ');
+    if (!tim && t.langkah && t.langkah.total) sub += ' · ' + t.langkah.selesai + '/' + t.langkah.total;
+    return { jenis: 'tugas', id: t.id, judul: t.nama, sub: sub, tim: !!tim, telat: t.telat };
+  }
+
+  /* ---------- tampilan ---------- */
+  function kartu(it) {
+    if (it.jenis === 'surel') {
+      return '<button class="c" data-buka="#surel/' + esc(it.id) + '"><div class="ic" style="background:var(--blubg)">' + IK.surel + '</div><div><span class="tt">' + esc(it.judul) + '</span><span class="ss">' + esc(it.sub) + '</span></div>' +
+        (it.baru ? '<span class="pill" style="background:var(--redbg);color:var(--red)">BARU</span>' : '<span style="color:var(--mut2)">›</span>') + '</button>';
+    }
+    return '<div class="c" data-buka="#tugas/' + esc(it.id) + '" role="button"><div class="ic" style="background:var(--purbg)">' + IK.tugas + '</div><div><span class="tt">' + esc(it.judul) + '</span><span class="ss">' + esc(it.sub) + '</span></div>' +
+      (it.tim ? '<span class="pill" style="background:var(--ambbg);color:var(--ambtx)">TAGIH</span>' : '<button class="chk" data-selesai="' + esc(it.id) + '" aria-label="Tandai selesai"></button>') + '</div>';
+  }
+  function bagian(judul, isi, kosong) { return '<div class="sec">' + judul + '</div>' + (isi.length ? isi.map(kartu).join('') : kosong_(kosong)); }
+  function kosong_(t) { return kosong(t); }
+  function notifBar() {
+    if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) return '';
+    if (Notification.permission === 'granted' && ambil('ops_notif') === '1') return '';
+    if (Notification.permission === 'denied') return '<div class="notifbar"><div><b>Notif diblokir</b>Buka setelan situs di Chrome, izinkan notifikasi.</div></div>';
+    return '<div class="notifbar"><div><b>Nyalakan notif HP</b>Biar balasan mitra dan tugas baru langsung masuk.</div><button data-notif>Nyalakan</button></div>';
+  }
+  function kepala(kecil, besar) {
+    var on = suaraNyala();
+    return '<div class="hd"><div class="kiri"><img class="logo" src="' + LOGO + '" alt="Mofmofriends"><div><small>' + esc(kecil) + '</small><h1>' + esc(besar) + '</h1></div></div>' +
+      '<div class="kanan"><button class="sbt" data-cari aria-label="Cek SKU">' + IK_CARI + '</button><button class="sbt" data-suara aria-pressed="' + (on ? 'false' : 'true') + '" aria-label="' + (on ? 'Bisukan suara' : 'Nyalakan suara') + '">' + (on ? IK_SUARA.on : IK_SUARA.off) + '</button>' +
+      '<button class="av" data-keluar title="Keluar">F</button></div></div>';
+  }
+
+  function vBeranda() {
+    var s = utas().map(itemSurel), T = S.tugas || {};
+    var hari = s.filter(function (x) { return x.tingkat === 'hari'; }).concat((T.hariIni || []).map(function (t) { return itemTugas(t); }));
+    var minggu = s.filter(function (x) { return x.tingkat === 'minggu'; }).concat((T.minggu || []).map(function (t) { return itemTugas(t); }), (T.timTelat || []).map(function (t) { return itemTugas(t, true); }));
+    var f = S.filter, saring = function (a) { return f === 'semua' ? a : a.filter(function (x) { return f === 'mitra' ? x.jenis === 'surel' : x.jenis === 'tugas'; }); };
+    var nM = hari.concat(minggu).filter(function (x) { return x.jenis === 'surel'; }).length, nT = hari.concat(minggu).length - nM;
+    var h = kepala(tglPanjang(Date.now()), 'Perlu ditangani') + notifBar() +
+      '<div class="sum"><div style="background:var(--redbg);color:var(--red)"><b>' + hari.length + '</b><span>Hari ini</span>' + imgBoneka('kr_tiger') + '</div><div style="background:var(--ambbg);color:var(--ambtx)"><b>' + minggu.length + '</b><span>Minggu ini</span>' + imgBoneka('shiba') + '</div>' +
+      '<div style="background:var(--grnbg);color:var(--grn)"><b>' + s.filter(function (x) { return x.tingkat === 'aman'; }).length + '</b><span>Surel aman</span>' + imgBoneka('mb_panda') + '</div></div>' +
+      '<div class="chips"><button class="chip' + (f === 'semua' ? ' on' : '') + '" data-filter="semua">Semua</button><button class="chip' + (f === 'mitra' ? ' on' : '') + '" data-filter="mitra">Mitra<em>' + nM + '</em></button><button class="chip' + (f === 'tugas' ? ' on' : '') + '" data-filter="tugas">ClickUp<em>' + nT + '</em></button></div>';
+    if (!S.surel && !S.tugas) return h + memuat();
+    if (f === 'semua') h += aman(barisIndra);
+    if (f !== 'tugas') h += bagianJanji(S.janji || []);
+    h += bagian('Hari ini', saring(hari), 'Tidak ada yang mendesak hari ini.') + bagian('Minggu ini', saring(minggu), 'Kosong.');
+    if (f === 'semua') h += aman(bagianWms);
+    if (S.tugas && S.tugas.galat) h += '<div class="kosong">ClickUp: ' + esc(S.tugas.galat) + '</div>';
+    if (S.surel && S.surel.waktu) h += '<div class="cat">Surel dicek ' + lalu(S.surel.waktu) + '</div>';
+    return h;
+  }
+  function vMitra() {
+    var a = utas().slice().sort(function (x, y) { return (giliran(y) ? 1 : 0) - (giliran(x) ? 1 : 0) || (y.waktuPesan || 0) - (x.waktuPesan || 0); });
+    var gil = a.filter(giliran), tunggu = a.filter(function (u) { return u.status === 'menunggu' || (GILIRAN[u.status] && waTerkini(u)); });
+    return kepala('Surel berlabel Pantau Mitra', 'Mitra') + bagian('Giliran kita', gil.map(itemSurel), 'Semua balasan mitra sudah dibalas.') + bagian('Menunggu mitra', tunggu.map(itemSurel), 'Tidak ada.') +
+      '<div class="cat">Tambah utas: pasang label WMS/Pantau Mitra di Gmail.</div>';
+  }
+  function bersihDraft(s) {
+    var b = String(s || '').split(/\r?\n/), o = [];
+    for (var i = 0; i < b.length; i++) { if (/^\s*(On .+wrote:|Pada .+menulis:|-----Original|From: )/.test(b[i]) || /^\s*>/.test(b[i])) break; o.push(b[i]); }
+    return o.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+  }
+  function vSurel(id) {
+    var u = utas().filter(function (x) { return x.id === id; })[0];
+    if (!u) return '<button class="back" data-buka="#mitra">‹ Mitra</button><div class="kosong">Utas tidak ditemukan. Mungkin labelnya sudah dicopot.</div>';
+    var h = '<button class="back" data-buka="#mitra">‹ Mitra</button><h1 class="mt">' + esc(u.subjek) + '</h1><div class="meta">' + esc(u.mitra) + (u.pengirim ? ' · ' + esc(u.pengirim) : '') + '</div>';
+    if (u.status === 'menunggu') return h + '<div class="bub">Surel terakhir dari kamu. Menunggu balasan ' + esc(u.mitra) + ', sudah ' + u.hariKerja + ' hari kerja.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Buka di Gmail</a>';
+    h += bagianJanji((S.janji || []).filter(function (j) { return j.utas === u.id; }));
+    if (u.lanjutan) h += '<div class="bub">Surel terakhir dari kamu' + (u.waktuPesan ? ', ' + lalu(u.waktuPesan) : '') + '. ' + (u.hariKerja >= 3 ? 'Sudah ' + u.hariKerja + ' hari kerja belum dibalas ' + esc(u.mitra) + '.' : '') + '</div>';
+    else h += '<div class="bub"><div class="w"><span>' + esc(u.pengirim) + '</span><span>' + (u.waktuPesan ? lalu(u.waktuPesan) : '') + '</span></div>' + esc(u.isiPesan || u.cuplikan) + '</div>';
+    if (u.status === 'disiapkan') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang disiapkan</span></div>Draft dibuat otomatis, biasanya siap dalam satu jam. Notif masuk begitu siap.</div><a class="bt" href="' + esc(u.url) + '" target="_blank" rel="noopener">Balas sendiri di Gmail</a>';
+    if (u.status === 'revisi') return h + '<div class="bub dr"><div class="w"><span>Draft balasan</span><span>sedang direvisi</span></div>Permintaan revisi sudah diteruskan. Notif "draft revisi siap" masuk begitu selesai.</div>';
+    if (waTerkini(u)) h += '<div class="bub waok">Sudah dikabari lewat WA jam ' + jam(S.wa[u.id].waktu) + '. Email tetap bisa dikirim kalau perlu catatan resmi.</div>';
+    return h + '<div class="bub dr"><div class="w"><span>' + (u.lanjutan ? (u.hariKerja >= 3 ? 'Draft susulan' : 'Draft kabar') : 'Draft balasan') + '</span><span>' + (u.draftT ? 'disiapkan ' + lalu(u.draftT) : '') + '</span></div>' + esc(bersihDraft(u.draftIsi)) + '</div>' +
+      '<textarea class="ta" id="catRevisi" placeholder="Tulis revisi, misal: jangan sebut jam, tanya SIK dulu" maxlength="500"></textarea>' +
+      '<div class="act"><button class="bt" data-revisi="' + esc(u.id) + '">Minta revisi</button><button class="bt p" data-kirim="' + esc(u.id) + '">Kirim balasan</button></div>' +
+      '<button class="bt wa" data-wa="' + esc(u.id) + '">' + IK_WA + 'Kirim lewat WhatsApp</button>' +
+      '<a class="bt" style="margin-top:8px" href="' + esc(u.urlDraft || u.url) + '" target="_blank" rel="noopener">Edit sendiri di Gmail</a><div class="cat">Kirim tetap kamu yang tekan. Draft yang sama ada di Gmail.</div>';
+  }
+  function vTugas() {
+    var T = S.tugas, f = S.tugasFilter;
+    var h = kepala('ClickUp', 'Tugas') + '<div class="chips"><button class="chip' + (f === 'punya' ? ' on' : '') + '" data-tfilter="punya">Punyaku</button><button class="chip' + (f === 'tim' ? ' on' : '') + '" data-tfilter="tim">Tim telat<em>' + ((T && T.timTelat) || []).length + '</em></button></div>';
+    h += stripKoleksi();
+    if (!T) return h + memuat();
+    if (T.galat) return h + kosong(esc(T.galat));
+    var p = function (a) { return (a || []).map(function (t) { return itemTugas(t); }); };
+    if (f === 'tim') return h + bagian('Tim, sudah telat', (T.timTelat || []).map(function (t) { return itemTugas(t, true); }), 'Tidak ada tugas tim yang telat.');
+    return h + bagian('Hari ini', p(T.hariIni), 'Kosong.') + bagian('Minggu ini', p(T.minggu), 'Kosong.') + bagian('Nanti', p(T.nanti), 'Kosong.');
+  }
+  function vTugasDetail(id) {
+    var d = S.detail && S.detail.tugas && S.detail.tugas.id === id ? S.detail : null;
+    var h = '<button class="back" data-buka="#tugas">‹ Tugas</button>';
+    if (!d) return h + memuat();
+    var t = d.tugas, L = t.langkah || { daftar: [] };
+    h += '<h1 class="mt">' + esc(t.nama) + '</h1><div class="meta">' + esc([t.daftar, t.orang, t.tenggat ? 'tenggat ' + kapan(t.tenggat) : 'tanpa tenggat', t.pemberi ? 'dari ' + t.pemberi : ''].filter(Boolean).join(' · ')) + '</div>';
+    h += '<div class="st">' + (d.statuses || []).map(function (s) { return '<button class="' + (String(s).toLowerCase() === String(t.status).toLowerCase() ? 'on' : '') + '" data-status="' + esc(s) + '">' + esc(s) + '</button>'; }).join('') + '</div>';
+    if (L.daftar.length) {
+      h += '<div class="lbl">Langkah · ' + L.selesai + ' dari ' + L.total + '</div><div class="bar"><i style="width:' + Math.round(100 * L.selesai / Math.max(1, L.total)) + '%"></i></div>' +
+        L.daftar.map(function (x) { return '<button class="ck" data-langkah="' + esc(x.checklist) + '|' + esc(x.item) + '|' + (x.selesai ? 0 : 1) + '"><span class="chk' + (x.selesai ? ' ok' : '') + '">' + (x.selesai ? IK.centang : '') + '</span>' + esc(x.nama) + '</button>'; }).join('');
+    }
+    h += '<div class="lbl">Catatan progres</div><div class="kirimbaris"><input class="inp" id="catProgres" placeholder="Tulis progres" maxlength="2000"><button class="bt p" style="width:auto;padding:0 16px" data-komentar="' + esc(t.id) + '">Kirim</button></div>';
+    h += (d.catatan || []).length ? '<div class="tl" style="margin-top:14px">' + d.catatan.map(function (c) { return '<div>' + esc(c.teks) + '<small>' + esc(c.oleh) + ' · ' + lalu(c.waktu) + '</small></div>'; }).join('') + '</div>' : '<div class="kosong">Belum ada catatan.</div>';
+    return h + '<a class="bt" style="margin-top:8px" href="' + esc(t.url) + '" target="_blank" rel="noopener">Buka di ClickUp</a>';
+  }
+  /* ---------- jadwal Operational PIC ---------- */
+  var HR3 = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+  var PENDEK = { 'T305': 'Alam Sutera', 'T311': 'Margo City', 'T317': 'Artha Gading', 'T390': 'Kota Wisata', 'KIY-GI': 'Kino GI', 'KIY-PIK': 'Kino PIK', 'MAA-SGI': 'Seibu GI', 'MAA-PIM2': 'Seibu PIM 2' };
+  S.jdCache = {}; S.jdGerai = null;
+  S.jd = { bulan: '', D: null, isi: {}, asli: {}, pilih: null, hasil: null, ringkas: [], galat: '', muat: false, sibuk: false };
+  function dua(n) { return (n < 10 ? '0' : '') + n; }
+  function bulanDari(ms) { return kunciHari(ms).slice(0, 7); }
+  function geserBln(b, n) { var y = +b.slice(0, 4), m = +b.slice(5, 7) - 1 + n; y += Math.floor(m / 12); m = ((m % 12) + 12) % 12; return y + '-' + dua(m + 1); }
+  function nHari(b) { return new Date(Date.UTC(+b.slice(0, 4), +b.slice(5, 7), 0)).getUTCDate(); }
+  function hariDari(t) { return new Date(Date.parse(t + 'T00:00:00Z')).getUTCDay(); }
+  function namaBln(b) { return ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'][+b.slice(5, 7) - 1] + ' ' + b.slice(0, 4); }
+  function tglHari(t) { return HR[hariDari(t)] + ' ' + (+t.slice(8, 10)) + ' ' + BLN[+t.slice(5, 7) - 1]; }
+  function salinIsi(x) { var o = {}; Object.keys(x || {}).forEach(function (t) { if ((x[t] || []).length) o[t] = x[t].slice(); }); return o; }
+  function geraiJd(kode) { return ((S.jd.D && S.jd.D.gerai) || S.jdGerai || []).filter(function (g) { return g.kode === kode; })[0] || { kode: kode, nama: kode, retailer: '' }; }
+  function pendekGerai(kode) { if (PENDEK[kode]) return PENDEK[kode]; var w = String(geraiJd(kode).nama || kode).toLowerCase().split(' ').slice(-2).join(' '); return w.replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+  function tglGerai(isi, kode) { return Object.keys(isi).filter(function (t) { return (isi[t] || []).indexOf(kode) > -1; }).sort(); }
+  function perubahanJd() {
+    var J = S.jd, kodes = {}, out = [];
+    [J.asli, J.isi].forEach(function (x) { Object.keys(x).forEach(function (t) { x[t].forEach(function (k) { kodes[k] = 1; }); }); });
+    Object.keys(kodes).forEach(function (k) {
+      var a = tglGerai(J.asli, k), b = tglGerai(J.isi, k);
+      var hilang = a.filter(function (t) { return b.indexOf(t) < 0; }), tambah = b.filter(function (t) { return a.indexOf(t) < 0; });
+      var n = Math.max(hilang.length, tambah.length);
+      for (var i = 0; i < n; i++) {
+        if (hilang[i] && tambah[i]) out.push({ kode: k, teks: pendekGerai(k) + ': ' + tglHari(hilang[i]) + ' jadi ' + tglHari(tambah[i]) });
+        else if (tambah[i]) out.push({ kode: k, teks: pendekGerai(k) + ': ditambah ' + tglHari(tambah[i]) });
+        else out.push({ kode: k, teks: pendekGerai(k) + ': ' + tglHari(hilang[i]) + ' dibatalkan' });
+      }
+    });
+    return out;
+  }
+  function muatSkrip(src, cek) {
+    if (cek()) return Promise.resolve();
+    return new Promise(function (ok, gagal) { var s = document.createElement('script'); s.src = src; s.onload = function () { cek() ? ok() : gagal(new Error('Pustaka ' + src + ' tidak terbaca.')); }; s.onerror = function () { gagal(new Error('Pustaka ' + src + ' tidak termuat. Cek sinyal.')); }; document.head.appendChild(s); });
+  }
+  function pustakaJadwal() { return muatSkrip('/jadwal.js', function () { return !!window.WmsJadwal; }); }
+  function muatGbr(src) { return new Promise(function (ok) { var im = new Image(); im.onload = function () { ok(im); }; im.onerror = function () { ok(null); }; im.src = src; }); }
+  function keDataUrl(im) { if (!im) return null; try { var c = document.createElement('canvas'); c.width = im.naturalWidth; c.height = im.naturalHeight; var x = c.getContext('2d'); x.fillStyle = '#FFF'; x.fillRect(0, 0, c.width, c.height); x.drawImage(im, 0, 0); return c.toDataURL('image/jpeg', 0.9); } catch (e) { return null; } }
+  function keB64(blob) { return new Promise(function (ok, gagal) { var r = new FileReader(); r.onload = function () { ok(String(r.result).split(',')[1] || ''); }; r.onerror = gagal; r.readAsDataURL(blob); }); }
+  function muatJadwal(b) {
+    var J = S.jd; J.bulan = b; J.muat = true; J.galat = ''; J.D = null; J.hasil = null;
+    Promise.all([jalanGas('ambilJadwalPic', ['WMS-TIKET', b]), pustakaJadwal().catch(function () {})]).then(function (z) {
+      var D = z[0]; J.muat = false;
+      if (!D || D.ok === false) { J.galat = (D && D.pesan) || 'Jadwal belum terbaca.'; gambar(); return; }
+      J.D = D;
+      var dasar = D.draf && D.draf.isi ? D.draf.isi : D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {};
+      J.asli = salinIsi(D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {}); J.isi = salinIsi(dasar);
+      gambar();
+    }).catch(function (e) { J.muat = false; J.galat = e.message; gambar(); });
+  }
+  /* Baca ulang jadwal diam-diam (perubahan dari WMS ikut masuk) selama tidak ada geseran yang belum terbit. */
+  function segarJadwal() {
+    var J = S.jd; if (!J.D || J.sibuk || perubahanJd().length) return;
+    jalanGas('ambilJadwalPic', ['WMS-TIKET', J.bulan]).then(function (D) {
+      if (!D || D.ok === false || perubahanJd().length || J.bulan !== D.bulan) return;
+      J.D = D; var dasar = D.draf && D.draf.isi ? D.draf.isi : D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {};
+      J.asli = salinIsi(D.terbit && D.terbit.isi ? D.terbit.isi : D.jadwal || {}); J.isi = salinIsi(dasar); S.jdCache[J.bulan] = D;
+      if (S.rute.indexOf('#jadwal') === 0) gambar();
+    }, function () {});
+  }
+  function vJadwal() {
+    var J = S.jd;
+    if (!J.bulan) J.bulan = bulanDari(Date.now());
+    var h = kepala('Operational PIC' + (J.D && J.D.pic ? ' · ' + J.D.pic.nama : ''), 'Jadwal') +
+      '<div class="jdmn"><button data-jd-bulan="-1">‹ ' + esc(namaBln(geserBln(J.bulan, -1)).split(' ')[0]) + '</button><b>' + esc(namaBln(J.bulan)) + '</b><button data-jd-bulan="1">' + esc(namaBln(geserBln(J.bulan, 1)).split(' ')[0]) + ' ›</button></div>';
+    if (!J.D) { if (!J.muat && !J.galat) muatJadwal(J.bulan); return h + (J.galat ? kosong(esc(J.galat)) : memuat('Memuat jadwal…')); }
+    var D = J.D, ubah = perubahanJd(); J.tombolLalu = 0;
+    h += '<div class="jdinfo">' + (D.terbit ? 'Terbit versi ' + D.terbit.versi + ' · ' + esc(D.terbit.waktu || '') : 'Belum pernah terbit') + (D.draf ? ' · ada draf belum terbit' : '') + '. Tekan gerai untuk menggeser.</div>';
+    if (J.hasil) {
+      h += '<div class="jdhasil"><b>' + esc(J.hasil.pesan || 'Terbit.') + '</b>' + ((J.hasil.draf || []).length ? '<ul style="margin:8px 0 0;padding-left:18px">' + J.hasil.draf.map(function (x) { return '<li>' + esc(x.penerima) + ': ' + (x.galat ? 'gagal, ' + esc(x.galat) : (x.mode === 'ubah' ? 'draf perubahan' : 'draf baru') + ' siap') + '</li>'; }).join('') + '</ul>' : '') +
+        (J.ringkas.length ? '<div class="cat" style="text-align:left;margin-top:8px">' + J.ringkas.map(function (x) { return esc(x.teks); }).join('<br>') + '</div>' : '') +
+        '<div class="act" style="margin-top:12px"><a class="bt" href="https://mail.google.com/mail/u/0/#drafts" target="_blank" rel="noopener">Buka draf Gmail</a><button class="bt p" data-jd-indra>Kirim ke Indra</button></div></div>';
+    }
+    if (ubah.length && window.WmsJadwal) {
+      var c = window.WmsJadwal._periksa(J.isi, D.gerai, J.bulan, { libur: D.libur, liburTercatat: D.liburTercatat, kontak: D.kontak, geser: D.geser }).cek.filter(function (x) { return !x.ok; });
+      h += '<div class="jdcek' + (c.length ? '' : ' aman') + '" data-jd-cek>' + (c.length ? c.map(function (x) { return esc(x.teks); }).join('<br>') : 'Pengecekan aman: tidak ada akhir pekan, tidak dobel sepekan, paling banyak 2 gerai sehari.') + '</div>';
+    }
+    var hariIni = kunciHari(Date.now()), pekan = '', disembunyikan = 0;
+    var seninIni = new Date(Date.parse(hariIni + 'T00:00:00Z') - ((hariDari(hariIni) + 6) % 7) * HARI).toISOString().slice(0, 10);
+    for (var d = 1; d <= nHari(J.bulan); d++) {
+      var t = J.bulan + '-' + dua(d), hk = hariDari(t);
+      if (hk === 0 || hk === 6) continue;
+      var sen = new Date(Date.parse(t + 'T00:00:00Z') - ((hk + 6) % 7) * HARI).toISOString().slice(0, 10);
+      if (sen < seninIni && !J.lalu) { disembunyikan++; continue; }
+      if (sen !== pekan) {
+        pekan = sen; var jum = new Date(Date.parse(sen + 'T00:00:00Z') + 4 * HARI).toISOString().slice(0, 10);
+        if (disembunyikan && !J.tombolLalu) { J.tombolLalu = 1; h += '<button class="chip" style="margin:8px 0 0" data-jd-lalu>Tampilkan pekan sebelumnya</button>'; }
+        h += '<div class="sec">' + (sen === seninIni ? 'Pekan ini · ' : 'Pekan ') + (+sen.slice(8, 10)) + (sen.slice(5, 7) !== jum.slice(5, 7) ? ' ' + BLN[+sen.slice(5, 7) - 1] : '') + ' sampai ' + (+jum.slice(8, 10)) + ' ' + BLN[+jum.slice(5, 7) - 1] + '</div>';
+      }
+      var gs = J.isi[t] || [];
+      h += '<div class="jdh' + (t < hariIni ? ' lewat' : '') + (t === hariIni ? ' kini' : '') + (t === J.sorot ? ' sorot' : '') + '" data-jd-hari="' + t + '"><div class="jdt"><b>' + HR3[hk] + '</b><span>' + d + '</span></div><div class="jdg">' +
+        (gs.length ? gs.map(function (k) { var baru = (J.asli[t] || []).indexOf(k) < 0; return '<button class="jchip ' + esc(geraiJd(k).retailer) + (baru ? ' baru' : '') + '" data-jd-gerai="' + t + '|' + esc(k) + '">' + esc(pendekGerai(k)) + '</button>'; }).join('') : '<span class="jdkosong">Tanpa kunjungan</span>') + '</div></div>';
+    }
+    if (ubah.length) h += '<div style="height:70px"></div><div class="jdbar" data-jd-bar><div><span style="flex:1">' + ubah.length + ' perubahan</span><button data-jd-kembali>Kembalikan</button><button class="p" data-jd-terbit' + (J.sibuk ? ' disabled' : '') + '>' + (J.sibuk ? 'Menerbitkan…' : 'Terbitkan') + '</button></div></div>';
+    return h;
+  }
+  function bukaGeser(t, kode) {
+    var J = S.jd; J.pilih = { t: t, kode: kode };
+    var hariIni = kunciHari(Date.now()), btn = '';
+    for (var d = 1; d <= nHari(J.bulan); d++) {
+      var x = J.bulan + '-' + dua(d), hk = hariDari(x);
+      if (hk === 0 || hk === 6) continue;
+      if (x < hariIni && J.bulan === bulanDari(Date.now()) && new Date(Date.parse(x + 'T00:00:00Z') + (5 - hk) * HARI).toISOString().slice(0, 10) < hariIni) continue;
+      if (btn === '') { for (var p = 1; p < hk; p++) btn += '<span></span>'; }
+      var n = (J.isi[x] || []).length, ada = (J.isi[x] || []).indexOf(kode) > -1;
+      btn += '<button data-jd-ke="' + x + '"' + (x < hariIni || ada ? ' disabled' : '') + '>' + HR3[hk] + ' ' + d + '<small>' + (n ? n + ' gerai' : 'kosong') + '</small></button>';
+    }
+    tampilSheet('<div class="grab"></div><h2>Geser ' + esc(pendekGerai(kode)) + '</h2><div class="meta" style="margin-top:-6px">dari ' + esc(tglHari(t)) + '. Pilih tanggal baru.</div><div class="jdke">' + btn + '</div>' +
+      '<button class="bt" style="margin-top:12px" data-jd-batal-kunj>Batalkan kunjungan ini</button>');
+  }
+  function terapkanGeser(ke) {
+    var J = S.jd, p = J.pilih; if (!p) return;
+    J.isi[p.t] = (J.isi[p.t] || []).filter(function (k) { return k !== p.kode; }); if (!J.isi[p.t].length) delete J.isi[p.t];
+    if (ke) { J.isi[ke] = J.isi[ke] || []; if (J.isi[ke].indexOf(p.kode) < 0) J.isi[ke].push(p.kode); }
+    J.pilih = null; J.hasil = null; tutupSheet(); gambar();
+  }
+  function terbitJadwal() {
+    var J = S.jd, D = J.D; if (J.sibuk) return;
+    if (!confirm('Terbitkan jadwal ' + namaBln(J.bulan) + '? Lembar Jadwal Kunjungan diganti (check-in Indra ikut jadwal baru) dan draf email dibuat untuk mitra yang tanggalnya berubah.')) return;
+    J.sibuk = true; gambar();
+    var ringkas = perubahanJd(), isi = salinIsi(J.isi);
+    Promise.all([pustakaJadwal(), muatSkrip('/vendor/jspdf.umd.min.js', function () { return !!(window.jspdf && window.jspdf.jsPDF); }), muatGbr('/img/logo-mofmo.jpg'), muatGbr('/img/logo-ols.jpg')]).then(function (z) {
+      var WJ = window.WmsJadwal, logo = { mof: keDataUrl(z[2]), ols: keDataUrl(z[3]) };
+      var opsi = { hariIni: kunciHari(Date.now()), versi: D.terbit ? D.terbit.versi + 1 : 1, lalu: (D.bulanLalu || {}).jadwal || {} };
+      return Promise.all(WJ._kelompok(isi, D.gerai, D.kontak).map(function (x) {
+        var f = WJ._buatPdf(window.jspdf.jsPDF, logo, D, x, isi, opsi);
+        return keB64(f.doc.output('blob')).then(function (b) { return [x.k.kunci, { nama: WJ._namaBerkas(x.k, D.bulan, D.pic || {}), b64: b }]; });
+      }));
+    }).then(function (pasangan) {
+      var berkas = {}; pasangan.forEach(function (p) { berkas[p[0]] = p[1]; });
+      return jalanGas('terbitkanJadwalPic', ['WMS-TIKET', J.bulan, { isi: isi, berkas: berkas }]);
+    }).then(function (r) {
+      J.sibuk = false;
+      if (!r || r.ok === false) { bunyi('galat'); toast((r && r.pesan) || 'Tidak terbit.'); gambar(); return; }
+      J.hasil = r; J.ringkas = ringkas; J.asli = salinIsi(isi);
+      D.terbit = { versi: r.versi, waktu: r.waktu, isi: salinIsi(isi) }; D.draf = null;
+      bunyi('sukses'); pestaTengah(); toast('Terbit versi ' + r.versi); gambar();
+    }).catch(function (e) { J.sibuk = false; toast(e.message); gambar(); });
+  }
+  function nomorWa(s) { var d = String(s || '').replace(/\D/g, ''); if (d.charAt(0) === '0') d = '62' + d.slice(1); return d; }
+  function kirimIndra() {
+    var J = S.jd, D = J.D; if (!D || !window.WmsJadwal) return;
+    var teks = 'Pak Indra, jadwal kunjungan ' + namaBln(J.bulan) + ' diperbarui:\n' + (J.ringkas.length ? J.ringkas.map(function (x) { return '- ' + x.teks; }).join('\n') : '- (tidak ada perubahan tanggal)') +
+      '\nJadwal lengkap terlampir, check-in di aplikasi sudah mengikuti jadwal baru. Terima kasih.';
+    muatGbr('/img/shiba.webp').then(function (shiba) {
+      var cv = window.WmsJadwal._gambarStaf(document.createElement('canvas'), shiba, D, J.isi);
+      cv.toBlob(function (bl) {
+        if (!bl) { toast('Gambar jadwal gagal dibuat.'); return; }
+        var nama = 'Jadwal-Indra-' + namaBln(J.bulan).replace(' ', '-') + '.png';
+        var f = typeof File === 'function' ? new File([bl], nama, { type: 'image/png' }) : null;
+        if (f && navigator.canShare && navigator.canShare({ files: [f] })) { navigator.share({ files: [f], text: teks }).catch(function () {}); return; }
+        var u = URL.createObjectURL(bl), a = document.createElement('a'); a.href = u; a.download = nama; document.body.appendChild(a); a.click();
+        setTimeout(function () { URL.revokeObjectURL(u); a.remove(); }, 1500);
+        window.open('https://wa.me/' + nomorWa((D.pic || {}).kontak) + '?text=' + encodeURIComponent(teks), '_blank');
+        toast('Gambar diunduh. Lampirkan di WhatsApp Indra.');
+      }, 'image/png');
+    });
+  }
+
+  function vMasuk() {
+    var barisan = ['shiba', 'kr_rabbit', 'panda', 'kr_tiger', 'angora', 'koala', 'mb_collie', 'redpanda', 'kc_bear', 'lamb', 'otter', 'kr_bsh'];
+    var parade = barisan.concat(barisan).map(function (n) { return imgBoneka(n); }).join('');
+    return '<form class="masuk" id="formMasuk"><img class="logo" src="' + LOGO + '" alt="Mofmofriends"><h1>WMS Ops</h1><p>Masuk dengan kode akses WMS.</p>' +
+      '<input class="inp" id="kode" type="password" autocomplete="current-password" placeholder="Kode akses" style="text-align:center"><div class="galat" id="galat"></div>' +
+      '<button class="bt p" style="margin-top:6px" id="tMasuk">Masuk</button><div class="parade" aria-hidden="true"><div>' + parade + '</div></div></form>';
+  }
+
+  function gambar() {
+    var nav = $('nav');
+    if (!S.tiket) { $('app').innerHTML = vMasuk(); nav.hidden = true; pasangMasuk(); return; }
+    var r = S.rute || '#beranda', bag = r.split('/')[0], id = decodeURIComponent(r.split('/')[1] || '');
+    var v = bag === '#mitra' ? vMitra() : bag === '#surel' ? vSurel(id) : bag === '#tugas' && id ? vTugasDetail(id) : bag === '#tugas' ? vTugas() : bag === '#jadwal' ? vJadwal() : vBeranda();
+    /* Gambar ulang di tengah animasi (data datang lalu cache jadwal) melanjutkan gerakan dari titik yang sama. */
+    var app = $('app'), kini = performance.now(), gerak = !kurangGerak(), anim = S.anim && gerak, lewat = 0; S.anim = false;
+    if (anim) S.animMulai = kini; else if (gerak && S.animMulai && kini - S.animMulai < 900) { anim = true; lewat = kini - S.animMulai; }
+    /* Ketikan di kolom (revisi draft, catatan progres) dijaga saat layar digambar ulang di halaman yang sama,
+       misalnya muat latar 90 detik. Pindah halaman tidak membawa ketikan ke utas atau tugas lain. */
+    var jaga = {}, fokus = null, akt = document.activeElement;
+    if (S.ruteGambar === r) {
+      [].forEach.call(app.querySelectorAll('textarea[id],input[id]'), function (x) { if (x.value && x.type !== 'password') jaga[x.id] = x.value; });
+      if (akt && akt.id && app.contains(akt)) { fokus = { id: akt.id, a: akt.selectionStart, b: akt.selectionEnd }; }
+    }
+    S.ruteGambar = r;
+    app.classList.remove('anim');
+    app.innerHTML = v + (bag === '#tugas' && !id ? '<button class="fab" data-tambah aria-label="Tugas baru">+</button>' : '');
+    Object.keys(jaga).forEach(function (id) { var x = $(id); if (x && !x.value) x.value = jaga[id]; });
+    if (fokus) { var fx = $(fokus.id); if (fx) { fx.focus(); try { fx.setSelectionRange(fokus.a, fokus.b); } catch (e) {} } }
+    /* Animasi masuk hanya saat pindah halaman atau data pertama datang, bukan tiap muat ulang latar. */
+    if (anim) {
+      [].forEach.call(app.children, function (x, i) { x.style.setProperty('--i', Math.min(i, 14)); });
+      app.style.setProperty('--lewat', Math.round(lewat) + 'ms');
+      void app.offsetWidth; app.classList.add('anim'); hitungNaik(lewat);
+    }
+    var nGil = utas().filter(giliran).length;
+    var tab = bag === '#surel' ? '#mitra' : bag === '#tugas' ? '#tugas' : bag === '#mitra' ? '#mitra' : bag === '#jadwal' ? '#jadwal' : '#beranda';
+    nav.hidden = false;
+    nav.innerHTML = [['#beranda', 'Beranda', IK.rumah], ['#mitra', 'Mitra', IK.mitra, nGil], ['#tugas', 'Tugas', IK.daftar], ['#jadwal', 'Jadwal', IK.jadwal]].map(function (x) {
+      return '<button class="' + (tab === x[0] ? 'on' + (anim && !lewat ? ' loncat' : '') : '') + '" data-buka="' + x[0] + '">' + x[2] + x[1] + (x[3] ? '<i>' + x[3] + '</i>' : '') + '</button>';
+    }).join('');
+  }
+
+  function pasangMasuk() {
+    var f = $('formMasuk'); if (!f) return;
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var kode = $('kode').value; if (!kode.trim()) { $('galat').textContent = 'Kode masih kosong.'; return; }
+      $('tMasuk').disabled = true; $('galat').textContent = '';
+      kirimKe(WMS, { fn: 'masuk', kode: kode, ingat: true }).then(function (h) {
+        if (!h || !h.ok || !h.tiket) throw new Error((h && h.pesan) || 'Kode akses tidak cocok.');
+        taruh('wms_tiket', h.tiket); taruh('wms_ingat', '1'); S.tiket = h.tiket; gambar(); muatSemua();
+      }).catch(function (er) { $('galat').textContent = er.message; $('tMasuk').disabled = false; });
+    });
+  }
+
+  /* ---------- tahap 2 (20 Okt): data WMS, Indra, cek SKU, koleksi ---------- */
+  function tglId(t) { t = String(t || ''); return /^\d{4}-\d{2}-\d{2}/.test(t) ? Number(t.slice(8, 10)) + ' ' + BLN[Number(t.slice(5, 7)) - 1] : ''; }
+  function namaPendek(k, n) { if (PENDEK[k]) return PENDEK[k]; if (!n) return k; return String(n).toLowerCase().split(/\s+/).slice(-2).join(' ').replace(/\b\w/g, function (c) { return c.toUpperCase(); }); }
+  function rpPenuh(n) { n = Math.round(Number(n) || 0); return (n < 0 ? '-' : '') + 'Rp' + String(Math.abs(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.'); }
+  function rpPendek(n) { n = Number(n) || 0; var a = Math.abs(n), t = a >= 1e6 ? (a / 1e6).toFixed(a >= 1e7 ? 0 : 1).replace('.', ',') + ' jt' : a >= 1e3 ? Math.round(a / 1e3) + ' rb' : String(a); return (n < 0 ? '-' : '') + 'Rp' + t; }
+  var PETA_SKU = [['netherland', 'ndr_s'], ['bishon', 'bichon_s'], ['bichon', 'bichon_s'], ['otter', 'otter'], ['red panda', 'redpanda'], ['panda', 'panda'], ['shiba', 'shiba'], ['koala', 'koala'],
+    ['lamb', 'lamb'], ['reindeer', 'reindeer'], ['elephant', 'elephant'], ['collie', 'collie'], ['tiger', 'kr_tiger'], ['rabbit', 'kr_rabbit'], ['angora', 'angora'], ['british', 'kr_bsh'],
+    ['bear', 'bear'], ['raccoon', 'racoon'], ['racoon', 'racoon'], ['pekingese', 'pekingese_s'], ['cow', 'kc_cow']];
+  /* Boneka yang mirip SKU-nya (nama produk), supaya baris rincian langsung dikenali. */
+  function bonekaSku(nama) {
+    var s = String(nama || '').toLowerCase(), kc = /key ?charm/.test(s);
+    for (var i = 0; i < PETA_SKU.length; i++) {
+      if (s.indexOf(PETA_SKU[i][0]) < 0) continue;
+      var n = PETA_SKU[i][1], dasar = n.replace(/^(kr|mb|kc)_/, '').replace(/_s$/, '');
+      return kc && BONEKA.indexOf('kc_' + dasar) > -1 ? 'kc_' + dasar : n;
+    }
+    return null;
+  }
+  function imgSku(nama) { var n = bonekaSku(nama); return n ? imgBoneka(n) : '<img src="' + LOGO + '" alt="" decoding="async">'; }
+  function namaBoneka(n) {
+    var pre = (n.match(/^(kc|kr|mb)_/) || [])[1], dasar = n.replace(/^(kc|kr|mb)_/, '').replace(/_s$/, '');
+    var nm = { bsh: 'British Shorthair', ndr: 'Netherland Dwarf', redpanda: 'Red Panda', bichon: 'Bichon', racoon: 'Racoon' }[dasar] || dasar.charAt(0).toUpperCase() + dasar.slice(1);
+    return nm + (pre === 'kc' ? ' Key Charm' : pre ? ' ' + pre.toUpperCase() : '');
+  }
+
+  /* Data WMS yang bentuknya tidak dikenal (misal server ops belum diperbarui) tidak boleh merusak Beranda. */
+  function aman(fn) { try { return fn(); } catch (e) { return ''; } }
+  function barisIndra() {
+    var hari = kunciHari(Date.now()), isi = isiJadwalBulan(hari.slice(0, 7)), w = S.wms && S.wms.ok && S.wms.indra && S.wms.indra.belum ? S.wms.indra : null;
+    var gerai = isi ? (isi[hari] || []) : null;
+    if (!gerai && w) { gerai = []; w.belum.concat(w.sudah).forEach(function (x) { if (x.toko && gerai.indexOf(x.toko) < 0) gerai.push(x.toko); }); }
+    if (!gerai && !w) return '';
+    var nama = gerai.map(function (k) { return namaPendek(k); }).join(', '), tag = '';
+    if (w && w.sudah.length) tag = '<span class="tag hijau">SUDAH LAPOR' + (w.sudah[0].jam ? ' ' + esc(w.sudah[0].jam) : '') + '</span>';
+    else if (w && w.belum.length) tag = '<span class="tag ' + (wib(Date.now()).getUTCHours() >= 17 ? 'merah' : 'kuning') + '">BELUM LAPOR</span>';
+    return '<button class="indra" data-indra>' + imgBoneka('kc_shiba') + '<div><b>Indra hari ini</b><span>' + esc(nama || 'Tidak ada kunjungan') + (gerai.length ? ' · datang 13.00 sampai 20.00' : '') + '</span></div>' + tag + '</button>';
+  }
+
+  function bagianWms() {
+    var w = S.wms; if (!w) return '';
+    var kepalaW = '<div class="sec">Gudang dan gerai</div>';
+    if (!w.ok || !w.terjual || !w.menipis || !w.shopee || !w.diam) return kepalaW + '<div class="cat" style="text-align:left;margin:0 2px">' + esc(w.pesan || 'Data WMS belum terbaca. Perbarui fungsi ops di Supabase.') + '</div>';
+    var t = w.terjual, m = w.menipis, sp = w.shopee, d = w.diam, mt = w.mitraTelat || [], hm = w.hitungMundur;
+    var ptk = function (k, judul, angka, ket, kelas, bon) { return '<button class="ptk ' + (kelas || '') + '" data-wms="' + k + '"><small>' + judul + '</small><b>' + angka + '</b><span>' + ket + '</span>' + imgBoneka(bon) + '</button>'; };
+    var nT = m.merah + m.kuning, habis = (m.daftar || []).filter(function (x) { return x.stok <= 0; }).length;
+    var h = ptk('terjual', 'Terjual pekan ini', t.ini.pcs + ' pcs', esc(rpPendek(t.ini.nilai)) + ' · pekan lalu ' + t.lalu.pcs, '', 'shiba');
+    h += ptk('shopee', 'Shopee belum kirim', String(sp.belum), sp.telat ? sp.telat + ' telat, lewat 1 hari' : sp.belum ? 'masih baru semua' : 'tidak ada antrean', sp.telat ? 'merah' : sp.belum ? 'kuning' : 'hijau', 'otter');
+    h += ptk('menipis', 'Stok gerai menipis', String(nT), nT ? [habis ? habis + ' habis' : '', m.merah - habis > 0 ? (m.merah - habis) + ' sisa 3 hari' : '', m.kuning ? m.kuning + ' di bawah 14 hari' : ''].filter(Boolean).join(', ') : 'aman, di atas 14 hari', m.merah ? 'merah' : m.kuning ? 'kuning' : 'hijau', 'kr_tiger');
+    h += ptk('diam', 'Barang diam', d.jumlah + ' SKU', d.jumlah ? d.pcs + ' pcs tanpa jual 60+ hari' : 'semua bergerak', d.jumlah ? 'kuning' : 'hijau', 'koala');
+    h += ptk('mitra', 'Laporan mitra', mt.length ? esc(mt.map(function (x) { return x.kode; }).join(', ')) : 'Lengkap', mt.length ? esc(mt.map(function (x) { return x.kode + ' ' + x.hari + ' hari'; }).join(', ')) + ' tanpa laporan' : 'semua mitra melapor', mt.length ? 'merah' : 'hijau', 'mb_panda');
+    if (hm) h += ptk('1111', 'Menuju 11.11', hm.hari + ' hari', 'Kitabku dan promo Shopee', hm.hari <= 7 ? 'merah' : '', 'redpanda');
+    return kepalaW + '<div class="petak">' + h + '</div><div class="cat">' + (w.basi ? 'Data WMS belum diperbarui, salinan terakhir ' : 'Data WMS ') + lalu(w.diperbarui) + '</div>';
+  }
+  function wrow(img, judul, sub, tag, kelas) { return '<div class="wrow">' + img + '<div><b>' + esc(judul) + '</b><small>' + esc(sub) + '</small></div>' + (tag ? '<span class="tag ' + (kelas || '') + '">' + esc(tag) + '</span>' : '<span></span>') + '</div>'; }
+  function bukaWms(k) {
+    var w = S.wms; if (!w || !w.ok || !w.menipis) return;
+    var isi = '', judul = { terjual: 'Terjual pekan ini', shopee: 'Shopee belum kirim', menipis: 'Stok gerai menipis', diam: 'Barang diam di gerai', mitra: 'Laporan penjualan mitra', '1111': 'Menuju 11.11' }[k] || '';
+    if (k === 'menipis') isi = w.menipis.daftar.length ? w.menipis.daftar.map(function (x) {
+      return wrow(imgSku(x.nama), x.nama, namaPendek(x.gerai, x.namaGerai) + ' · stok ' + Math.max(0, x.stok) + ' · laku ' + x.laku30 + ' per 30 hari', x.stok <= 0 ? 'HABIS' : x.hari + ' hari', x.tingkat);
+    }).join('') + '<div class="cat" style="text-align:left">Hitungan: stok di rak dibagi rata rata laku 30 hari terakhir. Merah 3 hari atau kurang, kuning 14 hari atau kurang.</div>' : kosong('Semua stok gerai cukup untuk lebih dari 14 hari.');
+    else if (k === 'diam') isi = w.diam.daftar.length ? w.diam.daftar.map(function (x) { return wrow(imgSku(x.nama), x.nama, namaPendek(x.gerai, x.namaGerai) + ' · ' + x.stok + ' pcs', x.hari + ' hari', x.hari >= 120 ? 'merah' : 'kuning'); }).join('') : kosong('Tidak ada barang yang diam lebih dari 60 hari.');
+    else if (k === 'shopee') isi = w.shopee.daftar.length ? w.shopee.daftar.map(function (x) { return wrow(imgBoneka('otter'), x.ref, x.tahap + ' · ' + x.pcs + ' pcs · pesan ' + tglId(x.tanggal), x.hari ? x.hari + ' hari' : 'hari ini', x.hari >= 2 ? 'merah' : 'kuning'); }).join('') : kosong('Semua pesanan Shopee sudah diserahkan ke kurir.');
+    else if (k === 'mitra') isi = (w.mitraTelat || []).length ? w.mitraTelat.map(function (x) { return wrow(imgBoneka('mb_panda'), x.kode, 'laporan terakhir ' + tglId(x.terakhir), x.hari + ' hari', 'merah'); }).join('') : kosong('Semua mitra sudah mengirim laporan penjualan.');
+    else if (k === 'terjual') isi = wrow(imgBoneka('shiba'), w.terjual.ini.pcs + ' pcs · ' + rpPenuh(w.terjual.ini.nilai), 'Pekan ini, sejak Senin ' + tglId(w.terjual.dari), '', '') +
+      wrow(imgBoneka('kc_shiba'), w.terjual.lalu.pcs + ' pcs · ' + rpPenuh(w.terjual.lalu.nilai), 'Pekan lalu sampai hari yang sama', '', '') +
+      '<div class="cat" style="text-align:left">Termasuk Shopee dan semua gerai, retur sudah dikurangi. Penjualan mitra masuk saat laporan atau invoice mitra diimpor, jadi angka pekan ini bisa bertambah.</div>';
+    else if (k === '1111' && w.hitungMundur) isi = wrow(imgBoneka('redpanda'), w.hitungMundur.hari + ' hari lagi', 'Rabu 11 November 2026', '', '') + '<div class="cat" style="text-align:left">Kartu QR paket dan Kitabku dipakai pembeli 11.11. Pastikan stok gudang HO dan edisi kartu siap.</div>';
+    tampilSheet('<div class="grab"></div><h2>' + judul + '</h2>' + isi + '<div class="cat">Data WMS ' + lalu(w.diperbarui) + '</div>');
+  }
+
+  function bukaCekSku() {
+    tampilSheet('<div class="grab"></div><h2>Cek SKU</h2><input class="inp" id="cariSku" type="search" inputmode="search" enterkeyhint="search" placeholder="4 angka terakhir barcode atau nama" autocomplete="off" maxlength="40">' +
+      '<div class="hsku" id="hasilSku"><div class="cat" style="text-align:left">Contoh: 6988, otter, bear. Data dari WMS, tertinggal paling lama 10 menit.</div></div>');
+    setTimeout(function () { var x = $('cariSku'); if (x) x.focus(); }, 60);
+  }
+  function kartuSku(x, q) {
+    var bc = esc(x.barcode), ujung = /^\d+$/.test(q) && x.barcode.slice(-q.length) === q ? q.length : 4;
+    if (x.barcode.length > ujung) bc = esc(x.barcode.slice(0, -ujung)) + '<mark>' + esc(x.barcode.slice(-ujung)) + '</mark>';
+    var h = '<div class="sku">' + imgSku(x.nama) + '<div><b>' + esc(x.nama) + '</b><small>' + esc(x.sku) + ' · ' + bc + '</small></div><div class="tot"><b>' + x.total + '</b><small>pcs</small></div></div>';
+    if (!x.lokasi.length) return h + '<div class="skul"><span>Tidak ada stok di lokasi mana pun</span></div>';
+    return h + x.lokasi.map(function (l) {
+      var nm = l.toko ? namaPendek(l.k, l.nama) : l.k === 'HO' ? 'Gudang HO' : l.k === 'SHP' ? 'Paket Shopee' : l.k === 'GMT' ? 'Gamotion' : l.k;
+      var ket = [l.jualTerakhir ? 'jual ' + tglId(l.jualTerakhir) : '', l.toko ? (l.soTerakhir ? 'SO ' + tglId(l.soTerakhir) : 'belum pernah SO') : ''].filter(Boolean).join(' · ');
+      return '<div class="skul"><span>' + esc(nm) + (ket ? '<small>' + esc(ket) + '</small>' : '') + '</span>' + (l.qty <= 0 ? '<span class="tag merah">HABIS</span>' : '<em>' + l.qty + '</em>') + '</div>';
+    }).join('');
+  }
+  function cekSku() {
+    var x = $('cariSku'); if (!x) return;
+    var q = x.value.trim(); if (!q) return;
+    api('cekSku', { q: q }).then(function (h) {
+      var x2 = $('cariSku'), out = $('hasilSku');
+      if (!x2 || !out || x2.value.trim() !== q) return;
+      if (!h.ok) { out.innerHTML = '<div class="cat" style="text-align:left">' + esc(h.pesan || 'Data WMS belum terbaca.') + '</div>'; return; }
+      out.innerHTML = h.hasil.length ? h.hasil.map(function (r) { return kartuSku(r, q); }).join('') : kosong(esc(h.pesan || 'Tidak ketemu.'));
+    }).catch(function (e) { var out = $('hasilSku'); if (out) out.innerHTML = '<div class="cat">' + esc(e.message) + '</div>'; });
+  }
+
+  function stripKoleksi() {
+    var k = S.koleksi; if (!k) return '';
+    var p = k.punya.slice(-3), tum = p.map(function (n) { return imgBoneka(n); }).join('') + (p.length < 3 ? '<img class="kunci" src="' + gbBoneka(BONEKA[p.length + 2]) + '" alt="">' : '');
+    return '<button class="kol" data-koleksi><div class="tum">' + tum + '</div><div><b>Koleksi boneka ' + k.punya.length + '/' + k.total + '</b><span>' + k.menuju + ' tugas lagi ke boneka berikutnya</span></div>' +
+      '<div class="kolbar"><i style="width:' + Math.round((k.per - k.menuju) / k.per * 100) + '%"></i></div></button>';
+  }
+  function bukaKoleksi() {
+    var k = S.koleksi || { punya: [], total: BONEKA.length, per: 3, menuju: 3 };
+    var urut = k.punya.concat(BONEKA.filter(function (n) { return k.punya.indexOf(n) < 0; }));
+    tampilSheet('<div class="grab"></div><h2>Koleksi boneka ' + k.punya.length + '/' + k.total + '</h2><div class="cat" style="text-align:left;margin:-4px 0 12px">Satu boneka baru tiap ' + k.per + ' tugas ClickUp yang kamu tandai selesai dari aplikasi ini.</div><div class="kgrid">' +
+      urut.map(function (n) { var ada = k.punya.indexOf(n) > -1; return '<div class="' + (ada ? 'punya' : '') + '">' + imgBoneka(n) + (ada ? esc(namaBoneka(n)) : '?') + '</div>'; }).join('') + '</div>');
+  }
+  function bonekaBaru(n) {
+    bunyi('sukses'); getar(30); pestaTengah();
+    var d = document.createElement('div'); d.className = 'bonekabaru';
+    d.innerHTML = '<div><img src="' + gbBoneka(n, BESAR.indexOf(n) > -1) + '" alt=""><small>Boneka baru</small><b>' + esc(namaBoneka(n)) + '</b><span>' +
+      (S.koleksi ? 'Koleksi ' + S.koleksi.punya.length + ' dari ' + S.koleksi.total : '') + '</span></div>';
+    var tutup = function () { if (d.parentNode) d.parentNode.removeChild(d); };
+    d.addEventListener('click', tutup); document.body.appendChild(d); setTimeout(tutup, 4500);
+  }
+
+  /* ---------- kabar mitra lewat WhatsApp (20 Okt) ---------- */
+  var IK_WA = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.5 0-3-.4-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3.9 2.5 1 2.7.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z"/></svg>';
+  function salamWaktu() { var j = wib(Date.now()).getUTCHours(); return j < 11 ? 'Selamat pagi' : j < 15 ? 'Selamat siang' : j < 18 ? 'Selamat sore' : 'Selamat malam'; }
+  /* Draft email jadi pesan WA: kutipan surel lama, salam pembuka email, dan tanda tangan dibuang. */
+  function waDariDraft(isi) {
+    var b = bersihDraft(isi).split(/\r?\n/), sapa = false;
+    for (var i = 0; i < b.length; i++) if (/^\s*(warm regards|best regards|kind regards|regards|salam hangat|salam|hormat kami|sincerely|thanks (and|&) regards)[,.!]?\s*$/i.test(b[i])) { b = b.slice(0, i); break; }
+    b = b.map(function (l) {
+      if (sapa || !l.trim()) return l;
+      sapa = true;
+      var m = l.match(/^\s*(dear|yth\.?|kepada yth\.?|halo|hai|hi)\s+(.+?)[,:]?\s*$/i);
+      return m ? salamWaktu() + ' ' + m[2] + ',' : l;
+    });
+    var t = b.join('\n').replace(/\n{3,}/g, '\n\n').trim();
+    if (!/terima ?kasih/i.test(t.split(/\n\n/).pop() || '')) t += '\n\nTerima kasih 🙏';
+    return t;
+  }
+  function tampilNomor(n) { return String(n).replace(/^62/, '0').replace(/(\d{4})(?=\d)/g, '$1 '); }
+  var WA = null;
+  function bukaWa(id) {
+    var u = utas().filter(function (x) { return x.id === id; })[0]; if (!u) return;
+    var ada = (S.kontakWa || {})[u.mitra] || [];
+    WA = { utas: id, mitra: u.mitra, teks: waDariDraft(u.draftIsi), ke: ada[0] ? ada[0].nomor : '', galat: '' };
+    gambarWa();
+  }
+  function gambarWa() {
+    var daftar = (S.kontakWa || {})[WA.mitra] || [];
+    tampilSheet('<div class="grab"></div><h2>Kirim lewat WhatsApp</h2><textarea class="ta" id="teksWa" rows="9" style="min-height:190px">' + esc(WA.teks) + '</textarea>' +
+      '<div class="lbl">Kirim ke PIC ' + esc(WA.mitra) + '</div><div class="ops">' + daftar.map(function (k) {
+        return '<button class="' + (WA.ke === k.nomor ? 'on' : '') + '" data-wa-ke="' + esc(k.nomor) + '">' + esc(k.nama) + ' · ' + esc(tampilNomor(k.nomor)) + '</button>';
+      }).join('') + '<button class="' + (WA.ke === '' ? 'on' : '') + '" data-wa-ke="">Pilih kontak di WhatsApp</button></div>' +
+      '<div class="waform"><input class="inp" id="waNama" placeholder="Nama, misal Bu Desy" maxlength="60"><input class="inp" id="waNomor" inputmode="tel" placeholder="0812 ..." maxlength="20"><button class="bt" style="width:auto;padding:0 12px" data-wa-simpan>Simpan</button></div>' +
+      (WA.galat ? '<div class="galat">' + esc(WA.galat) + '</div>' : '') +
+      '<button class="bt waok" style="margin-top:12px" data-wa-buka>' + IK_WA + 'Buka WhatsApp</button><div class="cat">Kamu yang menekan kirim di WhatsApp. Sesudahnya utas ini ditandai sudah dikabari lewat WA.</div>');
+  }
+  function simpanNomorWa(el) {
+    WA.teks = $('teksWa').value;
+    var nama = ($('waNama') || {}).value || '', nomor = ($('waNomor') || {}).value || '';
+    if (!nomor.trim()) { WA.galat = 'Isi nomor WA dulu.'; gambarWa(); return; }
+    el.disabled = true;
+    api('waSimpan', { mitra: WA.mitra, nama: nama, nomor: nomor }).then(function (h) {
+      if (!h.ok) { WA.galat = h.pesan || 'Nomor tidak tersimpan.'; bunyi('galat'); gambarWa(); return; }
+      S.kontakWa = h.kontakWa; WA.ke = ((h.kontakWa[WA.mitra] || [])[0] || {}).nomor || ''; WA.galat = ''; bunyi('tap'); gambarWa();
+    }).catch(function (e) { WA.galat = e.message; gambarWa(); });
+  }
+  function bukaWhatsApp(el) {
+    var teks = $('teksWa').value.trim(); if (!teks) { WA.galat = 'Pesannya masih kosong.'; gambarWa(); return; }
+    window.open('https://wa.me/' + (WA.ke || '') + '?text=' + encodeURIComponent(teks), '_blank');
+    el.disabled = true;
+    var id = WA.utas;
+    api('surelWa', { utas: id }).then(function (h) {
+      if (!h.ok) { toast(h.pesan || 'Tanda WA tidak tersimpan.'); el.disabled = false; return; }
+      S.wa = S.wa || {}; S.wa[id] = h.wa; tutupSheet(); bunyi('kirim'); toast('Ditandai sudah dikabari lewat WA'); gambar();
+    }).catch(function (e) { toast(e.message); el.disabled = false; });
+  }
+
+  /* ---------- rute ---------- */
+  function buka(r) { if (location.hash !== r) location.hash = r; else rute(); }
+  function rute() {
+    S.rute = location.hash || '#beranda';
+    var m = S.rute.match(/^#tugas\/(.+)$/);
+    if (m) { var id = decodeURIComponent(m[1]); if (!S.detail || S.detail.tugas.id !== id) S.detail = null; muatDetail(id); }
+    S.anim = true; gambar(); window.scrollTo(0, 0);
+  }
+  function muatDetail(id) {
+    return api('tugasDetail', { id: id }).then(function (h) {
+      if (!h.ok) { toast(h.pesan || 'Tugas tidak terbaca.'); return; }
+      S.detail = h; if (S.rute.indexOf('#tugas/') === 0) gambar();
+    }).catch(function (e) { toast(e.message); });
+  }
+
+  /* ---------- aksi ---------- */
+  function cariTugas(id) {
+    var T = S.tugas || {}, a = [].concat(T.hariIni || [], T.minggu || [], T.nanti || []);
+    for (var i = 0; i < a.length; i++) if (a[i].id === id) return a[i];
+    return null;
+  }
+  function selesai(id, tombol) {
+    var t = cariTugas(id); if (!t) return;
+    var kartuEl = tombol && tombol.closest('.c');
+    bunyi('pop'); getar(18);
+    if (tombol) {
+      var r = tombol.getBoundingClientRect(); pesta(r.left + r.width / 2, r.top + r.height / 2);
+      tombol.classList.add('ok'); tombol.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12 5 5L20 7"/></svg>';
+    }
+    var lanjut = function () {
+      ['hariIni', 'minggu', 'nanti'].forEach(function (k) { S.tugas[k] = (S.tugas[k] || []).filter(function (x) { return x.id !== id; }); });
+      gambar();
+      kirimSelesai(id);
+    };
+    if (kartuEl && !kurangGerak()) { kartuEl.classList.add('pergi'); setTimeout(lanjut, 320); } else lanjut();
+  }
+  function kirimSelesai(id) {
+    api('tugasSelesai', { id: id }).then(function (h) {
+      if (!h.ok) { bunyi('galat'); toast(h.pesan || 'Gagal menandai selesai.'); muatSemua(); return; }
+      if (h.koleksi) S.koleksi = h.koleksi;
+      if (h.boneka) setTimeout(function () { bonekaBaru(h.boneka); }, 350);
+      if (h.koleksi && S.rute === '#tugas') gambar();
+      toast('Ditandai ' + h.status + ' di ClickUp', 'Urungkan', function () {
+        api('tugasStatus', { id: id, status: h.sebelumnya }).then(function (u) { toast(u.ok ? 'Dibatalkan, kembali ke ' + h.sebelumnya : (u.pesan || 'Gagal membatalkan.')); muatSemua(); });
+      });
+    }).catch(function (e) { toast(e.message); muatSemua(); });
+  }
+  function nyalakanNotif() {
+    if (!('serviceWorker' in navigator)) return;
+    Notification.requestPermission().then(function (p) {
+      if (p !== 'granted') { gambar(); return; }
+      return Promise.all([navigator.serviceWorker.ready, api('kunciPublik')]).then(function (x) {
+        var reg = x[0], k = x[1].kunci; if (!k) throw new Error('Kunci notif belum tersedia di server.');
+        return reg.pushManager.getSubscription().then(function (s) { return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: kunciB64(k) }); });
+      }).then(function (s) { return api('langganan', { langganan: s.toJSON() }); }).then(function (h) {
+        if (!h.ok) throw new Error(h.pesan || 'Langganan notif gagal.');
+        taruh('ops_notif', '1'); bunyi('sukses'); toast('Notif HP menyala'); gambar();
+      });
+    }).catch(function (e) { toast(e.message); });
+  }
+  function kunciB64(s) { var p = '='.repeat((4 - s.length % 4) % 4), b = atob((s + p).replace(/-/g, '+').replace(/_/g, '/')), a = new Uint8Array(b.length); for (var i = 0; i < b.length; i++) a[i] = b.charCodeAt(i); return a; }
+
+  /* tambah tugas */
+  var BARU = null;
+  function hariIniStr(geser) { return kunciHari(Date.now() + (geser || 0) * HARI); }
+  function jumatStr() { var h = wib(Date.now()).getUTCDay(), g = (5 - h + 7) % 7; return hariIniStr(g === 0 && h === 5 ? 7 : g); }
+  function bukaTambah() {
+    BARU = { judul: '', untuk: [], daftar: '', tenggat: '', prioritas: 'biasa' };
+    tampilSheet('<div class="grab"></div><h2>Tugas baru</h2>' + memuat('Memuat anggota dan list…'));
+    (S.meta ? Promise.resolve({ ok: true }) : api('tugasMeta').then(function (h) { if (h.ok) S.meta = h; return h; })).then(function (h) {
+      if (!h.ok) { tampilSheet('<div class="grab"></div><h2>Tugas baru</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
+      BARU.untuk = [S.meta.saya.id]; BARU.daftar = (S.meta.daftar[0] || {}).id || '';
+      gambarTambah();
+    }).catch(function (e) { toast(e.message); tutupSheet(); });
+  }
+  function opsi(nama, daftar, pilih, banyak) {
+    return '<div class="ops">' + daftar.map(function (x) {
+      var on = banyak ? pilih.indexOf(x[0]) > -1 : String(pilih) === String(x[0]);
+      return '<button class="' + (on ? 'on' : '') + '" data-opsi="' + nama + '|' + esc(x[0]) + '">' + esc(x[1]) + '</button>';
+    }).join('') + '</div>';
+  }
+  function gambarTambah() {
+    var M = S.meta, ruang = {}; M.daftar.forEach(function (l) { ruang[l.ruang] = 1; });
+    var banyakRuang = Object.keys(ruang).length > 1, tgl = BARU.tenggat;
+    var pilihan = [[hariIniStr(0), 'Hari ini'], [hariIniStr(1), 'Besok'], [jumatStr(), 'Jumat ' + wib(Date.parse(jumatStr() + 'T05:00:00Z')).getUTCDate()], ['', 'Tanpa']];
+    tampilSheet('<div class="grab"></div><h2>Tugas baru</h2><input class="inp" id="judulBaru" placeholder="Judul tugas" maxlength="200" value="' + esc(BARU.judul) + '" style="margin-bottom:6px">' +
+      '<div class="lbl">Untuk</div>' + opsi('untuk', M.anggota.map(function (a) { return [a.id, a.id === M.saya.id ? 'Aku' : a.nama]; }), BARU.untuk, true) +
+      '<div class="lbl">List</div>' + opsi('daftar', M.daftar.map(function (l) { return [l.id, l.nama + (banyakRuang ? ' · ' + l.ruang : '')]; }), BARU.daftar) +
+      '<div class="lbl">Tenggat</div>' + opsi('tenggat', pilihan, tgl) + '<input class="inp" type="date" id="tglBaru" value="' + esc(tgl) + '" style="margin:2px 0 4px">' +
+      '<div class="lbl">Prioritas</div>' + opsi('prioritas', [['biasa', 'Biasa'], ['penting', 'Penting'], ['mendesak', 'Mendesak']], BARU.prioritas) +
+      '<button class="bt p" style="margin-top:14px" data-simpanbaru>Tambah ke ClickUp</button>');
+  }
+  function bukaJanji(id) {
+    var j = (S.janji || []).filter(function (x) { return x.id === id; })[0]; if (!j) return;
+    var ag = agendaJanji(j), judulSheet = ag ? 'Jadikan agenda' : 'Jadikan tugas';
+    tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2>' + memuat('Memuat list ClickUp…'));
+    (S.meta ? Promise.resolve({ ok: true }) : api('tugasMeta').then(function (h) { if (h.ok) S.meta = h; return h; })).then(function (h) {
+      if (!h.ok) { tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2><div class="kosong">' + esc(h.pesan) + '</div>'); return; }
+      var ada = S.meta.daftar.map(function (l) { return l.id; });
+      if (ada.indexOf(S.janjiList) < 0) S.janjiList = ada.indexOf(ambil('ops_list_agenda')) > -1 ? ambil('ops_list_agenda') : ada[0];
+      tampilSheet('<div class="grab"></div><h2>' + judulSheet + '</h2><div class="bub" style="box-shadow:none;background:#F7F8FA"><b>' + esc(j.mitra + ': ' + j.judul) + '</b><br>' + esc(kapanJanji(j)) + (j.lokasi ? '<br>' + esc(j.lokasi) : '') + '</div>' +
+        '<div class="cat" style="text-align:left;margin:0 0 6px">' + (ag ? 'Jadi tugas ClickUp untuk kamu dan event di kalender Agenda Mitra.' : 'Jadi tugas ClickUp untuk kamu.') + '</div>' +
+        '<div class="lbl">List ClickUp</div><div class="ops">' + S.meta.daftar.map(function (l) { return '<button class="' + (l.id === S.janjiList ? 'on' : '') + '" data-janjilist="' + esc(l.id) + '">' + esc(l.nama) + '</button>'; }).join('') + '</div>' +
+        '<button class="bt p" style="margin-top:12px" data-janjiok="' + j.id + '">' + judulSheet + '</button>');
+      S.janjiBuka = id;
+    }).catch(function (e) { toast(e.message); tutupSheet(); });
+  }
+  function tampilSheet(h) { if (!$('sheet').classList.contains('on')) bunyi('buka'); $('sheet').innerHTML = h; $('sheet').classList.add('on'); $('dim').classList.add('on'); }
+  function tutupSheet() { $('sheet').classList.remove('on'); $('dim').classList.remove('on'); }
+
+  document.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-jd-ke-tgl],[data-jd-lalu],[data-jd-bulan],[data-jd-gerai],[data-jd-ke],[data-jd-batal-kunj],[data-jd-kembali],[data-jd-terbit],[data-jd-indra],[data-abaikan],[data-janji],[data-janjilist],[data-janjiok],[data-buka],[data-selesai],[data-filter],[data-tfilter],[data-notif],[data-keluar],[data-revisi],[data-kirim],[data-status],[data-langkah],[data-komentar],[data-tambah],[data-opsi],[data-simpanbaru],[data-suara],[data-wms],[data-indra],[data-cari],[data-koleksi],[data-wa],[data-wa-ke],[data-wa-simpan],[data-wa-buka]');
+    if (!el) return;
+    var d = el.dataset;
+    if (el.hasAttribute('data-wa')) { bukaWa(el.getAttribute('data-wa')); return; }
+    if (el.hasAttribute('data-wa-ke')) { WA.teks = $('teksWa').value; WA.ke = el.getAttribute('data-wa-ke'); gambarWa(); return; }
+    if (el.hasAttribute('data-wa-simpan')) { simpanNomorWa(el); return; }
+    if (el.hasAttribute('data-wa-buka')) { bukaWhatsApp(el); return; }
+    if (el.hasAttribute('data-wms')) { bukaWms(el.getAttribute('data-wms')); return; }
+    if (el.hasAttribute('data-indra')) { var hi = kunciHari(Date.now()); S.jd.sorot = hi; if (S.jd.bulan !== hi.slice(0, 7)) { S.jd.bulan = hi.slice(0, 7); S.jd.D = null; } buka('#jadwal'); return; }
+    if (el.hasAttribute('data-cari')) { bukaCekSku(); return; }
+    if (el.hasAttribute('data-koleksi')) { bukaKoleksi(); return; }
+    if (el.hasAttribute('data-suara')) {
+      var nyala = !suaraNyala(); taruh('ops_suara', nyala ? '1' : '0'); if (nyala) bunyi('tap');
+      el.setAttribute('aria-pressed', nyala ? 'false' : 'true'); el.setAttribute('aria-label', nyala ? 'Bisukan suara' : 'Nyalakan suara'); el.innerHTML = nyala ? IK_SUARA.on : IK_SUARA.off;
+      toast(nyala ? 'Suara menyala' : 'Suara dibisukan'); return;
+    }
+    if (el.hasAttribute('data-jd-bulan')) {
+      if (perubahanJd().length && !confirm('Ada geseran yang belum diterbitkan. Buang?')) return;
+      S.jd.bulan = geserBln(S.jd.bulan, +el.getAttribute('data-jd-bulan')); S.jd.D = null; S.jd.galat = ''; gambar(); return;
+    }
+    if (el.hasAttribute('data-jd-gerai')) { var pg = el.getAttribute('data-jd-gerai').split('|'); bukaGeser(pg[0], pg[1]); return; }
+    if (el.hasAttribute('data-jd-ke')) { terapkanGeser(el.getAttribute('data-jd-ke')); return; }
+    if (el.hasAttribute('data-jd-batal-kunj')) { if (confirm('Batalkan kunjungan ini?')) terapkanGeser(''); return; }
+    if (el.hasAttribute('data-jd-ke-tgl')) {
+      e.stopPropagation(); var tg = el.getAttribute('data-jd-ke-tgl');
+      if (S.jd.bulan !== tg.slice(0, 7)) { S.jd.bulan = tg.slice(0, 7); S.jd.D = null; S.jd.galat = ''; }
+      S.jd.sorot = tg; if (tg < kunciHari(Date.now())) S.jd.lalu = true; buka('#jadwal');
+      setTimeout(function () { var x = document.querySelector('[data-jd-hari="' + tg + '"]'); if (x && x.scrollIntoView) x.scrollIntoView({ block: 'center' }); }, 400);
+      return;
+    }
+    if (el.hasAttribute('data-jd-lalu')) { S.jd.lalu = true; gambar(); return; }
+    if (el.hasAttribute('data-jd-kembali')) { S.jd.isi = salinIsi(S.jd.asli); gambar(); return; }
+    if (el.hasAttribute('data-jd-terbit')) { terbitJadwal(); return; }
+    if (el.hasAttribute('data-jd-indra')) { kirimIndra(); return; }
+    if (d.abaikan) {
+      e.stopPropagation(); var ia = Number(d.abaikan);
+      api('janjiAbaikan', { id: ia }).then(function (h) { S.janji = (S.janji || []).filter(function (x) { return x.id !== ia; }); gambar(); toast(h.ok ? 'Diabaikan' : (h.pesan || 'Gagal')); });
+      return;
+    }
+    if (d.janji) { bukaJanji(Number(d.janji)); return; }
+    if (d.janjilist) { S.janjiList = d.janjilist; bukaJanji(S.janjiBuka); return; }
+    if (d.janjiok) {
+      var ij = Number(d.janjiok); el.disabled = true; taruh('ops_list_agenda', S.janjiList);
+      api('janjiTerima', { id: ij, daftar: S.janjiList }).then(function (h) {
+        el.disabled = false; bunyi(h.ok ? 'sukses' : 'galat'); toast(h.pesan || (h.ok ? 'Jadi agenda' : 'Gagal'));
+        if (h.ok || /sudah/.test(h.pesan || '')) { S.janji = (S.janji || []).filter(function (x) { return x.id !== ij; }); tutupSheet(); gambar(); muatSemua(); }
+      }).catch(function (er) { el.disabled = false; toast(er.message); });
+      return;
+    }
+    if (d.selesai) { e.stopPropagation(); selesai(d.selesai, el); return; }
+    if (d.buka) { if (el.closest('.nav')) { bunyi('tap'); getar(8); } buka(d.buka); return; }
+    if (d.filter) { S.filter = d.filter; gambar(); return; }
+    if (d.tfilter) { S.tugasFilter = d.tfilter; gambar(); return; }
+    if ('notif' in d) { nyalakanNotif(); return; }
+    if ('keluar' in d) { if (confirm('Keluar dari WMS Ops di HP ini?')) keluar(); return; }
+    if (d.revisi) {
+      var c = ($('catRevisi') || {}).value || ''; if (!c.trim()) { toast('Tulis dulu revisinya.'); return; }
+      var u = utas().filter(function (x) { return x.id === d.revisi; })[0];
+      el.disabled = true;
+      api('surelRevisi', { utas: u.id, draft: u.draft, catatan: c }).then(function (h) { bunyi(h.ok ? 'kirim' : 'galat'); toast(h.pesan || (h.ok ? 'Revisi diteruskan.' : 'Gagal.')); if (h.ok) { u.status = 'revisi'; gambar(); } else el.disabled = false; }).catch(function (er) { toast(er.message); el.disabled = false; });
+      return;
+    }
+    if (d.kirim) {
+      var v = utas().filter(function (x) { return x.id === d.kirim; })[0];
+      if (!confirm('Kirim draft ini ke ' + (v.pengirim || v.mitra) + '?')) return;
+      el.disabled = true;
+      api('surelKirim', { utas: v.id, draft: v.draft }).then(function (h) { bunyi(h.ok ? 'kirim' : 'galat'); toast(h.pesan || (h.ok ? 'Dikirim.' : 'Gagal.')); if (!h.ok) el.disabled = false; }).catch(function (er) { toast(er.message); el.disabled = false; });
+      return;
+    }
+    if (d.status) {
+      var t = S.detail.tugas, lama = t.status; t.status = d.status; gambar();
+      api('tugasStatus', { id: t.id, status: d.status }).then(function (h) { if (!h.ok) { t.status = lama; gambar(); toast(h.pesan); } else { toast('Status: ' + d.status); muatSemua(); } });
+      return;
+    }
+    if (d.langkah) {
+      var p = d.langkah.split('|'), T2 = S.detail.tugas;
+      T2.langkah.daftar.forEach(function (x) { if (x.checklist === p[0] && x.item === p[1]) x.selesai = p[2] === '1'; });
+      T2.langkah.selesai = T2.langkah.daftar.filter(function (x) { return x.selesai; }).length; gambar(); bunyi(p[2] === '1' ? 'pop' : 'tap');
+      api('tugasLangkah', { id: T2.id, checklist: p[0], item: p[1], selesai: p[2] === '1' }).then(function (h) { if (!h.ok) { toast(h.pesan); muatDetail(T2.id); } });
+      return;
+    }
+    if (d.komentar) {
+      var isi = ($('catProgres') || {}).value || ''; if (!isi.trim()) return;
+      el.disabled = true;
+      api('tugasKomentar', { id: d.komentar, teks: isi }).then(function (h) { el.disabled = false; if (!h.ok) { bunyi('galat'); toast(h.pesan); return; } if ($('catProgres')) $('catProgres').value = ''; bunyi('sukses'); toast('Catatan tersimpan di ClickUp'); muatDetail(d.komentar); });
+      return;
+    }
+    if ('tambah' in d) { bukaTambah(); return; }
+    if (d.opsi) {
+      BARU.judul = ($('judulBaru') || {}).value || BARU.judul;
+      var q = d.opsi.split('|'), nama = q[0], nilai = q.slice(1).join('|');
+      if (nama === 'untuk') { var id = Number(nilai), i = BARU.untuk.indexOf(id); if (i > -1) { if (BARU.untuk.length > 1) BARU.untuk.splice(i, 1); } else BARU.untuk.push(id); }
+      else BARU[nama] = nilai;
+      gambarTambah(); return;
+    }
+    if ('simpanbaru' in d) {
+      BARU.judul = ($('judulBaru') || {}).value || '';
+      var tg = ($('tglBaru') || {}).value; if (tg) BARU.tenggat = tg;
+      if (!BARU.judul.trim()) { toast('Judulnya masih kosong.'); return; }
+      el.disabled = true;
+      api('tugasBaru', BARU).then(function (h) { el.disabled = false; if (!h.ok) { bunyi('galat'); toast(h.pesan); return; } tutupSheet(); bunyi('sukses'); pestaTengah(); toast('Masuk ke ClickUp'); muatSemua(); }).catch(function (er) { el.disabled = false; toast(er.message); });
+    }
+  });
+  var cariTm = null;
+  document.addEventListener('input', function (e) {
+    if (!e.target || e.target.id !== 'cariSku') return;
+    clearTimeout(cariTm); cariTm = setTimeout(cekSku, 260);
+  });
+  document.addEventListener('change', function (e) { if (e.target && e.target.id === 'tglBaru' && BARU) { BARU.judul = ($('judulBaru') || {}).value || BARU.judul; BARU.tenggat = e.target.value; gambarTambah(); } });
+  $('dim').addEventListener('click', tutupSheet);
+  window.addEventListener('hashchange', rute);
+  document.addEventListener('visibilitychange', function () { if (!document.hidden && S.tiket) muatSemua(); });
+  setInterval(function () { if (!document.hidden && S.tiket) muatSemua(); }, 90e3);
+
+  if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+    navigator.serviceWorker.register('sw-ops.js', { scope: './' }).catch(function () {});
+    navigator.serviceWorker.addEventListener('message', function (e) {
+      if (e.data && e.data.segarkan) muatSemua();
+      if (e.data && e.data.buka) { var u = new URL(e.data.buka); buka(u.hash || '#beranda'); muatSemua(); }
+    });
+  }
+  window.__ops = { S: S, gambar: gambar, rute: rute };
+  rute(); muatSemua();
+})();
+</script>
+</body>
+</html>
