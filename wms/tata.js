@@ -60,7 +60,7 @@
       p_alis: 'Shipments · PDF or photo of a partner PO', p_judul: 'Read PO', p_diHo: 'At HO', p_cek: 'Check', p_cukup: 'In stock', p_kurang: 'Short', p_kurangN: function (n) { return n + ' short at HO'; }, p_semua: 'All in stock at HO',
       w_alis: 'Shipments · outbound · USB scanner or phone camera', w_judul: 'Outbound · Offline',
       m_obdOff: 'Outbound · Offline', m_obdShp: 'Outbound · Shopee', m_kirim: 'Shipments', m_stok: 'Inventory',
-      m_ringkasStok: 'Stock overview', m_rak: 'Warehouse racks', m_ringkasKirim: 'Overview',
+      m_ringkasStok: 'Stock overview', m_ringkasKirim: 'Overview',
       s_alis: function (n) { return 'Inventory · ' + n + ' SKUs with stock'; }, s_judul: 'Stock overview',
       s_ho: 'HO warehouse', s_hoKet: 'pcs in our warehouse', s_keluar: 'Outbound', s_keluarKet: 'picking to staging', s_jalan: 'In transit', s_jalanKet: 'on the way to stores and buyers', s_gerai: 'Store shelves', s_geraiKet: function (n) { return 'pcs across ' + n + ' stores'; },
       s_alur: 'Where the stock is right now', s_alurKet: 'Every pcs in one line. Outbound stages open Shipments.', s_tahap: { HO: 'HO racks', PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'In transit', GERAI: 'Store shelves' },
@@ -69,15 +69,15 @@
       s_saring: { semua: 'All', tipis: 'HO thin', rakkosong: 'Rack empty', tanpagerai: 'Not in any store' }, s_st: { ok: 'OK', rakkosong: 'Rack empty', tanpagerai: 'Not in stores', tipis: 'HO thin' },
       s_perhatian: 'Needs attention', s_pTipis: function (n) { return 'Thin at HO (below ' + n + ' pcs)'; }, s_pTipisKet: 'Reorder candidates.', s_pRak: 'Empty pick faces', s_pRakKet: 'Stock is at HO but the pick face is empty. Refill from overflow.', s_pGerai: 'Only at HO', s_pGeraiKet: 'Not on any store shelf yet. Candidates for a store transfer.', s_pKosong: 'Nothing here.',
       s_bukaRak: 'Open Rack replenishment', s_tanpaGudang: 'Warehouse map not available right now; rack locations are hidden.', s_tanpaObd: 'Outbound documents not available right now; outbound and transit show 0.',
-      r_alis: 'Inventory · from Warehouse condition', r_judul: 'Warehouse racks', r_terisi: 'Locations filled', r_pcs: 'pcs in locations', r_kosong: 'Empty locations', r_kosongKet: 'pick faces and slots at 0', r_rendah: 'Pick faces under 50%',
-      r_unit: function (u) { return u === 'X' ? 'Overflow' : 'Unit ' + u; }, r_tanpa: 'empty slot', r_legenda: 'Red: empty · yellow: pick face under 50% · grey: overflow', r_tidakAda: 'The warehouse map could not be read right now.',
+      r_alis: 'Inventory condition · Warehouse · from the Location Master', r_judul: 'Warehouse condition', r_3d: '3D map', r_2d: 'Grid per level', r_grid: 'Warehouse racks', r_terisi: 'Locations filled', r_pcs: 'pcs in locations', r_kosong: 'Empty locations', r_kosongKet: 'pick faces and slots at 0', r_rendah: 'Pick faces under 50%',
+      r_unit: function (u) { return u === 'X' ? 'Overflow' : 'Unit ' + u; }, r_level: function (n) { return 'Level ' + n; }, r_tanpa: 'empty slot', r_legenda: 'Red: empty · yellow: pick face under 50% · grey: overflow', r_tidakAda: 'The warehouse map could not be read right now.',
       o_alis: 'Shipments · offline stores and Shopee', o_judul: 'Shipments overview', o_offline: 'Offline to stores', o_offlineKet: 'Delivery plans and delivery orders.', o_shopee: 'Shopee to buyers', o_shopeeKet: 'Marketplace orders from the warehouse app.',
       o_tahapOff: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'In transit', DELIVERED: 'Delivered, 7 days' }, o_tahapShp: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'To courier', TRANSIT: 'On the road', DELIVERED: 'Delivered, 7 days' },
       o_terbaru: 'Latest', o_diterima: 'Delivered', o_kosong: 'No documents yet.', o_bukaOff: 'Open Outbound · Offline', o_bukaShp: 'Open Outbound · Shopee', o_bukaSj: 'Open Delivery orders', o_tidakAda: 'Outbound documents could not be read right now.',
       j_judul: 'Outbound to stores', j_ket: 'Partner stores and manual delivery orders. Shopee orders are under Outbound · Shopee.',
       j_tahap: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'In transit', DELIVERED: 'Delivered' },
       j_belum: function (n) { return n + ' pcs not yet at stores'; }, j_kolom: ['Document', 'Store', 'Date', 'Pcs', 'Stage', 'Delivery order'],
-      j_kosong: 'No shipments to stores yet. A new one shows up here as soon as a delivery plan is made.', j_buka: 'Open Outbound · Offline', j_bukaSj: 'Open delivery orders',
+      j_kosong: 'No delivery plan in progress right now. Delivery orders already sent are listed under Delivery order below.', j_buka: 'Open Outbound · Offline', j_bukaSj: 'Open delivery orders',
       g2_judul: 'Goods in & out', g2_semua: 'See Shipments overview', g2_masuk: 'Inbound', g2_masukKanal: 'From principal', g2_keluar: 'Outbound', g2_offKanal: 'Offline · to stores', g2_onKanal: 'Online · Shopee',
       g2_uBatch: 'batches this month', g2_uPcsMasuk: 'pcs into HO this month', g2_uBelum: 'pcs not put away', g2_uBuka: 'open now', g2_uPcsOff: 'pcs this month', g2_uJalan: 'in transit',
       g2_uKirim: 'orders to ship', g2_uPcsOn: 'pcs to buyers this month', g2_uShp: 'pcs at Shopee',
@@ -114,7 +114,7 @@
       p_alis: 'Pengiriman · PDF atau foto PO mitra', p_judul: 'Baca PO', p_diHo: 'Di HO', p_cek: 'Cek', p_cukup: 'Cukup', p_kurang: 'Kurang', p_kurangN: function (n) { return n + ' kurang di HO'; }, p_semua: 'Semua cukup di HO',
       w_alis: 'Pengiriman · outbound · scanner USB atau kamera HP', w_judul: 'Outbound · Offline',
       m_obdOff: 'Outbound · Offline', m_obdShp: 'Outbound · Shopee', m_kirim: 'Pengiriman', m_stok: 'Persediaan',
-      m_ringkasStok: 'Ringkasan stok', m_rak: 'Rak gudang', m_ringkasKirim: 'Ringkasan',
+      m_ringkasStok: 'Ringkasan stok', m_ringkasKirim: 'Ringkasan',
       s_alis: function (n) { return 'Persediaan · ' + n + ' SKU berstok'; }, s_judul: 'Ringkasan stok',
       s_ho: 'Gudang HO', s_hoKet: 'pcs di gudang kita', s_keluar: 'Outbound', s_keluarKet: 'picking sampai staging', s_jalan: 'Dalam perjalanan', s_jalanKet: 'menuju gerai dan pembeli', s_gerai: 'Rak gerai', s_geraiKet: function (n) { return 'pcs di ' + n + ' gerai'; },
       s_alur: 'Posisi stok saat ini', s_alurKet: 'Semua pcs dalam satu alur. Tahap outbound membuka Pengiriman.', s_tahap: { HO: 'Rak HO', PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'Dalam perjalanan', GERAI: 'Rak gerai' },
@@ -123,15 +123,15 @@
       s_saring: { semua: 'Semua', tipis: 'HO menipis', rakkosong: 'Rak kosong', tanpagerai: 'Belum di gerai' }, s_st: { ok: 'Aman', rakkosong: 'Rak kosong', tanpagerai: 'Belum di gerai', tipis: 'HO menipis' },
       s_perhatian: 'Perlu perhatian', s_pTipis: function (n) { return 'Menipis di HO (di bawah ' + n + ' pcs)'; }, s_pTipisKet: 'Kandidat pesan ulang.', s_pRak: 'Pick face kosong', s_pRakKet: 'Stok ada di HO tetapi pick face kosong. Isi ulang dari overflow.', s_pGerai: 'Hanya ada di HO', s_pGeraiKet: 'Belum ada di rak gerai mana pun. Kandidat transfer ke gerai.', s_pKosong: 'Tidak ada.',
       s_bukaRak: 'Buka Isi ulang rak', s_tanpaGudang: 'Peta gudang belum terbaca; lokasi rak disembunyikan.', s_tanpaObd: 'Dokumen outbound belum terbaca; outbound dan perjalanan tertulis 0.',
-      r_alis: 'Persediaan · dari Kondisi gudang', r_judul: 'Rak gudang', r_terisi: 'Lokasi terisi', r_pcs: 'pcs di lokasi', r_kosong: 'Lokasi kosong', r_kosongKet: 'pick face dan slot berisi 0', r_rendah: 'Pick face di bawah 50%',
-      r_unit: function (u) { return u === 'X' ? 'Overflow' : 'Unit ' + u; }, r_tanpa: 'slot kosong', r_legenda: 'Merah: kosong · kuning: pick face di bawah 50% · abu: overflow', r_tidakAda: 'Peta gudang belum bisa dibaca saat ini.',
+      r_alis: 'Kondisi persediaan · Gudang · dari Location Master', r_judul: 'Kondisi gudang', r_3d: 'Peta 3D', r_2d: 'Grid per level', r_grid: 'Rak gudang', r_terisi: 'Lokasi terisi', r_pcs: 'pcs di lokasi', r_kosong: 'Lokasi kosong', r_kosongKet: 'pick face dan slot berisi 0', r_rendah: 'Pick face di bawah 50%',
+      r_unit: function (u) { return u === 'X' ? 'Overflow' : 'Unit ' + u; }, r_level: function (n) { return 'Level ' + n; }, r_tanpa: 'slot kosong', r_legenda: 'Merah: kosong · kuning: pick face di bawah 50% · abu: overflow', r_tidakAda: 'Peta gudang belum bisa dibaca saat ini.',
       o_alis: 'Pengiriman · gerai offline dan Shopee', o_judul: 'Ringkasan pengiriman', o_offline: 'Offline ke gerai', o_offlineKet: 'Rencana kirim dan surat jalan.', o_shopee: 'Shopee ke pembeli', o_shopeeKet: 'Pesanan marketplace dari aplikasi gudang.',
       o_tahapOff: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'Dalam perjalanan', DELIVERED: 'Diterima, 7 hari' }, o_tahapShp: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Ke kurir', TRANSIT: 'Di jalan', DELIVERED: 'Diterima, 7 hari' },
       o_terbaru: 'Terbaru', o_diterima: 'Diterima', o_kosong: 'Belum ada dokumen.', o_bukaOff: 'Buka Outbound · Offline', o_bukaShp: 'Buka Outbound · Shopee', o_bukaSj: 'Buka Surat jalan', o_tidakAda: 'Dokumen outbound belum bisa dibaca saat ini.',
       j_judul: 'Kiriman ke gerai', j_ket: 'Gerai mitra dan surat jalan manual. Pesanan Shopee ada di Outbound · Shopee.',
       j_tahap: { PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'Di jalan', DELIVERED: 'Diterima' },
       j_belum: function (n) { return n + ' pcs belum sampai gerai'; }, j_kolom: ['Dokumen', 'Gerai', 'Tanggal', 'Pcs', 'Tahap', 'Surat jalan'],
-      j_kosong: 'Belum ada kiriman ke gerai. Kiriman baru muncul di sini begitu rencana kirim dibuat.', j_buka: 'Buka Outbound · Offline', j_bukaSj: 'Buka surat jalan',
+      j_kosong: 'Tidak ada rencana kirim yang sedang berjalan. Surat jalan yang sudah dikirim ada di daftar surat jalan di bawah.', j_buka: 'Buka Outbound · Offline', j_bukaSj: 'Buka surat jalan',
       g2_judul: 'Barang masuk & keluar', g2_semua: 'Lihat ringkasan pengiriman', g2_masuk: 'Inbound', g2_masukKanal: 'Dari principal', g2_keluar: 'Outbound', g2_offKanal: 'Offline · ke gerai', g2_onKanal: 'Online · Shopee',
       g2_uBatch: 'batch bulan ini', g2_uPcsMasuk: 'pcs masuk HO bulan ini', g2_uBelum: 'pcs belum put away', g2_uBuka: 'terbuka', g2_uPcsOff: 'pcs bulan ini', g2_uJalan: 'dalam perjalanan',
       g2_uKirim: 'pesanan perlu dikirim', g2_uPcsOn: 'pcs ke pembeli bulan ini', g2_uShp: 'pcs di Shopee',
@@ -226,6 +226,7 @@
     '.l4t-alis{font-size:15px;font-weight:800;color:var(--l4-mut)}',
     '.l4t-hal h1{margin:0;font-family:"Baloo 2",Nunito,sans-serif;font-size:44px;line-height:1.05;letter-spacing:-.01em;color:var(--l4-ink)}',
     '.l4t-halkanan{display:flex;align-items:center;gap:10px;flex-wrap:wrap}',
+    '.l4t-pilihtampil{display:inline-flex;gap:6px;flex-wrap:wrap}',
     '.l4t-tombol{height:42px;padding:0 18px;border-radius:999px;border:0;background:var(--l4-aksen);color:#4A3426;font:800 14.5px Nunito,sans-serif;cursor:pointer;display:inline-flex;align-items:center;gap:8px}',
     '.l4t-tombol.dua{background:var(--l4-kartu);color:var(--l4-ink);border:1.5px solid var(--l4-garis)}',
     '.l4t-pilih{height:42px;padding:0 14px;border-radius:999px;border:1.5px solid var(--l4-garis);background:var(--l4-kartu);color:var(--l4-ink);font:800 14.5px Nunito,sans-serif}',
@@ -311,6 +312,8 @@
     '.l4t-daftar{list-style:none;margin:0 0 10px;padding:0;display:flex;flex-direction:column;gap:6px}.l4t-daftar li{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:8px 12px;border-radius:14px;background:var(--l4-lembut);font-size:14px}',
     '.l4t-daftar .l4t-cip.info{background:var(--l4-kartu)}',
     '.l4t-unit{margin:0 0 16px}.l4t-slotgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}',
+    '.l4t-lvrow{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;padding:8px 0 10px;border-bottom:4px solid var(--l4-lembut)}.l4t-lvrow .lvl{font-size:12.5px;font-weight:800;color:var(--l4-mut)}',
+    '@media (max-width:700px){.l4t-lvrow{grid-template-columns:minmax(0,1fr)}}',
     '.l4t-slot{display:flex;flex-direction:column;gap:5px;padding:12px;border-radius:16px;border:1.5px solid var(--l4-garis);background:var(--l4-kartu);min-width:0}.l4t-slot .atas{display:flex;justify-content:space-between;gap:6px}.l4t-slot .nm{font-size:13px;font-weight:800;overflow-wrap:anywhere}.l4t-slot small{font-size:12px;color:var(--l4-mut)}',
     '.l4t-slot.kosong{background:var(--l4-pink);border-color:var(--l4-pinkTeks)}.l4t-slot.rendah{background:var(--l4-peach);border-color:var(--l4-aksen)}.l4t-slot.over{background:var(--l4-lembut)}',
 
@@ -351,7 +354,7 @@
   ].join('\n');
 
   /* ---------- P9 Gerai offline ---------- */
-  var A = { retailer: '', semuaBaris: false }, BATAS = { baris: 12 };
+  var A = { retailer: '', semuaBaris: false, rak2d: false }, BATAS = { baris: 12 };
   function gambarGerai(sek) {
     var H = D.H, L = H.L, P = H.P;
     var semuaGerai = H.geraiIdx.filter(function (li) { return P.some(function (p, pi) { return stokDi(H, li, pi) > 0 || H.tiba[li + '|' + pi]; }); });
@@ -630,7 +633,8 @@
     if (off) depan.push(['outbound', t('m_obdOff')]);
     if (shp) depan.push([shp[0], t('m_obdShp')]);
     K[3] = depan.concat(K[3].filter(function (c) { return c[0] !== 'outbound' && c[0] !== 'obdShopee' && c[0] !== 'l4kirim'; }));
-    S[3] = [['l4stok', t('m_ringkasStok')], ['l4rak', t('m_rak')]].concat(S[3].filter(function (c) { return c[0] !== 'l4stok' && c[0] !== 'l4rak'; }));
+    /* 20 Okt, Ferdy: Warehouse condition tempatnya di Kondisi persediaan › Gudang, bukan menu sendiri */
+    S[3] = [['l4stok', t('m_ringkasStok')]].concat(S[3].filter(function (c) { return c[0] !== 'l4stok'; }));
     if (iu && !S[3].some(function (c) { return c[0] === iu[0]; })) S[3].push([iu[0], iu[1]]);
     return baru;
   }
@@ -684,9 +688,11 @@
     TAHAP.forEach(function (k) { jml[k] = 0; });
     L.forEach(function (d) { if (jml[d.tahap] != null) jml[d.tahap]++; });
     var nama = t('j_tahap');
-    var isi = '<p class="l4t-ket">' + esc(t('j_ket')) + '</p><div class="l4t-lapor">' + TAHAP.map(function (k) {
+    /* Tanpa dokumen offline kotak tahap tidak digambar: lima angka 0 (Delivered 0) bertabrakan dengan
+       surat jalan Received yang tampil di bawahnya (20 Okt 2026). */
+    var isi = '<p class="l4t-ket">' + esc(t('j_ket')) + '</p>' + (L.length ? '<div class="l4t-lapor">' + TAHAP.map(function (k) {
       return '<div data-l4t-tahap="' + k + '"><b>' + esc(nama[k]) + '</b><strong>' + nf(jml[k]) + '</strong></div>';
-    }).join('') + '</div>';
+    }).join('') + '</div>' : '');
     if (!L.length) {
       isi += '<p class="l4t-ket" data-l4t-kosong>' + esc(t('j_kosong')) + '</p>';
     } else {
@@ -716,6 +722,20 @@
     isi.insertBefore(sek, isi.firstChild);
     muatObd().then(function (x) { if (sek.isConnected && fw.HAL === 'rencana') sek.innerHTML = kartuJalur(x); },
       function () { if (sek.isConnected) sek.innerHTML = '<p class="l4t-ket">' + esc(t('gagal')) + '</p>'; });
+  }
+  /* 20 Okt, Ferdy: "hrsnya taruh di kondisi persediaan, bagian warehouse". Peta gudang (3D, grid di balik
+     tombol 2D) menempel di atas halaman Kondisi persediaan › Gudang; isi halaman lama di bawahnya
+     (unggah dan unduh Location Master, tabel isi ulang, Not put away) tetap. */
+  function tataKondisi(fw, isi) {
+    if (isi.querySelector(':scope > .l4t[data-l4t-hal-ini=kondisi]')) return;
+    var sek = fw.document.createElement('div'); sek.className = 'l4t'; sek.setAttribute('data-l4t-hal-ini', 'kondisi');
+    sek.innerHTML = '<p class="l4t-ket">' + esc(t('muat')) + '</p>';
+    isi.insertBefore(sek, isi.firstChild);
+    var gudang = muatGudang().then(function () { return 1; }, function () { return 0; });
+    muat().catch(function () { return null; }).then(function () { return gudang; }).then(function () {
+      if (!sek.isConnected || fw.HAL !== 'kondisi') return;
+      try { gambarRak(sek); } catch (e) { sek.innerHTML = '<p class="l4t-ket">' + esc(t('gagal')) + '</p>'; if (W.console) W.console.warn('tata kondisi', e); }
+    });
   }
   function tataSuratJalan(fw, isi) {
     if (isi.querySelector(':scope > .l4t[data-l4t-hal-ini=kemas]')) return;
@@ -781,7 +801,7 @@
       '<div class="l4t-kpi" data-l4t-angka="keluar"><span>' + esc(t('s_keluar')) + '</span><strong>' + nf(keluar) + '</strong><small>' + esc(t('s_keluarKet')) + '</small></div>' +
       '<div class="l4t-kpi" data-l4t-angka="jalan"><span>' + esc(t('s_jalan')) + '</span><strong>' + nf(jalan) + '</strong><small>' + esc(t('s_jalanKet')) + '</small></div>' +
       '<div class="l4t-kpi" data-l4t-angka="gerai"><span>' + esc(t('s_gerai')) + '</span><strong>' + nf(gerai) + '</strong><small>' + esc(t('s_geraiKet')(nGerai)) + '</small></div></div>';
-    var nama = t('s_tahap'), langkah = [['HO', ho, 'l4rak'], ['PICKING', pcsTahap(daftar, 'PICKING'), 'l4kirim'], ['PACKING', pcsTahap(daftar, 'PACKING'), 'l4kirim'], ['STAGING', pcsTahap(daftar, 'STAGING'), 'l4kirim'], ['TRANSIT', jalan, 'l4kirim'], ['GERAI', gerai, 'stokgerai']];
+    var nama = t('s_tahap'), langkah = [['HO', ho, 'kondisi'], ['PICKING', pcsTahap(daftar, 'PICKING'), 'l4kirim'], ['PACKING', pcsTahap(daftar, 'PACKING'), 'l4kirim'], ['STAGING', pcsTahap(daftar, 'STAGING'), 'l4kirim'], ['TRANSIT', jalan, 'l4kirim'], ['GERAI', gerai, 'stokgerai']];
     var alur = '<p class="l4t-ket">' + esc(t('s_alurKet')) + '</p><div class="l4t-alur">' + langkah.map(function (x, i) {
       return (i ? '<i class="l4t-panah" aria-hidden="true">›</i>' : '') + '<button type="button" class="l4t-alurb" data-l4t-alur="' + x[0] + '" data-l4t-hal="' + x[2] + '"><b>' + esc(nama[x[0]]) + '</b><strong>' + nf(x[1]) + '</strong><small>pcs</small></button>';
     }).join('') + '</div>' + (O ? '' : '<p class="l4t-ket">' + esc(t('s_tanpaObd')) + '</p>');
@@ -834,14 +854,41 @@
       '<div class="l4t-kpi' + (kosong ? ' awas' : '') + '" data-l4t-angka="kosong"><span>' + esc(t('r_kosong')) + '</span><strong>' + nf(kosong) + '</strong><small>' + esc(t('r_kosongKet')) + '</small></div>' +
       '<div class="l4t-kpi" data-l4t-angka="rendah"><span>' + esc(t('r_rendah')) + '</span><strong>' + nf(rendah) + '</strong></div></div>';
     var isi = '<p class="l4t-ket">' + esc(t('r_legenda')) + '</p>' + grup.map(function (u) {
-      return '<div class="l4t-unit" data-l4t-unit="' + esc(u) + '"><h3>' + esc(t('r_unit')(u)) + '</h3><div class="l4t-slotgrid">' + peta[u].map(function (l) {
+      var slot = function (l) {
         var q = Number(l.isi) || 0, k = Number(l.kap) || 0, ps = k > 0 ? Math.min(q / k, 1) : 0;
         var kls = q <= 0 && !over(l) ? ' kosong' : (!over(l) && l.peran === 'PICK' && (l.rendah || Number(l.persen) < 0.5) ? ' rendah' : (over(l) ? ' over' : ''));
         return '<div class="l4t-slot' + kls + '" data-l4t-slot="' + esc(l.kode) + '"><div class="atas"><b>' + esc(l.kode) + '</b><small>' + esc(l.peran === 'PICK' ? 'pick' : String(l.peran || '').toLowerCase()) + '</small></div>' +
           '<span class="nm">' + esc(l.sku || t('r_tanpa')) + '</span><div class="l4t-batang"><i class="terang" style="width:' + (ps * 100).toFixed(1) + '%"></i></div><small>' + nf(q) + (k ? ' / ' + nf(k) : '') + ' pcs</small></div>';
-      }).join('') + '</div></div>';
+      };
+      var kepala = '<div class="l4t-unit" data-l4t-unit="' + esc(u) + '"><h3>' + esc(t('r_unit')(u)) + '</h3>';
+      if (u === 'X') return kepala + '<div class="l4t-slotgrid">' + peta[u].map(slot).join('') + '</div></div>';
+      /* 20 Okt, Ferdy: angka sesudah nomor rak itu level, naik ke atas (R1-1 lantai, R1-4 paling atas).
+         Rak digambar seperti tampak depan: satu baris per level, level tertinggi di atas. */
+      var tingkat = {}, urut = [];
+      peta[u].forEach(function (l) {
+        var n = Number(l.level) || Number((String(l.kode || '').match(/^[A-Z]+\d*-(\d+)/) || [])[1]) || 0;
+        if (!tingkat[n]) { tingkat[n] = []; urut.push(n); }
+        tingkat[n].push(l);
+      });
+      urut.sort(function (a, b) { return b - a; });
+      return kepala + urut.map(function (n) {
+        var isiLv = tingkat[n].slice().sort(function (a, b) { return String(a.kode) < String(b.kode) ? -1 : String(a.kode) > String(b.kode) ? 1 : 0; });
+        return '<div class="l4t-lvrow" data-l4t-level="' + n + '"><span class="lvl">' + esc(n ? t('r_level')(n) : '') + '</span><div class="l4t-slotgrid">' + isiLv.map(slot).join('') + '</div></div>';
+      }).join('') + '</div>';
     }).join('');
-    sek.innerHTML = kepalaHal(t('r_alis'), t('r_judul'), '<button type="button" class="l4t-tombol dua" data-l4t-hal="obdIsiUlang">' + esc(t('s_bukaRak')) + '</button>') + kpi + kartu(t('r_judul'), 1, isi);
+    /* 20 Okt: Warehouse condition. Peta 3D (gudang3d.js) jadi tampilan awal, grid per level tetap di balik tombol 2D. */
+    var bisa3d = !!(W.WmsGudang3D && W.WmsGudang3D.pasang), di3d = bisa3d && !A.rak2d;
+    var tampil = bisa3d ? '<span class="l4t-pilihtampil" role="group">' + [['3d', t('r_3d')], ['2d', t('r_2d')]].map(function (x) {
+      var on = (x[0] === '3d') === di3d;
+      return '<button type="button" class="l4t-tombol' + (on ? '' : ' dua') + '" data-l4t-tampil="' + x[0] + '" aria-pressed="' + on + '">' + esc(x[1]) + '</button>';
+    }).join('') + '</span>' : '';
+    var kanan = tampil + '<button type="button" class="l4t-tombol dua" data-l4t-hal="obdIsiUlang">' + esc(t('s_bukaRak')) + '</button>';
+    if (di3d) {
+      sek.innerHTML = kepalaHal(t('r_alis'), t('r_judul'), kanan) + kpi + '<div data-l4t-3d></div>';
+      W.WmsGudang3D.pasang(sek.querySelector('[data-l4t-3d]'), { gudang: G, data: D.data, bahasa: id() ? 'id' : 'en' });
+      return;
+    }
+    sek.innerHTML = kepalaHal(t('r_alis'), t('r_judul'), kanan) + kpi + kartu(t('r_grid'), 1, isi);
   }
   function gambarRingkasKirim(sek) {
     var O = OBD.data, hariIni = (D.data && D.data.hariIni) || new Date().toISOString().slice(0, 10);
@@ -1027,9 +1074,9 @@
   }
 
   /* ---------- pemasangan ---------- */
-  var GANTI = { stokgerai: gambarGerai, mitra2: gambarKeuangan, sehat: gambarKualitas, l4stok: gambarRingkasStok, l4rak: gambarRak, l4kirim: gambarRingkasKirim };
-  var TAMBAH_MUAT = { l4stok: [muatGudang, muatObd], l4rak: [muatGudang], l4kirim: [muatObd] };
-  var TAMBAH = { ringkasan: tataSummary, dokumen: tataDokumen, bacapo: tataBacaPo, outbound: tataGudang, rencana: tataKiriman, kemas: tataSuratJalan };
+  var GANTI = { stokgerai: gambarGerai, mitra2: gambarKeuangan, sehat: gambarKualitas, l4stok: gambarRingkasStok, l4kirim: gambarRingkasKirim };
+  var TAMBAH_MUAT = { l4stok: [muatGudang, muatObd], l4kirim: [muatObd] };
+  var TAMBAH = { kondisi: tataKondisi, ringkasan: tataSummary, dokumen: tataDokumen, bacapo: tataBacaPo, outbound: tataGudang, rencana: tataKiriman, kemas: tataSuratJalan };
   function gambarGanti(fw, isi, hal) {
     var sek = fw.document.createElement('div');
     sek.className = 'l4t'; sek.setAttribute('data-l4t-hal-ini', hal);
@@ -1071,7 +1118,7 @@
     new fw.MutationObserver(lihat).observe(isi, { childList: true, attributes: true, attributeFilter: ['class'] });
     /* poHasil muncul lewat gambar ulang seluruh #isi (gambarBacaPo), jadi childList cukup */
     isi.addEventListener('click', function (e) {
-      var x = e.target.closest ? e.target.closest('[data-l4t],[data-l4t-hal],[data-l4t-semua],[data-l4t-saring]') : null; if (!x) return;
+      var x = e.target.closest ? e.target.closest('[data-l4t],[data-l4t-hal],[data-l4t-semua],[data-l4t-saring],[data-l4t-tampil]') : null; if (!x) return;
       e.preventDefault(); e.stopPropagation();
       if (x.getAttribute('data-l4t') === 'lama') {
         var buka = !isi.classList.contains('l4t-lihatlama');
@@ -1083,6 +1130,7 @@
         return;
       }
       if (x.hasAttribute('data-l4t-saring')) { saringRingkas(isi, x.getAttribute('data-l4t-saring')); return; }
+      if (x.hasAttribute('data-l4t-tampil')) { A.rak2d = x.getAttribute('data-l4t-tampil') === '2d'; var rk = isi.querySelector(':scope > .l4t[data-l4t-hal-ini=kondisi]'); if (rk) gambarRak(rk); return; }
       if (x.hasAttribute('data-l4t-semua')) { A.semuaBaris = !A.semuaBaris; var sg = isi.querySelector(':scope > .l4t[data-l4t-hal-ini=stokgerai]'); if (sg && D.H) gambarGerai(sg); return; }
       var hal = x.getAttribute('data-l4t-hal');
       if (hal) { fw.HAL = hal; try { fw.gambar(); } catch (er) {} try { fw.scrollTo(0, 0); } catch (er) {} }

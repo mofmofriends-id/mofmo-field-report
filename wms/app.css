@@ -419,15 +419,24 @@ body.alat-terbuka{overflow:hidden}
 /* label rak */
 .label-atur{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
 .label-atur select{height:46px;padding:0 14px;border-radius:14px;border:1.5px solid var(--line);background:var(--card);font-weight:800}
-.lembar-label{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
-.label-rak{background:#fff;color:#1b1410;border:1.5px dashed #c9b49a;border-radius:12px;padding:12px 14px;display:flex;flex-direction:column;gap:8px;break-inside:avoid}
-.label-atas{display:flex;align-items:center;justify-content:space-between;gap:8px}
-.label-kode{font:800 38px/1 var(--judul);letter-spacing:.02em}
-.label-peran{font-size:12px;font-weight:800;border:1.5px solid #1b1410;border-radius:999px;padding:2px 9px}
-.label-rak svg.kode128{display:block;width:100%;height:64px}
-.label-bawah{display:flex;align-items:center;gap:10px;min-width:0}
-.label-bawah .foto-sku{background:#f6efe6}
-.label-nama{min-width:0}.label-nama b{display:block;font-size:15px}.label-nama small{display:block;font-size:12px;color:#5c4a3d;font-weight:700}
+.lembar-label{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:12px}
+/* kartu peraga v11 (20 Okt 2026): 10,5 x 7 cm, kode Jubelio besar, badge zona, nama Shopee, EAN-13 SKU, barcode lokasi Jubelio */
+.label-rak{position:relative;background:#fff;color:#1b1410;border:1.5px solid #ddd3c8;border-radius:12px;overflow:hidden;padding:12px 18px 10px 24px;display:grid;grid-template-rows:auto 1fr auto;row-gap:8px;break-inside:avoid;aspect-ratio:105/70}
+.label-strip{position:absolute;left:0;top:0;bottom:0;width:9px}
+.label-atas{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.label-lok{font:800 34px/.9 var(--judul);letter-spacing:.01em;white-space:nowrap}
+.label-zona{color:#fff;font:800 15px/1 var(--judul);letter-spacing:.06em;padding:6px 11px 4px;border-radius:7px;white-space:nowrap}
+.label-tengah{display:grid;grid-template-columns:38% minmax(0,1fr);gap:11px;align-items:center;min-height:0}
+.foto-sku.kartu{width:100%;height:auto;aspect-ratio:1;max-height:100%;border-radius:10px;padding:4px;background:#f7f1ea;object-fit:contain}
+.foto-sku.kartu.inisial{font-size:34px;color:#5c4a3d}
+.label-sku{min-width:0;display:flex;flex-direction:column;gap:3px}
+.label-listing{font-size:10px;font-weight:700;line-height:1.2;color:#5a4a3d;white-space:nowrap;overflow:hidden}
+.label-nama{font:800 22px/1.05 var(--judul);white-space:nowrap;overflow:hidden}
+.label-meta{font-size:11px;font-weight:700;color:#7a6a5d}.label-meta b{color:#2a2118}
+.label-rak svg.kode-sku{display:block;width:100%;height:50px;margin-top:3px}
+.label-angka{font-size:11px;letter-spacing:.18em;color:#8a7b6e;text-align:center}
+.label-bawah{border-top:1px solid #ece4da;padding-top:6px}
+.label-rak svg.kode-lok{display:block;width:78%;height:32px;margin:0 auto}
 #lembarCetak{display:none}
 /* paspor */
 .balik-alat{align-self:flex-start;height:38px;padding:0 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--card);font-weight:800;color:var(--ink)}
@@ -472,10 +481,25 @@ body.alat-terbuka{overflow:hidden}
   @page{size:A4;margin:8mm}
   body.cetak-label{background:#fff !important}
   body.cetak-label>*:not(#lembarCetak){display:none !important}
-  body.cetak-label #lembarCetak{display:grid !important;grid-template-columns:1fr 1fr;gap:4mm}
-  #lembarCetak .label-rak{height:53mm;border:1px dashed #999;border-radius:3mm;padding:3mm 4mm;justify-content:space-between}
-  #lembarCetak .label-kode{font-size:30pt}
-  #lembarCetak svg.kode128{height:20mm}
+  /* 2 x 4 per A4, kartu 105 x 70 mm persis (lebar 2 x 105 = 210 mm). Isi digeser 7 sampai 9 mm dari tepi
+     supaya barcode tidak kena area yang tidak tercetak printer. Cetak skala 100%. */
+  @page kartu{size:A4;margin:0}
+  body.cetak-label #lembarCetak{display:block !important;page:kartu}
+  #lembarCetak .halaman-kartu{display:grid;grid-template-columns:105mm 105mm;grid-auto-rows:70mm;width:210mm;height:296mm;padding-top:8.5mm;box-sizing:border-box;break-after:page;overflow:hidden}
+  #lembarCetak .halaman-kartu:last-child{break-after:auto}
+  #lembarCetak .label-rak{width:105mm;height:70mm;aspect-ratio:auto;border:.3mm solid #ddd3c8;border-radius:2mm;padding:3mm 7mm 2.8mm 9mm;row-gap:1.6mm;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  #lembarCetak .label-strip{width:2.6mm}
+  #lembarCetak .label-lok{font-size:30pt}
+  #lembarCetak .label-zona{font-size:14pt;padding:1.5mm 3mm 1.1mm;border-radius:1.8mm}
+  #lembarCetak .label-tengah{grid-template-columns:37mm minmax(0,1fr);gap:3mm}
+  #lembarCetak .foto-sku.kartu{width:37mm;height:37mm;border-radius:2.5mm;padding:1mm}
+  #lembarCetak .label-listing{font-size:7.6pt}
+  #lembarCetak .label-nama{font-size:17pt}
+  #lembarCetak .label-meta{font-size:8.5pt}
+  #lembarCetak svg.kode-sku{height:15mm;margin-top:1mm}
+  #lembarCetak .label-angka{font-size:8.5pt}
+  #lembarCetak .label-bawah{padding-top:1.6mm;border-top-width:.25mm}
+  #lembarCetak svg.kode-lok{width:78%;height:9mm}
 }
 @media (prefers-reduced-motion:reduce){.alat-latar.buka,.alat-latar .lembar{animation:none}}
 
@@ -607,6 +631,8 @@ body.alat-terbuka{overflow:hidden}
 .kt-margin,.kt-urut{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:800;color:var(--mut)}
 .kt-margin input{width:78px;text-align:right}
 .kt-margin b{color:var(--ink)}
+.kt-preset{display:inline-flex;flex-wrap:wrap;gap:6px}
+.kt-preset .chip-alat.on{background:var(--navOn);color:var(--navOnInk);border-color:transparent}
 .kt-baris2{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px}
 .kt-saring .chip-alat.on{background:var(--navOn);color:var(--navOnInk);border-color:transparent}
 .kt-aksi{display:flex;gap:8px;flex-wrap:wrap}
@@ -1219,3 +1245,26 @@ html[data-theme="dark"] #kbHs .kb-hs-angka{background:#3a2023;color:#f3c2c6;bord
 .kb-vunggah{position:relative;align-self:flex-start;cursor:pointer}
 .kb-vunggah input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
 @media (max-width:560px){.kb-fn li{grid-template-columns:1fr auto}.kb-fn-batang{grid-column:1/-1;order:3}}
+/* Pantau game (21 Okt 2026) */
+.kb-pt-tabel{width:100%;border-collapse:collapse;font-size:13px}
+.kb-pt-tabel th,.kb-pt-tabel td{padding:8px 10px;border-bottom:1px solid var(--line2);text-align:left;vertical-align:top;white-space:nowrap}
+.kb-pt-tabel thead th{font-size:12px;font-weight:800;color:var(--mut);white-space:normal;line-height:1.2}
+@media (max-width:560px){.kb-pt-tabel th,.kb-pt-tabel td{padding:7px 6px}.kb-pt-tabel tbody th{white-space:normal}}
+.kb-pt-tabel tbody th{font-weight:700;color:var(--ink)}
+.kb-pt-tabel .num{text-align:right}
+.kb-pt-tabel td b{font-family:'Baloo 2',Nunito,sans-serif;font-size:17px;color:var(--ink)}
+.kb-pt-tabel td small{display:block;font-size:11.5px;font-weight:700;color:var(--mut)}
+.kb-pt-tabel td small.kb-pt-habis{color:var(--warn,#b45309)}
+.kb-pt-tabel td.kb-pt-nol b{color:var(--mut);font-weight:600}
+.kb-pt-tabel tfoot th,.kb-pt-tabel tfoot td{border-top:2px solid var(--line2);border-bottom:0;font-weight:800}
+.kb-pt-papan{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin:10px 0}
+.kb-pt-kartu{border:1.5px solid var(--line2);border-radius:14px;padding:10px 12px;min-width:0}
+.kb-pt-kartu h4{margin:0 0 6px;font-size:13px;font-weight:800;color:var(--ink)}
+.kb-pt-kartu ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}
+.kb-pt-kartu li{display:grid;grid-template-columns:1.6em minmax(0,1fr) auto auto;align-items:baseline;gap:6px;font-size:13px}
+.kb-pt-no{font-weight:800;color:var(--mut)}
+.kb-pt-nama{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;color:var(--ink)}
+.kb-pt-nama small,.kb-pt-dtk{font-size:11.5px;font-weight:700;color:var(--mut)}
+.kb-pt-kartu li b{font-family:'Baloo 2',Nunito,sans-serif;font-size:16px;color:var(--ink)}
+.kb-pt-kom{display:grid;grid-template-columns:auto minmax(80px,1fr);align-items:center;gap:10px;font-size:13.5px;font-weight:800;color:var(--ink);margin:6px 0}
+@media (max-width:560px){.kb-pt-kom{grid-template-columns:1fr}}

@@ -17,6 +17,12 @@
  *  - JPG, PDF, dan Cetak untuk pembeli (Ferdy: "harga beli putus aja"): cuma
  *    harga beli putus termasuk pajak, tanpa margin, wholesale, atau rumus.
  *    Excel dan CSV tetap lengkap untuk kerja internal.
+ *  - Harga event (Ferdy, 21 Okt: "Price list wholesale +5% ... buat event ...
+ *    sangkutin ke WMS jdi ada opsi yg 5, 10 (direct sales)"): tombol cepat
+ *    "Event +5%" dan "Direct sales 10%". Event memakai KENAIKAN di atas wholesale
+ *    (wholesale x (1 + 5%)), bukan margin dari harga jual; direct sales tetap
+ *    aturan margin di atas. Mode dan angkanya diingat per perangkat. Lembar untuk
+ *    pembeli dalam mode event berjudul harga event, tanpa menyebut kenaikannya.
  * Lembar ini cuma membaca; tidak ada yang ditulis ke sistem.
  */
 (function () {
@@ -41,7 +47,12 @@
       tanpaHarga: 'No price yet', kosong: 'No SKU matches.', jumlah: 'SKUs shown', per: 'Data as of',
       rumus: function (m) { return 'Outright price = wholesale ÷ (1 − ' + m + '). The ' + m + ' margin is taken from the selling price, the same rule the system uses for Gamotion. Each SKU then gets its own tax rate from the product master (PPN 11% for most), so the big number already includes tax.'; },
       cetakJudul: 'Mofmofriends outright purchase price list', cetakKet: function (t) { return 'Prices include tax. Issued ' + t + '.'; },
-      kolom: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Outright price before tax', 'Tax %', 'Outright price incl. tax', 'Retail incl. tax']
+      kolom: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Outright price before tax', 'Tax %', 'Outright price incl. tax', 'Retail incl. tax'],
+      markup: 'Markup', preset: 'Price preset', presetDirect: 'Direct sales 10%', presetEvent: 'Event +5%',
+      jualEv: 'Event price', cetakJudulEv: 'Mofmofriends event price list',
+      xlsxCatatanEv: 'Change the markup in B2 and both event price columns recalculate. The markup is added on top of wholesale. Each SKU keeps its own tax rate from the product master.',
+      rumusEv: function (m) { return 'Event price = wholesale \u00d7 (1 + ' + m + '). The ' + m + ' markup is added on top of wholesale, not taken from the selling price. Each SKU then gets its own tax rate from the product master (PPN 11% for most), so the big number already includes tax.'; },
+      kolomEv: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Event price before tax', 'Tax %', 'Event price incl. tax', 'Retail incl. tax']
     },
     id: {
       judul: 'Katalog', sub: 'Semua SKU dengan harga jual putus, sudah termasuk pajak', tutup: 'Tutup', cari: 'Cari SKU, nama, atau barcode',
@@ -53,27 +64,38 @@
       tanpaHarga: 'Belum ada harga', kosong: 'Tidak ada SKU yang cocok.', jumlah: 'SKU tampil', per: 'Data per',
       rumus: function (m) { return 'Harga jual putus = wholesale ÷ (1 − ' + m + '). Margin ' + m + ' diambil dari harga jual, aturan yang sama dengan Gamotion. Sesudah itu ditambah tarif pajak masing-masing SKU dari Master Produk (umumnya PPN 11%), jadi angka besar sudah termasuk pajak.'; },
       cetakJudul: 'Daftar harga beli putus Mofmofriends', cetakKet: function (t) { return 'Harga sudah termasuk pajak. Diterbitkan ' + t + '.'; },
-      kolom: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga jual putus sebelum pajak', 'Pajak %', 'Harga jual putus termasuk pajak', 'Retail termasuk pajak']
+      kolom: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga jual putus sebelum pajak', 'Pajak %', 'Harga jual putus termasuk pajak', 'Retail termasuk pajak'],
+      markup: 'Kenaikan', preset: 'Pilihan harga', presetDirect: 'Direct sales 10%', presetEvent: 'Event +5%',
+      jualEv: 'Harga event', cetakJudulEv: 'Daftar harga event Mofmofriends',
+      xlsxCatatanEv: 'Ubah kenaikan di B2, kedua kolom harga event ikut terhitung ulang. Kenaikan ditambahkan di atas wholesale. Tarif pajak tiap SKU tetap dari Master Produk.',
+      rumusEv: function (m) { return 'Harga event = wholesale \u00d7 (1 + ' + m + '). Kenaikan ' + m + ' ditambahkan di atas wholesale, bukan diambil dari harga jual. Sesudah itu ditambah tarif pajak masing-masing SKU dari Master Produk (umumnya PPN 11%), jadi angka besar sudah termasuk pajak.'; },
+      kolomEv: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga event sebelum pajak', 'Pajak %', 'Harga event termasuk pajak', 'Retail termasuk pajak']
     }
   };
   function t(k) { var d = TEKS[id() ? 'id' : 'en']; return d[k] != null ? d[k] : TEKS.en[k]; }
+  /* teks yang beda di mode event (judul lembar pembeli, label harga, kolom, rumus) */
+  function tm(k, mode) { return (mode || A.mode) === 'event' && t(k + 'Ev') != null ? t(k + 'Ev') : t(k); }
 
   /* ---------- harga ---------- */
-  var MARGIN_BAWAAN = 0.1, KUNCI_MARGIN = 'wms_katalog_margin';
+  var MARGIN_BAWAAN = 0.1, KUNCI_MARGIN = 'wms_katalog_margin', KUNCI_MODE = 'wms_katalog_mode';
+  /* direct = margin diambil dari harga jual (aturan beli putus); event = kenaikan di atas wholesale */
+  var PRESET = { direct: { mode: 'direct', m: 0.1 }, event: { mode: 'event', m: 0.05 } };
   /* Tarif pajak SKU dari pasangannya sendiri, dibulatkan ke 0,1% supaya harga
      sesudah pajak yang sudah dibulatkan di Master Produk tidak menggeser rupiah. */
   function tarifPajak(hs, h) { hs = Number(hs) || 0; h = Number(h) || 0; return hs > 0 && h > 0 ? Math.round((h / hs - 1) * 1000) / 1000 : 0; }
-  function harga(hs, h, margin) {
+  function harga(hs, h, margin, mode) {
     hs = Number(hs) || 0; if (!(hs > 0)) return null;
     var m = Number(margin); if (!(m >= 0 && m < 0.95)) m = MARGIN_BAWAAN;
-    var pajak = tarifPajak(hs, h), sebelum = Math.round(hs / (1 - m));
-    return { sebelum: sebelum, termasuk: Math.round(sebelum * (1 + pajak)), pajak: pajak, margin: m };
+    var ev = mode === 'event', pajak = tarifPajak(hs, h), sebelum = Math.round(ev ? hs * (1 + m) : hs / (1 - m));
+    return { sebelum: sebelum, termasuk: Math.round(sebelum * (1 + pajak)), pajak: pajak, margin: m, mode: ev ? 'event' : 'direct' };
   }
   function bacaMargin() {
     var v = null; try { v = W.localStorage.getItem(KUNCI_MARGIN); } catch (e) { v = null; }
     var n = Number(v); return v != null && v !== '' && n >= 0 && n < 95 ? n / 100 : MARGIN_BAWAAN;
   }
   function simpanMargin(m) { try { W.localStorage.setItem(KUNCI_MARGIN, String(Math.round(m * 1000) / 10)); } catch (e) {} }
+  function bacaMode() { var v = null; try { v = W.localStorage.getItem(KUNCI_MODE); } catch (e) { v = null; } return v === 'event' ? 'event' : 'direct'; }
+  function simpanMode(v) { try { W.localStorage.setItem(KUNCI_MODE, v === 'event' ? 'event' : 'direct'); } catch (e) {} }
 
   /* ---------- data ---------- */
   var D = { janji: null, waktu: 0, data: null, daftar: [] };
@@ -121,7 +143,7 @@
   }
 
   /* ---------- lembar ---------- */
-  var A = { saring: 'semua', urut: 'nama', cari: '', margin: MARGIN_BAWAAN, dari: null };
+  var A = { saring: 'semua', urut: 'nama', cari: '', margin: MARGIN_BAWAAN, mode: 'direct', dari: null };
   function pastikanDom() {
     if (el('katalog')) return el('katalog');
     var d = document.createElement('div');
@@ -130,8 +152,13 @@
     document.body.appendChild(d);
     d.addEventListener('click', function (e) {
       if (e.target === d) { tutup(); return; }
-      var x = e.target.closest ? e.target.closest('[data-katalog],[data-saring]') : null;
+      var x = e.target.closest ? e.target.closest('[data-katalog],[data-saring],[data-preset]') : null;
       if (!x) return;
+      if (x.hasAttribute('data-preset')) {
+        var pr = PRESET[x.getAttribute('data-preset')]; if (!pr) return;
+        bunyi('klik'); A.mode = pr.mode; A.margin = pr.m; simpanMode(A.mode); simpanMargin(A.margin);
+        gambarAtur(); gambarDaftar(); gambarRumus(); return;
+      }
       if (x.hasAttribute('data-saring')) { bunyi('klik'); A.saring = x.getAttribute('data-saring'); gambarDaftar(); gambarSaring(); return; }
       var a = x.getAttribute('data-katalog');
       if (a === 'tutup') tutup();
@@ -147,7 +174,7 @@
       if (g.id === 'katalogMargin') {
         var n = Number(String(g.value).replace(',', '.'));
         if (!(n >= 0 && n < 95)) { g.value = String(Math.round(A.margin * 1000) / 10); return; }
-        A.margin = n / 100; simpanMargin(A.margin); gambarDaftar(); gambarRumus();
+        A.margin = n / 100; simpanMargin(A.margin); gambarAtur(); gambarDaftar(); gambarRumus();
       }
     });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.classList.contains('buka')) { e.preventDefault(); tutup(); } });
@@ -155,7 +182,7 @@
   }
   function buka() {
     var d = pastikanDom();
-    A.margin = bacaMargin();
+    A.margin = bacaMargin(); A.mode = bacaMode();
     if (!d.classList.contains('buka')) A.dari = document.activeElement;
     d.classList.add('buka'); d.setAttribute('aria-hidden', 'false'); document.body.classList.add('alat-terbuka');
     d.querySelector('.lembar').setAttribute('aria-label', t('judul'));
@@ -174,7 +201,8 @@
       '<button type="button" class="tutup-alat" data-katalog="tutup" aria-label="' + esc(t('tutup')) + '" title="' + esc(t('tutup')) + '">' + IKON_TUTUP + '</button></div>' +
       '<div class="kt-atur">' +
         '<input id="katalogCari" type="search" autocomplete="off" spellcheck="false" placeholder="' + esc(t('cari')) + '" aria-label="' + esc(t('cari')) + '" value="' + esc(A.cari) + '">' +
-        '<label class="kt-margin" for="katalogMargin"><span>' + esc(t('margin')) + '</span><input id="katalogMargin" type="number" inputmode="decimal" min="0" max="90" step="0.5" value="' + esc(Math.round(A.margin * 1000) / 10) + '"><b>%</b></label>' +
+        '<label class="kt-margin" for="katalogMargin"><span>' + esc(t(A.mode === 'event' ? 'markup' : 'margin')) + '</span><input id="katalogMargin" type="number" inputmode="decimal" min="0" max="90" step="0.5" value="' + esc(Math.round(A.margin * 1000) / 10) + '"><b>%</b></label>' +
+        '<span class="kt-preset" id="katalogPreset" role="group" aria-label="' + esc(t('preset')) + '"></span>' +
         '<label class="kt-urut"><span>' + esc(t('urut')) + '</span><select id="katalogUrut">' + ['nama', 'harga', 'ho'].map(function (u) { return '<option value="' + u + '"' + (A.urut === u ? ' selected' : '') + '>' + esc(t(u === 'nama' ? 'uNama' : u === 'harga' ? 'uHarga' : 'uHo')) + '</option>'; }).join('') + '</select></label>' +
       '</div>' +
       '<div class="kt-baris2"><div class="kt-saring" id="katalogSaring" role="group"></div>' +
@@ -183,7 +211,7 @@
         }).join('') + '<button type="button" class="btn" data-katalog="cetak">' + esc(t('cetak')) + '</button><span class="kt-status" id="katalogStatus" role="status" aria-live="polite"></span></div></div>' +
       '<div id="katalogDaftar" class="kt-daftar" aria-live="polite"><p class="ket-alat">' + esc(t('muat')) + '</p></div>' +
       '<p class="ket-alat kt-rumus" id="katalogRumus"></p>';
-    gambarSaring(); gambarRumus();
+    gambarSaring(); gambarAtur(); gambarRumus();
     muat(paksa).then(function () { gambarDaftar(); gambarRumus(); }, function () {
       var w = el('katalogDaftar'); if (w) w.innerHTML = '<div class="tolak-alat" role="alert">' + esc(t('gagal')) + ' <button type="button" class="btn dua" data-katalog="ulang">↻</button></div>';
     });
@@ -192,9 +220,19 @@
     var w = el('katalogSaring'); if (!w) return;
     w.innerHTML = ['semua', 'ho', 'nol'].map(function (s) { return '<button type="button" class="chip-alat' + (A.saring === s ? ' on' : '') + '" data-saring="' + s + '" aria-pressed="' + (A.saring === s) + '">' + esc(t(s)) + '</button>'; }).join('');
   }
+  /* Label kolom angka ikut mode; tombol cepat menyala cuma kalau mode DAN angkanya sama persis. */
+  function gambarAtur() {
+    var lb = document.querySelector('#katalog .kt-margin span'); if (lb) lb.textContent = t(A.mode === 'event' ? 'markup' : 'margin');
+    var inp = el('katalogMargin'); if (inp && Number(inp.value) / 100 !== A.margin) inp.value = String(Math.round(A.margin * 1000) / 10);
+    var w = el('katalogPreset'); if (!w) return;
+    w.innerHTML = ['direct', 'event'].map(function (k) {
+      var pr = PRESET[k], on = A.mode === pr.mode && Math.abs(A.margin - pr.m) < 1e-9;
+      return '<button type="button" class="chip-alat' + (on ? ' on' : '') + '" data-preset="' + k + '" aria-pressed="' + on + '">' + esc(t(k === 'event' ? 'presetEvent' : 'presetDirect')) + '</button>';
+    }).join('');
+  }
   function gambarRumus() {
     var w = el('katalogRumus'); if (!w) return;
-    w.textContent = t('rumus')(persen(A.margin)) + (D.data && D.data.diperbarui ? ' ' + t('per') + ' ' + D.data.diperbarui + '.' : '');
+    w.textContent = tm('rumus')(persen(A.margin)) + (D.data && D.data.diperbarui ? ' ' + t('per') + ' ' + D.data.diperbarui + '.' : '');
   }
   function cocok(x) {
     var q = String(A.cari || '').trim().toLowerCase();
@@ -208,7 +246,7 @@
     return true;
   }
   function terpilih() {
-    var ls = D.daftar.filter(cocok).map(function (x) { x.h = harga(x.p.hs, x.p.h, A.margin); return x; });
+    var ls = D.daftar.filter(cocok).map(function (x) { x.h = harga(x.p.hs, x.p.h, A.margin, A.mode); return x; });
     var nama = function (a, b) { var x = String(a.p.n || '').toLowerCase(), y = String(b.p.n || '').toLowerCase(); return x < y ? -1 : x > y ? 1 : 0; };
     ls.sort(function (a, b) {
       if (A.urut === 'harga') return ((b.h && b.h.termasuk) || 0) - ((a.h && a.h.termasuk) || 0) || nama(a, b);
@@ -229,7 +267,7 @@
           '<span class="kt-stok"><b>' + nf(x.ho) + '</b> ' + esc(t('stokHo')) + ' · <b>' + nf(x.total) + '</b> ' + esc(t('stokTotal')) + '</span>' +
           (h ? '<small class="kt-rinci">' + rp(h.sebelum) + ' ' + esc(t('sebelum')) + ' · ' + esc(t('modal')) + ' ' + rp(p.hs) + (p.r ? ' · ' + esc(t('retail')) + ' ' + rp(p.r) : '') + '</small>' : '') + '</div>' +
         '<div class="kt-harga">' + (h
-          ? '<span class="lbl">' + esc(t('jual')) + '</span><b class="kt-besar">' + rp(h.termasuk) + '</b><small>' + esc(t('inkl')(persen(h.pajak))) + '</small>'
+          ? '<span class="lbl">' + esc(tm('jual')) + '</span><b class="kt-besar">' + rp(h.termasuk) + '</b><small>' + esc(t('inkl')(persen(h.pajak))) + '</small>'
           : '<b class="kt-tanpa">' + esc(t('tanpaHarga')) + '</b>') + '</div></article>';
     }).join('');
   }
@@ -238,7 +276,7 @@
   function tanggal() { var d = new Date(), z = function (n) { return (n < 10 ? '0' : '') + n; }; return d.getFullYear() + '-' + z(d.getMonth() + 1) + '-' + z(d.getDate()); }
   function csvTeks() {
     var sel = function (v) { var s = String(v == null ? '' : v); return /[",\n;]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; };
-    var baris = [t('kolom').map(sel).join(',')];
+    var baris = [tm('kolom').map(sel).join(',')];
     terpilih().forEach(function (x) {
       var p = x.p, h = x.h;
       baris.push([p.s, p.b, p.n, x.ho, x.total, p.hs || '', h ? h.sebelum : '', h ? Math.round(h.pajak * 1000) / 10 : '', h ? h.termasuk : '', p.r || ''].map(sel).join(','));
@@ -247,7 +285,7 @@
   }
   function unduhBlob(blob, ekor) {
     var u = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = u; a.download = 'katalog-jual-putus-' + tanggal() + '.' + ekor; a.style.display = 'none';
+    a.href = u; a.download = (A.mode === 'event' ? 'katalog-harga-event-' : 'katalog-jual-putus-') + tanggal() + '.' + ekor; a.style.display = 'none';
     document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(u); if (a.parentNode) a.parentNode.removeChild(a); }, 1500);
   }
@@ -260,7 +298,7 @@
     if (!D.data) return;
     var ls = terpilih(); if (!ls.length) return;
     var w = document.createElement('div'); w.id = 'lembarKatalog';
-    w.innerHTML = '<header class="kc-kepala"><h1>' + esc(t('cetakJudul')) + '</h1><p>' + esc(t('cetakKet')(tanggal())) + '</p></header>' +
+    w.innerHTML = '<header class="kc-kepala"><h1>' + esc(tm('cetakJudul')) + '</h1><p>' + esc(t('cetakKet')(tanggal())) + '</p></header>' +
       '<div class="kc-grid">' + ls.map(function (x) {
         var p = x.p, h = x.h;
         return '<div class="kc-sku" data-cetak-sku="' + esc(p.s || p.b) + '">' + fotoHtml(p.n) + '<div class="kc-teks"><b>' + esc(p.n || p.s) + '</b><small>' + esc([p.s, p.b].filter(Boolean).join(' · ')) + '</small></div>' +
@@ -311,21 +349,22 @@
   function xe(s) { return String(s == null ? '' : s).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
   function xlsxDari(ls, margin, info) {
     info = info || {};
+    var mode = info.mode === 'event' ? 'event' : 'direct', ev = mode === 'event';
     var m = Math.round(Number(margin) * 1000) / 1000;
     var kol = 'ABCDEFGHIJ', baris = [];
     var teks = function (r, c, v, st) { return '<c r="' + kol[c] + r + '" s="' + st + '" t="inlineStr"><is><t>' + xe(v) + '</t></is></c>'; };
     var angka = function (r, c, v, st) { return '<c r="' + kol[c] + r + '" s="' + st + '"><v>' + v + '</v></c>'; };
     var rumus = function (r, c, f, v, st) { return '<c r="' + kol[c] + r + '" s="' + st + '"><f>' + xe(f) + '</f><v>' + v + '</v></c>'; };
     baris.push('<row r="1" ht="22" customHeight="1">' + teks(1, 0, info.judul || '', 2) + '</row>');
-    baris.push('<row r="2">' + teks(2, 0, t('margin'), 3) + angka(2, 1, m, 4) + '</row>');
-    baris.push('<row r="3">' + teks(3, 0, t('xlsxCatatan'), 5) + '</row>');
+    baris.push('<row r="2">' + teks(2, 0, t(ev ? 'markup' : 'margin'), 3) + angka(2, 1, m, 4) + '</row>');
+    baris.push('<row r="3">' + teks(3, 0, tm('xlsxCatatan', mode), 5) + '</row>');
     baris.push('<row r="4">' + teks(4, 0, (info.per ? t('per') + ' ' + info.per : ''), 5) + '</row>');
-    baris.push('<row r="5" ht="32" customHeight="1">' + t('kolom').map(function (k, c) { return teks(5, c, k, 1); }).join('') + '</row>');
+    baris.push('<row r="5" ht="32" customHeight="1">' + tm('kolom', mode).map(function (k, c) { return teks(5, c, k, 1); }).join('') + '</row>');
     ls.forEach(function (x, i) {
-      var r = 6 + i, p = x.p, h = harga(p.hs, p.h, m), sel = [teks(r, 0, p.s || '', 6), teks(r, 1, p.b || '', 6), teks(r, 2, p.n || '', 0), angka(r, 3, x.ho, 7), angka(r, 4, x.total, 7)];
+      var r = 6 + i, p = x.p, h = harga(p.hs, p.h, m, mode), sel = [teks(r, 0, p.s || '', 6), teks(r, 1, p.b || '', 6), teks(r, 2, p.n || '', 0), angka(r, 3, x.ho, 7), angka(r, 4, x.total, 7)];
       if (h) {
         sel.push(angka(r, 5, Number(p.hs), 7));
-        sel.push(rumus(r, 6, 'ROUND(F' + r + '/(1-$B$2),0)', h.sebelum, 7));
+        sel.push(rumus(r, 6, ev ? 'ROUND(F' + r + '*(1+$B$2),0)' : 'ROUND(F' + r + '/(1-$B$2),0)', h.sebelum, 7));
         sel.push(angka(r, 7, h.pajak, 8));
         sel.push(rumus(r, 8, 'ROUND(G' + r + '*(1+H' + r + '),0)', h.termasuk, 9));
       }
@@ -434,14 +473,14 @@
     g.fillStyle = WARNA.pita; g.fillRect(0, 0, KV.lebar, KV.kepala - 28);
     g.fillStyle = WARNA.aksen; g.fillRect(0, KV.kepala - 30, KV.lebar, 4);
     g.textBaseline = 'alphabetic'; g.textAlign = 'left';
-    g.fillStyle = WARNA.tinta; g.font = '800 38px ' + HURUF_JUDUL; g.fillText(t('cetakJudul'), KV.tepi, 76);
+    g.fillStyle = WARNA.tinta; g.font = '800 38px ' + HURUF_JUDUL; g.fillText(tm('cetakJudul'), KV.tepi, 76);
     g.fillStyle = WARNA.redup; g.font = '700 19px ' + HURUF; g.fillText(t('cetakKet')(tanggal()), KV.tepi, 112);
     g.textAlign = 'right'; g.font = '700 16px ' + HURUF;
     if (opsi.per) g.fillText(t('per') + ' ' + opsi.per, KV.lebar - KV.tepi, 76);
     if (opsi.dari > 1) g.fillText(t('halaman')(opsi.ke, opsi.dari), KV.lebar - KV.tepi, 112);
     g.textAlign = 'left';
     ls.forEach(function (x, i) {
-      var kx = KV.tepi + (i % KV.kolom) * (kartuL + KV.celah), ky = KV.kepala + Math.floor(i / KV.kolom) * langkah(), p = x.p, h = harga(p.hs, p.h, A.margin);
+      var kx = KV.tepi + (i % KV.kolom) * (kartuL + KV.celah), ky = KV.kepala + Math.floor(i / KV.kolom) * langkah(), p = x.p, h = harga(p.hs, p.h, A.margin, A.mode);
       g.fillStyle = '#FFFFFF'; kotakBulat(g, kx, ky, kartuL, KV.kartu, 22); g.fill();
       g.lineWidth = 2; g.strokeStyle = WARNA.garis; g.stroke();
       var fx = kx + 16, fy = ky + 16, fs = 104;
@@ -478,7 +517,7 @@
       if (st) st.textContent = galat ? t('gagalBerkas') : '';
     };
     if (jenis === 'xlsx') {
-      try { unduhBlob(new Blob([xlsxDari(ls, A.margin, { judul: t('cetakJudul'), per: per })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'xlsx'); akhir(false); }
+      try { unduhBlob(new Blob([xlsxDari(ls, A.margin, { judul: tm('cetakJudul'), per: per, mode: A.mode })], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }), 'xlsx'); akhir(false); }
       catch (e) { akhir(true); }
       return;
     }
@@ -495,7 +534,7 @@
           var cv = gambarLembar(hl.ls, hl.foto, { per: per, tinggi: KV.tinggiA4, ke: k + 1, dari: hal.length });
           return keJpeg(cv).then(function (b) { return b.arrayBuffer(); }).then(function (ab) { acc.push({ bytes: new Uint8Array(ab), w: cv.width, h: cv.height }); return acc; });
         });
-      }, Promise.resolve([])).then(function (jp) { unduhBlob(new Blob([pdfDariJpeg(jp, t('cetakJudul'))], { type: 'application/pdf' }), 'pdf'); });
+      }, Promise.resolve([])).then(function (jp) { unduhBlob(new Blob([pdfDariJpeg(jp, tm('cetakJudul'))], { type: 'application/pdf' }), 'pdf'); });
     }).then(function () { akhir(false); }, function () { akhir(true); });
   }
 
