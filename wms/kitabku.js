@@ -198,6 +198,8 @@
       psPindah: 'Move card to this order', psGanti: 'Replace with this card', ps_cek: function (k, p) { return p ? 'Card ' + k + ' is linked to order ' + p + '.' : 'Card ' + k + ' is not linked to any order yet.'; },
       ps_cekBuka: ' The buyer has opened it.', ps_cekLama: 'This is a per-product card (the old kind).',
       kamera: 'Camera', kamTutup: 'Close camera', kamArahKartu: 'Point the camera at the card QR.', kamArahPesanan: 'Point the camera at the order number barcode on the label.', kamMuat: 'Opening the camera…',
+      pt_judul: 'Game monitor {cap}', pt_ket: 'Ranked games started per WIB day. Out of plays = players who used all 10 ranked plays in that game that day.', pt_tgl: 'Date', pt_k_triv: 'Quiz', pt_k_mem: 'Match', pt_k_adv: 'Dash', pt_triv: 'Animal Quiz', pt_mem: 'Memory Match', pt_adv: 'Adventure Dash', pt_total: 'Edition total',
+      pt_pemain: '{n} players', pt_habis: '{n} out of plays', pt_semua: 'Unique players across all games: {n}', pt_teratas: 'Top 5', pt_kosong: 'No scores yet.', pt_kom: 'Community Mission {n}/{t} ({p})', pt_komTanpa: 'Community Mission: {n} correct answers', pt_latihan: '{n} books played practice mode (never bought, scores stay off the leaderboard).', pt_dtk: 's',
       fn_judul: 'Campaign funnel {cap}', fn_dicetak: 'QR cards printed', fn_discan: 'Scanned in Mofmo Collection', fn_pembeli: 'Buyer books', fn_mainPembeli: 'Buyers who played a game',
       fn_dari: '{p} of the previous step', fn_latihan: '{n} books played practice mode (never bought, scores stay off the leaderboard).', fn_ket: 'Test cards and test vouchers (TES/UJI) are not counted.',
       v_judul: 'Voucher reconciliation', v_ket: 'Given = vouchers buyers received through QR cards and Kitab rewards. Used = from the Shopee report, or typed in. Typed numbers are kept on this device, per edition.',
@@ -257,6 +259,8 @@
       psPindah: 'Pindahkan ke pesanan ini', psGanti: 'Ganti dengan kartu ini', ps_cek: function (k, p) { return p ? 'Kartu ' + k + ' terpasang ke pesanan ' + p + '.' : 'Kartu ' + k + ' belum terpasang ke pesanan mana pun.'; },
       ps_cekBuka: ' Sudah dibuka pembeli.', ps_cekLama: 'Ini kartu per produk (cara lama).',
       kamera: 'Kamera', kamTutup: 'Tutup kamera', kamArahKartu: 'Arahkan kamera ke QR kartu.', kamArahPesanan: 'Arahkan kamera ke barcode No Pesanan di label.', kamMuat: 'Membuka kamera…',
+      pt_judul: 'Pantau game {cap}', pt_ket: 'Game ranked yang dimulai per hari WIB. Habis jatah = pemain yang sudah memakai 10 main ranked di game itu hari itu.', pt_tgl: 'Tanggal', pt_k_triv: 'Quiz', pt_k_mem: 'Match', pt_k_adv: 'Dash', pt_triv: 'Animal Quiz', pt_mem: 'Memory Match', pt_adv: 'Adventure Dash', pt_total: 'Total edisi',
+      pt_pemain: '{n} pemain', pt_habis: '{n} habis jatah', pt_semua: 'Pemain unik semua game: {n}', pt_teratas: '5 teratas', pt_kosong: 'Belum ada skor.', pt_kom: 'Misi Komunitas {n}/{t} ({p})', pt_komTanpa: 'Misi Komunitas: {n} jawaban benar', pt_latihan: '{n} buku main latihan (belum beli, skornya tidak masuk papan).', pt_dtk: 'dtk',
       fn_judul: 'Funnel kampanye {cap}', fn_dicetak: 'Kartu QR dicetak', fn_discan: 'Discan di Mofmo Collection', fn_pembeli: 'Buku pembeli', fn_mainPembeli: 'Pembeli yang main game',
       fn_dari: '{p} dari langkah sebelumnya', fn_latihan: '{n} buku main mode latihan (belum pernah beli, skornya tidak masuk papan).', fn_ket: 'Kartu dan voucher uji (TES/UJI) tidak dihitung.',
       v_judul: 'Rekonsiliasi voucher', v_ket: 'Dibagikan = voucher yang diterima pembeli lewat kartu QR dan hadiah Kitab. Dipakai = dari laporan Shopee, atau isi sendiri. Isian disimpan di perangkat ini, per edisi.',
@@ -288,7 +292,7 @@
   }
   function muatRingkas() {
     A.galat = ''; A.sibuk = true; gambar();
-    return panggil('ringkas').then(function (h) { A.sibuk = false; if (!h.ok) throw new Error(h.pesan || t('gagal')); A.ringkas = h; gambar(); if (h.acara) muatFunnel(); }, function (e) { A.sibuk = false; A.galat = e.message; gambar(); });
+    return panggil('ringkas').then(function (h) { A.sibuk = false; if (!h.ok) throw new Error(h.pesan || t('gagal')); A.ringkas = h; gambar(); if (h.acara) { muatFunnel(); muatPantau(); } else A.pantau = null; }, function (e) { A.sibuk = false; A.galat = e.message; gambar(); });
   }
   /* ---------- Funnel kampanye dan rekonsiliasi voucher (19 Okt 2026, Ferdy: "semua gas") ----------
      Funnel dari aksi admin 'funnel' (server kitab v14): kartu dicetak, discan, buku pembeli, pembeli yang main.
@@ -303,6 +307,53 @@
       if (A.funnel) A.vpakai = bacaPakai(h.acara.id);
       if (A.tab === 'ringkas') gambar();
     }, function () { A.funnel = null; });
+  }
+  /* ---------- Pantau game (21 Okt 2026, Ferdy: "Pantau game di WMS") ----------
+     Aksi admin 'pantauGame' (server kitab v28): per hari WIB sejak edisi mulai, per game ranked: game dimulai,
+     pemain unik, pemain yang menghabiskan jatah 10. Plus total edisi, 5 teratas tiap papan, Misi Komunitas, latihan.
+     Server lama tanpa aksi itu, atau tanpa edisi aktif: bagiannya tidak tampil, Ringkas lain tetap jalan. */
+  var PT_GAME = ['triv', 'mem', 'adv'];
+  function muatPantau() {
+    return panggil('pantauGame').then(function (h) {
+      A.pantau = h && h.ok && h.acara && Array.isArray(h.hari) ? h : null;
+      if (A.tab === 'ringkas') gambar();
+    }, function () { A.pantau = null; });
+  }
+  function tglPantau(tgl) {
+    var d = new Date(tgl + 'T00:00:00Z');
+    try { return d.toLocaleDateString(bhs() === 'id' ? 'id-ID' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short', timeZone: 'UTC' }); } catch (e) { return tgl; }
+  }
+  function selPantau(g, x) {
+    x = x || { main: 0, pemain: 0, habis: 0 };
+    return '<td class="num' + (x.main ? '' : ' kb-pt-nol') + '" data-g="' + g + '"><b>' + nf(x.main) + '</b>' +
+      (x.pemain ? ' <small>' + esc(teksIsi('pt_pemain', { n: nf(x.pemain) })) + '</small>' : '') +
+      (x.habis ? ' <small class="kb-pt-habis">' + esc(teksIsi('pt_habis', { n: nf(x.habis) })) + '</small>' : '') + '</td>';
+  }
+  function htmlPantau() {
+    var P = A.pantau; if (!P) return '';
+    var kepala = '<tr><th>' + esc(t('pt_tgl')) + '</th>' + PT_GAME.map(function (g) { return '<th class="num" title="' + esc(t('pt_' + g)) + '">' + esc(t('pt_k_' + g)) + '</th>'; }).join('') + '</tr>';
+    var isi = P.hari.slice().reverse().map(function (h) {
+      return '<tr data-tgl="' + esc(h.tgl) + '"><th scope="row">' + esc(tglPantau(h.tgl)) + '</th>' + PT_GAME.map(function (g) { return selPantau(g, h[g]); }).join('') + '</tr>';
+    }).join('');
+    var T = P.total || {}, kaki = '<tr><th scope="row">' + esc(t('pt_total')) + '</th>' + PT_GAME.map(function (g) { return selPantau(g, T[g] && { main: T[g].main, pemain: T[g].pemain, habis: 0 }); }).join('') + '</tr>';
+    var papan = PT_GAME.map(function (g) {
+      var L = ((P.papan || {})[g] || []).map(function (b, i) {
+        return '<li><span class="kb-pt-no">' + (i + 1) + '</span><span class="kb-pt-nama">' + esc(b.nama || '') + (b.tag ? ' <small>#' + esc(b.tag) + '</small>' : '') + '</span><b>' + nf(b.nilai) + '</b>' +
+          (b.detik != null ? '<small class="kb-pt-dtk">' + nf(b.detik) + ' ' + esc(t('pt_dtk')) + '</small>' : '') + '</li>';
+      }).join('');
+      return '<div class="kb-pt-kartu" data-papan="' + g + '"><h4>' + esc(t('pt_' + g)) + ' · ' + esc(t('pt_teratas')) + '</h4>' + (L ? '<ol>' + L + '</ol>' : '<p class="ket-alat">' + esc(t('pt_kosong')) + '</p>') + '</div>';
+    }).join('');
+    var K = P.komunitas, kom = '';
+    if (K) {
+      var tgt = Number(K.target) || 0, pr = tgt ? Math.min(100, Math.round(K.n / tgt * 100)) : 0;
+      kom = '<div class="kb-pt-kom" data-pantau-kom><span>' + esc(tgt ? teksIsi('pt_kom', { n: nf(K.n), t: nf(tgt), p: persen(K.n, tgt) }) : teksIsi('pt_komTanpa', { n: nf(K.n) })) + '</span>' +
+        (tgt ? '<div class="kb-fn-batang" aria-hidden="true"><i style="width:' + pr + '%"></i></div>' : '') + '</div>';
+    }
+    return '<section class="kb-kotak kb-pantau" id="kbPantau"><h3>' + esc(teksIsi('pt_judul', { cap: P.acara.cap || P.acara.nama || '' })) + '</h3><p class="ket-alat">' + esc(t('pt_ket')) + '</p>' +
+      '<div class="hpp-gulung"><table class="kb-pt-tabel"><thead>' + kepala + '</thead><tbody>' + isi + '</tbody><tfoot>' + kaki + '</tfoot></table></div>' +
+      '<p class="ket-alat" data-pantau-semua>' + esc(teksIsi('pt_semua', { n: nf(T.semua ? T.semua.pemain : 0) })) + '</p>' +
+      '<div class="kb-pt-papan">' + papan + '</div>' + kom +
+      '<p class="ket-alat" data-pantau-latihan>' + esc(teksIsi('pt_latihan', { n: nf(P.latihan) })) + '</p></section>';
   }
   function bacaPakai(aid) { try { var o = JSON.parse(W.localStorage.getItem(KUNCI_PAKAI + aid) || '{}'); return o && typeof o === 'object' ? o : {}; } catch (e) { return {}; } }
   function simpanPakai() { try { W.localStorage.setItem(KUNCI_PAKAI + A.funnel.acara.id, JSON.stringify(A.vpakai || {})); } catch (e) {} }
@@ -564,7 +615,7 @@
       /* tombol tingkat cuma muncul selama belum ada hadiah papan yang mulai di bawah peringkat 1 */
       ((r.hadiah || []).some(function (h) { return h.jenis === 'papan' && Number(h.peringkat_dari) > 1; }) ? '' :
         '<div class="kb-tingkat-usul"><button type="button" class="btn dua" data-kb="tingkat3">' + esc(t('tingkat3')) + '</button><small class="ket-alat">' + esc(t('tingkat3Ket')) + '</small></div>') + '</section>';
-    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + htmlSiap(r) + '<div class="kb-kpis">' + kpi + '</div>' + htmlFunnel() + acara + hadiah;
+    return (A.pesan ? '<div class="tolak-alat" role="alert">' + esc(A.pesan) + '</div>' : '') + htmlSiap(r) + '<div class="kb-kpis">' + kpi + '</div>' + htmlFunnel() + htmlPantau() + acara + hadiah;
   }
   /* ---------- Siap edisi (18 Okt 2026, mockup disetujui Ferdy) ----------
      Cek kesiapan edisi sebelum dan selama edisi: tanggal, tingkat papan, kode voucher, hadiah menyala,

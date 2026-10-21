@@ -30,7 +30,7 @@
       tidakKetemu: ' not found. Check the label, or type part of the SKU name.', kapasitas: 'pcs', alsoAt: 'This SKU is also at', paspor: 'SKU passport',
       kosong: 'Empty', rendah: 'Below 50%', penuh: 'Full', lebih: 'Over capacity', ok: 'OK', terakhir: 'Last scans', hasilCari: 'Results for',
       sku: 'SKUs', slot: 'Locations', diRak: 'on the racks', lokasiSku: 'Locations for this barcode', belumAdaDiRak: 'Not on any rack in the warehouse map.',
-      unit: 'Unit', semuaUnit: 'All units', cetak: 'Print labels', ketLabel: 'A4, 2 x 5 labels per sheet, Code 128. Same codes as MOFMO Location Master, so the scanner gun and Excel SCAN STATION read them too.',
+      unit: 'Unit', semuaUnit: 'All units', cetak: 'Print cards', ketLabel: 'One 10.5 x 7 cm card per display slot, 8 per A4 sheet. Location codes follow Jubelio: L (rack level) - rack - position, e.g. L4-R1-A. The bottom barcode is the Jubelio code, and Scan here reads both the Jubelio code and the old WMS code. Print at 100% (Actual size).', staging: 'Inbound staging', overflow: 'Overflow', kosongSlot: 'empty slot',
       kembali: 'Back to scan', judulPaspor: 'SKU passport', milik: 'pcs owned', masuk: 'Received at the warehouse', diGudang: 'On warehouse racks now', dikirim: 'Shipped to stores',
       diGerai: 'On store shelves now', laku: 'Sold', koreksi: 'Count corrections', pertama: 'first', diGudangJudul: 'In the warehouse', belumLokasi: 'Not put away yet',
       diGeraiJudul: 'At stores', terima: 'received', terjual: 'sold', stok: 'on shelf', riwayat: 'History', tanpaRiwayat: 'No movement in the ledger yet.',
@@ -49,7 +49,7 @@
       tidakKetemu: ' tidak ditemukan. Cek labelnya, atau ketik sebagian nama SKU.', kapasitas: 'pcs', alsoAt: 'SKU ini juga ada di', paspor: 'Paspor SKU',
       kosong: 'Kosong', rendah: 'Di bawah 50%', penuh: 'Penuh', lebih: 'Melebihi kapasitas', ok: 'OK', terakhir: 'Scan terakhir', hasilCari: 'Hasil untuk',
       sku: 'SKU', slot: 'Lokasi', diRak: 'di rak', lokasiSku: 'Lokasi barcode ini', belumAdaDiRak: 'Belum ada di rak mana pun di peta gudang.',
-      unit: 'Unit', semuaUnit: 'Semua unit', cetak: 'Cetak label', ketLabel: 'A4, 2 x 5 label per lembar, Code 128. Kodenya sama dengan MOFMO Location Master, jadi terbaca juga oleh scanner gun dan SCAN STATION di Excel.',
+      unit: 'Unit', semuaUnit: 'Semua unit', cetak: 'Cetak kartu', ketLabel: 'Satu kartu 10,5 x 7 cm per slot peraga, 8 kartu per lembar A4. Kode lokasi mengikuti Jubelio: L (level tumpukan rak) - rak - posisi, misalnya L4-R1-A. Barcode bawah memakai kode Jubelio, dan Scan di sini membaca kode Jubelio maupun kode WMS lama. Cetak dengan skala 100% (Actual size).', staging: 'Staging masuk', overflow: 'Overflow', kosongSlot: 'slot kosong',
       kembali: 'Kembali ke scan', judulPaspor: 'Paspor SKU', milik: 'pcs dimiliki', masuk: 'Masuk gudang', diGudang: 'Di rak gudang sekarang', dikirim: 'Dikirim ke gerai',
       diGerai: 'Di rak gerai sekarang', laku: 'Terjual', koreksi: 'Koreksi hitung', pertama: 'pertama', diGudangJudul: 'Di gudang', belumLokasi: 'Belum di-putaway',
       diGeraiJudul: 'Di gerai', terima: 'diterima', terjual: 'terjual', stok: 'di rak', riwayat: 'Riwayat', tanpaRiwayat: 'Belum ada pergerakan di buku besar.',
@@ -67,7 +67,7 @@
 
   /* ---------- data ---------- */
   var D = { janji: null, waktu: 0, gudang: null, data: null };
-  var X = { lok: {}, perBc: {}, prodBc: {}, prodNama: {}, pendek: {}, lokIdx: {} };
+  var X = { lok: {}, jub: {}, perBc: {}, prodBc: {}, prodNama: {}, pendek: {}, lokIdx: {} };
   function norm(s) { return String(s || '').toLowerCase().replace(/mofmo ?friends/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim(); }
   function muat(paksa) {
     if (D.janji && !paksa && Date.now() - D.waktu < 5 * 60 * 1000) return D.janji;
@@ -106,10 +106,36 @@
     } catch (e) {}
   }
   function bacaPerangkat() { try { var c = JSON.parse(W.localStorage.getItem(KUNCI_SIMPAN) || 'null'); return c && (c.gudang || c.data) ? c : null; } catch (e) { return null; } }
+  /* Kode rak Jubelio (20 Okt 2026). Ferdy mengganti kode rak di Jubelio jadi L{level}-{rak}-{posisi}:
+     L di sini level tumpukan rak, bukan lantai gedung. R1-4A = L4-R1-A, R1-3A-1 = L3-R1-A1,
+     T1-0A = L0-T1-A. Overflow dan IN tetap kode lama Jubelio: X-02 = L1-OF-1-02, X-IN = L1-IN-1-01.
+     Location Master WMS belum diganti, jadi kode Jubelio diturunkan dari kode WMS di sini, dan
+     format Jubelio sebelumnya (L1-R1-4-A) tetap dikenali karena labelnya mungkin sudah tercetak. */
+  function kodeJubelio(kode) {
+    var k = String(kode || '').toUpperCase().trim();
+    if (k === 'X-IN') return 'L1-IN-1-01';
+    var x = k.match(/^X-(\d+)$/); if (x) return 'L1-OF-1-' + ('0' + Number(x[1])).slice(-2);
+    var m = k.match(/^([A-Z]\d+)-(\d+)([A-Z])(?:-(\d+))?$/);
+    return m ? 'L' + m[2] + '-' + m[1] + '-' + m[3] + (m[4] || '') : k;
+  }
+  /* Bentuk apa pun (kode WMS R1-4A, Jubelio lama L1-R1-4-A, Jubelio baru L4-R1-A, X-02, L1-OF-1-02)
+     jadi kode Jubelio baru. Location Master boleh sudah diganti ke kode Jubelio, label lama masih
+     menempel di rak sampai kartu baru dipasang. */
+  function kodeBaku(kode) {
+    var k = String(kode || '').toUpperCase().trim();
+    var l = k.match(/^L1-([A-Z]\d+)-(\d+)-([A-Z]\d?)$/);
+    if (l) return 'L' + l[2] + '-' + l[1] + '-' + l[3];
+    return kodeJubelio(k);
+  }
+  function kodeJubelioLama(kode) {
+    var k = String(kode || '').toUpperCase().trim(), m = k.match(/^([A-Z]\d+)-(\d+)([A-Z])(?:-(\d+))?$/);
+    return m ? 'L1-' + m[1] + '-' + m[2] + '-' + m[3] + (m[4] || '') : kodeJubelio(k);
+  }
   function susunIndeks() {
-    X = { lok: {}, perBc: {}, prodBc: {}, prodNama: {}, pendek: {}, lokIdx: {} };
+    X = { lok: {}, jub: {}, perBc: {}, prodBc: {}, prodNama: {}, pendek: {}, lokIdx: {} };
     ((D.gudang && D.gudang.lokasi) || []).forEach(function (l) {
       X.lok[String(l.kode).toUpperCase()] = l;
+      X.jub[kodeJubelio(l.kode)] = l; X.jub[kodeJubelioLama(l.kode)] = l; X.jub[kodeBaku(l.kode)] = l;
       var bc = String(l.barcode || '');
       if (bc) { (X.perBc[bc] = X.perBc[bc] || []).push(l); if (l.sku) X.pendek[norm(l.sku)] = bc; }
     });
@@ -239,7 +265,8 @@
     muat().then(function () {
       var k = q.toUpperCase();
       if (D.dariSimpanan && W.WmsPetik) setTimeout(function () { var h = el('alatHasil'); if (h && !h.querySelector('.alat-simpanan')) h.insertAdjacentHTML('afterbegin', '<p class="alat-simpanan" role="status">' + esc(W.WmsPetik.teksSimpanan(D.dariSimpanan)) + '</p>'); }, 0);
-      if (X.lok[k]) { tampilSlot(X.lok[k]); bunyi('scanOk'); getar(30); catat(k); return; }
+      var sl = X.lok[k] || X.jub[k] || X.jub[kodeBaku(k)];
+      if (sl) { tampilSlot(sl); bunyi('scanOk'); getar(30); catat(k); return; }
       var angka = q.replace(/\s+/g, '');
       if (/^\d{6,}$/.test(angka) && (X.prodBc[angka] || X.perBc[angka])) { tampilBarcode(angka); bunyi('scanOk'); getar(30); catat(angka); return; }
       if (q.length >= 2) {
@@ -291,7 +318,7 @@
       if (prod.length >= 12 || !p.n || lihat[p.b]) return;
       if (norm(p.n).indexOf(n) > -1 || String(p.s || '').toLowerCase().indexOf(q.toLowerCase()) > -1) { lihat[p.b] = 1; prod.push(p); }
     });
-    ((D.gudang && D.gudang.lokasi) || []).forEach(function (l) { if (lok.length < 40 && String(l.kode).toUpperCase().indexOf(k) === 0) lok.push(l); });
+    ((D.gudang && D.gudang.lokasi) || []).forEach(function (l) { if (lok.length < 40 && (String(l.kode).toUpperCase().indexOf(k) === 0 || kodeJubelio(l.kode).indexOf(k) === 0)) lok.push(l); });
     /* nama pendek gudang ("KC Bear") juga dicari */
     Object.keys(X.pendek).forEach(function (s) { var p = X.prodBc[X.pendek[s]]; if (n && s.indexOf(n) > -1 && p && !lihat[p.b] && prod.length < 12) { lihat[p.b] = 1; prod.push(p); } });
     return { prod: prod, lok: lok };
@@ -354,17 +381,115 @@
     }, function () { el('alatIsi').innerHTML = '<div class="tolak-alat">' + esc(t('gagalData')) + '</div>'; });
   }
   function labelTerpilih() { return ((D.gudang && D.gudang.lokasi) || []).filter(function (l) { return !A.unit || String(l.unit || l.kode.split('-')[0]) === A.unit; }); }
-  function htmlLabel(l) {
-    var nama = namaSlot(l);
-    return '<div class="label-rak" data-kode="' + esc(l.kode) + '"><div class="label-atas"><b class="label-kode">' + esc(l.kode) + '</b>' + (l.peran ? '<span class="label-peran">' + esc(l.peran) + '</span>' : '') + '</div>' +
-      kode128(String(l.kode)) +
-      '<div class="label-bawah">' + fotoHtml(nama, l.sku, 'kecil') + '<span class="label-nama"><b>' + esc(l.sku || '') + '</b><small>' + esc(metaSlot(l)) + '</small></span></div></div>';
+  /* Kartu peraga (mockup v11 disetujui Ferdy 20 Okt 2026): 10,5 x 7 cm, 8 per A4. Kode lokasi Jubelio
+     besar di kiri atas, badge zona di kanan atas, nama ikut listing Shopee (baris kecil nama listing,
+     baris besar nama pendek + variasi), kode SKU dan maks. pcs (Maks. Qty), barcode SKU EAN-13,
+     barcode lokasi Code 128 berisi kode Jubelio. PICK/RESERVE tidak ditulis: Jubelio tidak punya kolomnya. */
+  var WARNA_ZONA = { RACK: '#1F5FA8', STACK: '#C0661B', TABLE: '#2E7D4F', OVERFLOW: '#B03A2E', STAGING: '#B03A2E' };
+  /* Nama listing dan variasi Shopee per barcode (Seller Centre, 20 Okt 2026: 18 listing, 43 variasi).
+     Kolom ketiga nama pendek di kartu; "S" di Mini Backpack sengaja dibuang (permintaan Ferdy).
+     Barcode yang tidak ada di Shopee (misalnya S Netherland Dwarf) memakai nama Master Produk. */
+  var LISTING = {
+    plush: 'MofmoFriends Plush - ', kc: 'MofmoFriends - Key Charm', kr: 'MofmoFriends - Key Ring', cap: 'Cap for MofmoFriends - S',
+    ball: 'MofmoFriends Mascot Ball - Key Chain', ruck: 'MofmoFriends - Mini Rucksck (Key Charm)', bp: 'MofmoFriends S Mini Backpack (Key Charm)'
+  };
+  var PENDEK = { kc: 'Key Charm', kr: 'Key Ring', cap: 'Cap S', ball: 'Mascot Ball', ruck: 'Mini Rucksack', bp: 'Mini Backpack' };
+  var SHOPEE = {
+    '4582586962737': ['plush', 'Sea Otter', 'S'], '4582586962126': ['plush', 'Border Collie', 'S'], '4582586962225': ['plush', 'Angora Rabbit', 'S'],
+    '4582586963260': ['plush', 'Panda', 'S'], '4582586963291': ['plush', 'Panda', 'M'], '4582586962133': ['plush', 'Lamb', 'S'],
+    '4582586966605': ['plush', 'Red Panda', 'S'], '4582586966636': ['plush', 'Red Panda', 'M'], '4582586964403': ['plush', 'Reindeer', 'S'],
+    '4582586950512': ['plush', 'Yellow Shiba', 'S'], '4582586950536': ['plush', 'Yellow Shiba', 'M'], '4582586966612': ['plush', 'Elephant', 'S'],
+    '4582586966643': ['plush', 'Elephant', 'M'], '4582586966629': ['plush', 'Koala', 'S'], '4582586964434': ['plush', 'Pekingese', 'S'], '4582586962058': ['plush', 'Bear', 'S'],
+    '4582586966988': ['kc', 'Dwarf Rabbit'], '4582586967015': ['kc', 'Bear'], '4582586966971': ['kc', 'Bichon Frize'], '4582586966995': ['kc', 'British Short Hair'],
+    '4582586966544': ['kc', 'Shiba Inu'], '4582586964311': ['kc', 'Lamb'], '4582586964274': ['kc', 'Tiger'], '4582586964298': ['kc', 'Cow'],
+    '4582586966780': ['kr', 'Dwarf Rabbit'], '4582586966810': ['kr', 'Bear'], '4582586966773': ['kr', 'Bichon Frize'], '4582586966827': ['kr', 'Tiger'], '4582586966797': ['kr', 'British Short Hair'],
+    '4589715755918': ['ruck', 'Dwarf Rabbit'], '4589715755925': ['ruck', 'British Short Hair'],
+    '4582586961822': ['cap', 'Dwarf Rabbit'], '4582586964014': ['cap', 'Watermelon'], '4582586964021': ['cap', 'Banana'], '4582586966360': ['cap', 'Tomato'],
+    '4582586965714': ['ball', 'Yellow Tiger'], '4582586965721': ['ball', 'Border Collie'], '4582586965738': ['ball', 'Lamb'], '4582586965707': ['ball', 'Panda'],
+    '4582586968333': ['bp', 'Ivory'], '4582586968357': ['bp', 'Green'], '4582586968364': ['bp', 'Blue'], '4582586968340': ['bp', 'Pink']
+  };
+  function namaShopee(bc, cadangan) {
+    var x = SHOPEE[String(bc || '')];
+    if (!x) return { listing: '', pendek: cadangan || '' };
+    if (x[0] === 'plush') return { listing: LISTING.plush + x[1], pendek: 'Plush ' + x[1] + ' · ' + x[2] };
+    return { listing: LISTING[x[0]], pendek: PENDEK[x[0]] + ' · ' + x[1] };
   }
-  function gambarLabel() { var w = el('alatLabel'); if (w) w.innerHTML = labelTerpilih().map(htmlLabel).join(''); }
-  function cetak() {
-    var ls = labelTerpilih(); if (!ls.length) return;
-    var w = document.createElement('div'); w.id = 'lembarCetak'; w.innerHTML = ls.map(htmlLabel).join('');
-    document.body.appendChild(w); document.body.classList.add('cetak-label');
+  /* EAN-13: barcode SKU 13 angka dari pabrik; kode lain jatuh ke Code 128 */
+  var EAN_L = ['0001101', '0011001', '0010011', '0111101', '0100011', '0110001', '0101111', '0111011', '0110111', '0001011'];
+  var EAN_G = ['0100111', '0110011', '0011011', '0100001', '0011101', '0111001', '0000101', '0010001', '0001001', '0010111'];
+  var EAN_R = ['1110010', '1100110', '1101100', '1000010', '1011100', '1001110', '1010000', '1000100', '1001000', '1110100'];
+  var EAN_P = ['LLLLLL', 'LLGLGG', 'LLGGLG', 'LLGGGL', 'LGLLGG', 'LGGLLG', 'LGGGLL', 'LGLGLG', 'LGLGGL', 'LGGLGL'];
+  function eanSah(t) {
+    if (!/^\d{13}$/.test(t)) return false;
+    var j = 0; for (var i = 0; i < 12; i++) j += Number(t[i]) * (i % 2 ? 3 : 1);
+    return (10 - j % 10) % 10 === Number(t[12]);
+  }
+  function barcodeSku(t, kelas) {
+    if (!eanSah(t)) return kode128(t).replace('class="kode128"', 'class="kode128 ' + kelas + '"');
+    var pola = EAN_P[Number(t[0])], m = '101';
+    for (var i = 1; i < 7; i++) m += (pola[i - 1] === 'L' ? EAN_L : EAN_G)[Number(t[i])];
+    m += '01010'; for (var k = 7; k < 13; k++) m += EAN_R[Number(t[k])]; m += '101';
+    var tenang = 9, batang = '';
+    for (var x = 0; x < m.length; x++) if (m[x] === '1') batang += '<rect x="' + (tenang + x) + '" y="0" width="1" height="1"/>';
+    var total = m.length + 2 * tenang;
+    return '<svg class="ean13 ' + kelas + '" viewBox="0 0 ' + total + ' 1" preserveAspectRatio="none" shape-rendering="crispEdges" role="img" aria-label="' + esc(t) + '"><rect width="' + total + '" height="1" fill="#fff"/><g fill="#1b1410">' + batang + '</g></svg>';
+  }
+  function htmlLabel(l) {
+    var nama = namaSlot(l), p = X.prodBc[String(l.barcode || '')] || null, bc = String(l.barcode || '');
+    var jub = kodeJubelio(l.kode), sh = namaShopee(bc, nama);
+    var zona = String(l.peran === 'STAGING' ? 'STAGING' : (l.zona || '')).toUpperCase();
+    var warna = WARNA_ZONA[zona] || '#5c4a3d';
+    var meta = [p && p.s ? '<b class="label-kodesku">' + esc(p.s) + '</b>' : '', Number(l.kap) > 0 ? esc('maks. ' + nf(l.kap) + ' pcs') : ''].filter(Boolean).join(' · ');
+    return '<div class="label-rak" data-kode="' + esc(l.kode) + '" data-jubelio="' + esc(jub) + '"><span class="label-strip" style="background:' + warna + '"></span>' +
+      '<div class="label-atas"><b class="label-lok">' + esc(jub) + '</b>' + (zona ? '<span class="label-zona" style="background:' + warna + '">' + esc(zona) + '</span>' : '') + '</div>' +
+      '<div class="label-tengah">' + fotoHtml(nama, l.sku, 'kartu') +
+        '<div class="label-sku">' + (sh.listing ? '<span class="label-listing">' + esc(sh.listing) + '</span>' : '') +
+        '<b class="label-nama">' + esc(sh.pendek || t('kosongSlot')) + '</b>' +
+        (meta ? '<span class="label-meta">' + meta + '</span>' : '') +
+        (bc ? barcodeSku(bc, 'kode-sku') + '<small class="label-angka">' + esc(bc) + '</small>' : '') + '</div></div>' +
+      '<div class="label-bawah">' + kode128(jub).replace('class="kode128"', 'class="kode128 kode-lok"') + '</div></div>';
+  }
+  /* nama Shopee terlalu panjang untuk satu baris dikecilkan sampai muat, tidak dipotong */
+  function pasNama(akar) {
+    Array.prototype.forEach.call((akar || document).querySelectorAll('.label-nama,.label-listing'), function (e) {
+      e.style.fontSize = ''; var f = parseFloat(getComputedStyle(e).fontSize) || 0, min = e.classList.contains('label-nama') ? 11 : 7, n = 0;
+      while (e.scrollWidth > e.clientWidth + 1 && f > min && n++ < 40) { f -= 0.5; e.style.fontSize = f + 'px'; }
+    });
+  }
+  /* Lembar cetak tersembunyi saat diukur (aturannya cuma berlaku waktu print), jadi lebar teks dihitung
+     dengan kanvas pada ukuran cetak: kolom nama 49 mm (105 - tepi 16 - foto 37 - jarak 3). */
+  function pasNamaCetak(akar) {
+    var kv = document.createElement('canvas').getContext('2d'); if (!kv) return;
+    var px = 96 / 25.4, lebar = 49 * px;
+    var ukur = function (sel, gaya, pt, minPt) {
+      Array.prototype.forEach.call(akar.querySelectorAll(sel), function (e) {
+        kv.font = gaya.replace('{}', pt + 'pt'); var w = kv.measureText(e.textContent || '').width;
+        if (w > lebar) e.style.fontSize = Math.max(minPt, Math.floor(pt * lebar / w * 10) / 10) + 'pt';
+      });
+    };
+    ukur('.label-nama', '800 {} "Baloo 2", Nunito, Arial, sans-serif', 17, 10);
+    ukur('.label-listing', '700 {} Nunito, Arial, sans-serif', 7.6, 5.5);
+  }
+  function gambarLabel() { var w = el('alatLabel'); if (w) { w.innerHTML = labelTerpilih().map(htmlLabel).join(''); pasNama(w); } }
+  function cetak() { cetakDaftar(labelTerpilih()); }
+  /* 20 Okt: kartu dari Warehouse condition 3D. Kode WMS atau Jubelio, urut seperti diminta, kode asing dilewati. */
+  function cetakKode(kodes) {
+    return muat().then(function () {
+      var ls = [];
+      (kodes || []).forEach(function (k) {
+        var K = String(k || '').toUpperCase().trim(), l = X.lok[K] || X.jub[K] || X.jub[kodeBaku(K)];
+        if (l && ls.indexOf(l) < 0) ls.push(l);
+      });
+      cetakDaftar(ls);
+      return ls.length;
+    });
+  }
+  function cetakDaftar(ls) {
+    if (!ls || !ls.length) return;
+    /* per 8 kartu satu halaman A4 tersendiri, supaya halaman kedua dan seterusnya punya tepi atas yang sama */
+    var hal = []; for (var i = 0; i < ls.length; i += 8) hal.push('<div class="halaman-kartu">' + ls.slice(i, i + 8).map(htmlLabel).join('') + '</div>');
+    var w = document.createElement('div'); w.id = 'lembarCetak'; w.innerHTML = hal.join('');
+    document.body.appendChild(w); document.body.classList.add('cetak-label'); pasNamaCetak(w);
     var beres = function () { document.body.classList.remove('cetak-label'); if (w.parentNode) w.parentNode.removeChild(w); };
     try { W.print(); } finally { setTimeout(beres, 0); }
   }
@@ -477,7 +602,7 @@
     var isi = el('alatIsi'); if (isi) isi.scrollTop = 0;
   }
 
-  W.WmsAlat = { buka: buka, tutup: tutup, paspor: paspor, kode128: kode128, _hitung: hitungPaspor,
+  W.WmsAlat = { buka: buka, tutup: tutup, paspor: paspor, kode128: kode128, kodeJubelio: kodeJubelio, kodeBaku: kodeBaku, namaShopee: namaShopee, barcodeSku: barcodeSku, cetakKode: cetakKode, _hitung: hitungPaspor,
     /* untuk Petik tanpa sinyal (petik.js) */
     _muat: function () { return muat(); }, _data: function () { return { gudang: D.gudang, data: D.data, dariSimpanan: D.dariSimpanan || '' }; } };
 })();
