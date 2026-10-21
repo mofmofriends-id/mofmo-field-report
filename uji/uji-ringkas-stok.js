@@ -1,5 +1,5 @@
 /* Uji halaman Stock overview, Warehouse racks (Inventory) dan Overview (Shipments) di wms/tata.js, 17 Okt 2026.
- * Harapan: "20 pemeriksaan, SEMUA LULUS".
+ * Harapan: "22 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Mockup 15 Okt disetujui Ferdy ("oke good simpan dlu"), lalu 17 Okt
  * "integrasiin dlu" sebelum video WMS baru direkam. Menu Warehouse sudah dibubarkan
@@ -20,7 +20,7 @@ const AKAR = process.env.AKAR || path.resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 20;
+const DIHARAPKAN = 22;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
@@ -252,8 +252,8 @@ const PALSU_AWAL = () => {
     /* ================= menu ================= */
     await ke(p, 'stok'); await jeda(800);
     const m1 = await bacaMenu(p);
-    c('A1 Inventory terbuka: Stock overview dan Warehouse racks paling atas, anak lama tetap, Rack replenishment tetap terakhir',
-      /^l4stok=Stock overview\|l4rak=Warehouse racks\|bukubesar=/.test(m1.anak) && /\|obdIsiUlang=Isi ulang rak$/.test(m1.anak) && m1.atas === 'ringkasan,stok,laku,rencana,kinerja,sehat', JSON.stringify(m1));
+    c('A1 Inventory terbuka: Stock overview paling atas (Warehouse condition tidak jadi menu sendiri, ada di Kondisi persediaan › Gudang), anak lama tetap, Rack replenishment tetap terakhir',
+      /^l4stok=Stock overview\|bukubesar=/.test(m1.anak) && !/l4rak/.test(m1.anak) && /\|kondisi=/.test(m1.anak) && /\|obdIsiUlang=Isi ulang rak$/.test(m1.anak) && m1.atas === 'ringkasan,stok,laku,rencana,kinerja,sehat', JSON.stringify(m1));
     await ke(p, 'rencana'); await jeda(800);
     const m2 = await bacaMenu(p);
     c('A2 Shipments terbuka: Overview paling atas, lalu Outbound · Offline, Outbound · Shopee, lalu anak lama',
@@ -299,17 +299,33 @@ const PALSU_AWAL = () => {
       perhatian.tipis === 'MF-PLU-010' && perhatian.rakkosong === 'MF-KC-008@R1-3B' && perhatian.tanpagerai === 'MF-PLU-040,MF-PLU-010', JSON.stringify(perhatian));
     await fe(p, () => document.querySelector('[data-l4t-hal-ini=l4stok] [data-l4t-alur=TRANSIT]').click()); await jeda(400);
     c('B8 tahap Transit di alur membuka Shipments · Overview', (await fe(p, () => window.HAL)) === 'l4kirim', '');
+    await ke(p, 'l4stok', () => !!document.querySelector('[data-l4t-hal-ini=l4stok] [data-l4t-alur=HO]'));
+    await fe(p, () => document.querySelector('[data-l4t-hal-ini=l4stok] [data-l4t-alur=HO]').click()); await jeda(400);
+    c('B9 tahap HO di alur membuka Kondisi persediaan › Gudang (tempat peta gudang sekarang)', (await fe(p, () => window.HAL)) === 'kondisi', await fe(p, () => window.HAL));
 
     /* ================= Warehouse racks ================= */
-    await ke(p, 'l4rak', () => !!document.querySelector('[data-l4t-hal-ini=l4rak] [data-l4t-slot]'));
+    /* 20 Okt: Warehouse racks jadi Warehouse condition dengan peta 3D sebagai tampilan awal (uji-gudang3d.js),
+       dan Ferdy: "hrsnya taruh di kondisi persediaan, bagian warehouse", jadi ia menempel di atas halaman
+       Kondisi persediaan › Gudang (HAL kondisi). Grid per level tetap di balik tombol 2D; yang diuji di sini grid itu. */
+    await ke(p, 'kondisi', () => !!document.querySelector('[data-l4t-hal-ini=kondisi] [data-l4t-tampil="2d"]'));
+    await fe(p, () => document.querySelector('[data-l4t-hal-ini=kondisi] [data-l4t-tampil="2d"]').click());
+    await tungguBingkai(p, () => !!document.querySelector('[data-l4t-hal-ini=kondisi] [data-l4t-slot]'), 4000);
     const rk = await fe(p, () => {
-      const s = document.querySelector('[data-l4t-hal-ini=l4rak]');
+      const s = document.querySelector('[data-l4t-hal-ini=kondisi]');
       const grup = Array.from(s.querySelectorAll('[data-l4t-unit]')).map(g => g.getAttribute('data-l4t-unit') + ':' + Array.from(g.querySelectorAll('[data-l4t-slot]')).map(x => x.getAttribute('data-l4t-slot') + (x.classList.contains('kosong') ? '!' : x.classList.contains('rendah') ? '~' : '')).join(',')).join(' | ');
       const angka = {}; s.querySelectorAll('[data-l4t-angka]').forEach(x => { angka[x.getAttribute('data-l4t-angka')] = x.querySelector('strong').textContent; });
       return { grup, angka };
     });
     c('C1 lokasi dikelompokkan per unit: R1 (R1-4A, R1-3B kosong, R1-2A kosong), T2 (T2-1A di bawah 50%), X overflow (X-01)',
       rk.grup === 'R1:R1-4A,R1-3B!,R1-2A! | T2:T2-1A~ | X:X-01', rk.grup);
+    /* 20 Okt, Ferdy: "nomor rak ke atas, misal R1 1, R1 2 itu level/lantai". Rak digambar seperti tampak
+       depan: satu baris per level, level paling atas di atas, level 1 (lantai) paling bawah. Overflow tetap grid. */
+    const lv = await fe(p, () => {
+      const s = document.querySelector('[data-l4t-hal-ini=kondisi] [data-l4t-unit=R1]');
+      return Array.from(s.querySelectorAll('[data-l4t-level]')).map(r => r.getAttribute('data-l4t-level') + '=' + (r.querySelector('.lvl') || {}).textContent + ':' + Array.from(r.querySelectorAll('[data-l4t-slot]')).map(x => x.getAttribute('data-l4t-slot')).join(',')).join(' | ');
+    });
+    c('C3 unit R1 tampil per level dari atas ke bawah: Level 4 (R1-4A), Level 3 (R1-3B), Level 2 (R1-2A)',
+      lv === '4=Level 4:R1-4A | 3=Level 3:R1-3B | 2=Level 2:R1-2A', lv);
     c('C2 ringkasan: 3 dari 5 lokasi terisi, 29 pcs di lokasi, 2 lokasi kosong',
       teksAngka(rk.angka.terisi) === '35' && teksAngka(rk.angka.pcs) === '29' && teksAngka(rk.angka.kosong) === '2', JSON.stringify(rk.angka));
 
@@ -339,7 +355,7 @@ const PALSU_AWAL = () => {
     await masuk(hp, 'id');
     await fe(hp, () => { document.documentElement.lang = 'id'; });
     const hasil = [];
-    for (const [h, sel] of [['l4stok', '[data-l4t-sku]'], ['l4rak', '[data-l4t-slot]'], ['l4kirim', '[data-l4t-tahap]']]) {
+    for (const [h, sel] of [['l4stok', '[data-l4t-sku]'], ['kondisi', '[data-g3-krat]'], ['l4kirim', '[data-l4t-tahap]']]) {
       await ke(hp, h, s => !!document.querySelector('[data-l4t-hal-ini] ' + s), );
       await tungguBingkai(hp, s => !!document.querySelector(s), 6000, '[data-l4t-hal-ini=' + h + '] ' + sel);
       hasil.push(await fe(hp, h => ({ h, lebar: document.documentElement.scrollWidth, em: /\u2014/.test(document.getElementById('isi').innerText), judul: (document.querySelector('[data-l4t-hal-ini=' + h + '] h1') || {}).textContent }), h));
@@ -347,8 +363,8 @@ const PALSU_AWAL = () => {
     c('E1 HP 390 px: tiga halaman tanpa geser samping dan tanpa tanda pisah panjang', hasil.every(x => x.lebar <= 392 && !x.em), JSON.stringify(hasil));
     await ke(hp, 'stok'); await jeda(600);
     const mId = await bacaMenu(hp);
-    c('E2 bahasa Indonesia: judul Ringkasan stok, Rak gudang, Ringkasan pengiriman; menu ikut',
-      hasil.map(x => x.judul).join('|') === 'Ringkasan stok|Rak gudang|Ringkasan pengiriman' && /^l4stok=Ringkasan stok\|l4rak=Rak gudang\|/.test(mId.anak), JSON.stringify(hasil.map(x => x.judul)) + ' ' + mId.anak);
+    c('E2 bahasa Indonesia: judul Ringkasan stok, Kondisi gudang, Ringkasan pengiriman; menu ikut',
+      hasil.map(x => x.judul).join('|') === 'Ringkasan stok|Kondisi gudang|Ringkasan pengiriman' && /^l4stok=Ringkasan stok\|bukubesar=/.test(mId.anak), JSON.stringify(hasil.map(x => x.judul)) + ' ' + mId.anak);
     await ctx2.close();
   } catch (e) {
     c('MATI di tengah jalan', false, e.stack);

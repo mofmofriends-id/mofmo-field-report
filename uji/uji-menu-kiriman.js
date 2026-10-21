@@ -307,9 +307,12 @@ const PALSU_AWAL = () => {
     await masuk(hp, 'id');
     await fe(hp, () => { document.documentElement.lang = 'id'; });
     await ke(hp, 'rencana', () => !!document.querySelector('[data-l4t-jalur=offline] [data-l4t-kosong]'));
-    const ks = await fe(hp, () => ({ teks: (document.querySelector('[data-l4t-jalur=offline]') || {}).innerText || '', lebar: document.documentElement.scrollWidth, em: /—/.test(document.getElementById('isi').innerText) }));
-    c('M14 tanpa dokumen offline: kartu bilang belum ada kiriman ke gerai (bukan tabel kosong), HP 390 px tanpa geser samping, tanpa tanda pisah panjang',
-      /Belum ada kiriman ke gerai/.test(ks.teks) && ks.lebar <= 392 && !ks.em, JSON.stringify(ks).slice(0, 300));
+    const ks = await fe(hp, () => ({ teks: (document.querySelector('[data-l4t-jalur=offline]') || {}).innerText || '', tahap: document.querySelectorAll('[data-l4t-jalur=offline] [data-l4t-tahap]').length, lebar: document.documentElement.scrollWidth, em: /—/.test(document.getElementById('isi').innerText) }));
+    /* 20 Okt: kartu kosong dulu menulis "Belum ada kiriman ke gerai" plus lima kotak 0 (Delivered 0), padahal
+       surat jalan yang sudah Received tampil persis di bawahnya. Sekarang: tanpa kotak tahap, dan kalimatnya
+       bilang tidak ada rencana kirim yang SEDANG berjalan, surat jalan lama ada di bawah. */
+    c('M14 tanpa dokumen offline: tanpa kotak tahap nol, kalimat "tidak ada rencana kirim yang sedang berjalan" yang menunjuk surat jalan di bawah, HP 390 px tanpa geser samping, tanpa tanda pisah panjang',
+      ks.tahap === 0 && /Tidak ada rencana kirim yang sedang berjalan/.test(ks.teks) && /surat jalan/i.test(ks.teks) && !/Belum ada kiriman ke gerai/.test(ks.teks) && ks.lebar <= 392 && !ks.em, JSON.stringify(ks).slice(0, 300));
     await ke(hp, 'outbound'); await jeda(900);
     const subId = await fe(hp, () => document.getElementById('subJudul').textContent.replace(/\u00a0/g, ' '));
     c('M15 bahasa Indonesia: subjudul "Pengiriman · outbound"', subId === 'Pengiriman · outbound', subId);

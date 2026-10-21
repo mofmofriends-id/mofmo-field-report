@@ -1,5 +1,5 @@
 /* Uji alat WMS (wms/alat.js + rapihan papan), 10 Okt 2026 malam.
- * Harapan: "19 pemeriksaan, SEMUA LULUS".
+ * Harapan: "24 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Sesudah Mofmo Soft disetujui, Ferdy minta empat
  * rapihan dan dua alat baru ("gass", "gaskeun"):
@@ -30,7 +30,7 @@ const AKAR = process.env.AKAR || path.resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 19;
+const DIHARAPKAN = 24;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
@@ -59,7 +59,9 @@ const DATA = { ok: true, diperbarui: '2026-10-10 18:00',
 const GUDANG = { ok: true, lokasi: [
   { kode: 'R1-4A', sku: 'KC Bear', barcode: '4582586967015', isi: 74, kap: 120, zona: 'RACK', unit: 'R1', level: 4, pos: 'A', peran: 'PICK', persen: 74 / 120, rendah: false },
   { kode: 'T2-3A', sku: 'S Reindeer', barcode: '4582586963000', isi: 6, kap: 16, zona: 'TABLE', unit: 'T2', level: 3, pos: 'A', peran: 'PICK', persen: 6 / 16, rendah: true },
-  { kode: 'X-02', sku: 'S Reindeer', barcode: '4582586963000', isi: 1, kap: 40, zona: 'OVERFLOW', unit: 'X', level: 0, pos: '', peran: 'OVERFLOW', persen: 1 / 40, rendah: false }
+  { kode: 'X-02', sku: 'S Reindeer', barcode: '4582586963000', isi: 1, kap: 40, zona: 'OVERFLOW', unit: 'X', level: 0, pos: '', peran: 'OVERFLOW', persen: 1 / 40, rendah: false },
+  /* 20 Okt: satu baris yang sudah memakai kode Jubelio, seperti sesudah Location Master diganti */
+  { kode: 'L2-R2-B', sku: '', barcode: '', isi: 0, kap: 30, zona: 'RACK', unit: 'R2', level: 2, pos: 'B', peran: 'PICK', persen: 0, rendah: true }
 ] };
 
 /* ---------- papan lama palsu ---------- */
@@ -108,7 +110,7 @@ const KAMERA_PALSU = () => {
     detect() { window.__deteksi++; return Promise.resolve(window.__deteksi >= 2 ? [{ rawValue: 'T2-3A', format: 'code_128' }] : []); } };
   const md = { getUserMedia: function () { const c = document.createElement('canvas'); c.width = 64; c.height = 48; const s = c.captureStream(5); s.getTracks().forEach(t => { const st = t.stop.bind(t); t.stop = function () { window.__stop++; st(); }; }); return Promise.resolve(s); } };
   try { Object.defineProperty(navigator, 'mediaDevices', { value: md, configurable: true }); } catch (e) {}
-  window.print = function () { window.__cetak = document.body.classList.contains('cetak-label') ? 'kelas' : 'tanpa'; };
+  window.print = function () { window.__cetak = document.body.classList.contains('cetak-label') ? 'kelas' : 'tanpa'; window.__kartuCetak = Array.from(document.querySelectorAll('#lembarCetak .label-rak')).map(x => x.getAttribute('data-jubelio')); };
 };
 
 (async () => {
@@ -235,6 +237,24 @@ const KAMERA_PALSU = () => {
     c('W51 scan barcode SKU menyebut semua lokasinya (T2-3A, X-02); ketik nama "rein" memberi daftar SKU yang bisa dibuka paspornya; kode asing ditolak dengan bunyi tolak',
       /T2-3A/.test(s2) && /X-02/.test(s2) && /Reindeer/.test(s2) && /Reindeer/.test(s3) && s3t >= 1 && /not found/i.test(s4) && s4s === 'scanTolak', JSON.stringify([s2.slice(0, 160), s3.slice(0, 120), s3t, s4.slice(0, 120), s4s]));
 
+    /* 20 Okt, Ferdy: kode rak Jubelio diganti jadi L{level}-{rak}-{posisi} (R1-4A = L4-R1-A,
+       T2-3A = L3-T2-A, X-02 = L1-OF-1-02) dan barcode kartu peraga memakai kode Jubelio itu.
+       Scan WMS harus mengenali kode Jubelio baru dan juga format Jubelio lama (L1-R1-4-A). */
+    const jub = [];
+    for (const k of ['L4-R1-A', 'l3-t2-a', 'L1-R1-4-A', 'L1-OF-1-02']) { await tembak(p, k); jub.push((await teksAlat(p)).slice(0, 220)); }
+    /* Sesudah Location Master diganti ke kode Jubelio, label lama (R1-4A, L1-R1-4-A) masih menempel
+       di rak sampai kartu baru dipasang: semua bentuk harus dibakukan ke kode Jubelio yang sama. */
+    const baku = await p.evaluate(() => ['R1-4A', 'r1-3a-1', 'L1-R1-4-A', 'L1-R1-3-A1', 'L4-R1-A', 'X-IN', 'X-02', 'L1-OF-1-02'].map(k => typeof window.WmsAlat.kodeBaku === 'function' ? window.WmsAlat.kodeBaku(k) : 'kodeBaku belum ada'));
+    c('W67 kode dibakukan ke Jubelio: R1-4A, L1-R1-4-A, L4-R1-A semua L4-R1-A; R1-3A-1 dan L1-R1-3-A1 jadi L3-R1-A1; X-IN = L1-IN-1-01; X-02 dan L1-OF-1-02 = L1-OF-1-02',
+      JSON.stringify(baku) === JSON.stringify(['L4-R1-A', 'L3-R1-A1', 'L4-R1-A', 'L3-R1-A1', 'L4-R1-A', 'L1-IN-1-01', 'L1-OF-1-02', 'L1-OF-1-02']), JSON.stringify(baku));
+    /* Location Master yang sudah kode Jubelio (L2-R2-B) tetap terbuka dari label lama: kode WMS R2-2B dan Jubelio lama L1-R2-2-B */
+    const lamaKeBaru = [];
+    for (const k of ['R2-2B', 'L1-R2-2-B', 'L2-R2-B']) { await tembak(p, k); lamaKeBaru.push((await teksAlat(p)).slice(0, 160)); }
+    c('W69 Location Master berkode Jubelio: label lama R2-2B dan L1-R2-2-B membuka L2-R2-B, kode barunya juga',
+      lamaKeBaru.every(x => /L2-R2-B/.test(x) && !/not found/i.test(x)), JSON.stringify(lamaKeBaru));
+    c('W66 scan kode rak Jubelio: L4-R1-A membuka R1-4A (Bear, 74), l3-t2-a membuka T2-3A, format lama L1-R1-4-A juga R1-4A, L1-OF-1-02 membuka X-02',
+      /R1-4A/.test(jub[0]) && /Bear/.test(jub[0]) && /\b74\b/.test(jub[0]) && /T2-3A/.test(jub[1]) && /Reindeer/.test(jub[1]) && /R1-4A/.test(jub[2]) && /X-02/.test(jub[3]) && !/not found/i.test(jub.join(' ')), JSON.stringify(jub));
+
     const adaKamera = await p.evaluate(() => !!document.getElementById('alatKamera'));
     if (adaKamera) await p.click('#alatKamera');
     await tunggu(p, () => /T2-3A/.test((document.getElementById('alatHasil') || {}).innerText || '') && !document.querySelector('#alat video'), 5000);
@@ -247,21 +267,50 @@ const KAMERA_PALSU = () => {
     await tunggu(p, () => document.getElementById('alatUnit'));
     await p.selectOption('#alatUnit', 'R1');
     await jeda(200);
-    const label = await p.$('#alat .label-rak[data-kode="R1-4A"] svg.kode128');
+    const label = await p.$('#alat .label-rak[data-kode="R1-4A"] svg.kode-lok');
     let terbaca = '';
     if (label) {
       const png = path.join(os.tmpdir(), 'label-r1-4a.png');
       await label.screenshot({ path: png });
       try { terbaca = execFileSync('python3', ['-c', 'import sys,zxingcpp\nfrom PIL import Image\nr=zxingcpp.read_barcodes(Image.open(sys.argv[1]))\nprint(r[0].text if r else "")', png]).toString().trim(); } catch (e) { terbaca = 'galat ' + e.message.slice(0, 80); }
     }
+    /* 20 Okt, Ferdy menyetujui mockup kartu peraga v11 (10,5 x 7 cm, 8 per A4): kode lokasi
+       Jubelio besar di kiri atas, badge zona di kanan atas, nama ikut Shopee (nama listing kecil +
+       nama pendek dengan variasi), kode SKU + maks. pcs dari Maks. Qty, barcode SKU EAN-13, dan
+       barcode lokasi di bawah memakai kode Jubelio (L4-R1-A), bukan kode WMS lama. */
+    const skuSvg = await p.$('#alat .label-rak[data-kode="R1-4A"] svg.kode-sku');
+    let terbacaSku = '';
+    if (skuSvg) {
+      const png2 = path.join(os.tmpdir(), 'label-r1-4a-sku.png');
+      await skuSvg.screenshot({ path: png2 });
+      try { terbacaSku = execFileSync('python3', ['-c', 'import sys,zxingcpp\nfrom PIL import Image\nr=zxingcpp.read_barcodes(Image.open(sys.argv[1]))\nprint(r[0].text if r else "")', png2]).toString().trim(); } catch (e) { terbacaSku = 'galat ' + e.message.slice(0, 80); }
+    }
+    const kartu = await p.evaluate(() => {
+      const k = document.querySelector('#alat .label-rak[data-kode="R1-4A"]');
+      const f = k && k.querySelector('img.foto-sku'), z = k && k.querySelector('.label-zona');
+      const q = s => ((k.querySelector(s) || {}).textContent || '').trim();
+      return k ? { lok: q('.label-lok'), zona: q('.label-zona'), warna: z ? getComputedStyle(z).backgroundColor : '', listing: q('.label-listing'), nama: q('.label-nama'), meta: q('.label-meta'), ean: !!k.querySelector('svg.ean13.kode-sku'), foto: f ? f.getBoundingClientRect().width : 0 } : null;
+    });
+    c('W65 kartu peraga R1-4A: lokasi L4-R1-A, badge RACK biru, listing Shopee "MofmoFriends - Key Charm", nama "Key Charm · Bear", MF-KC-001 · maks. 120 pcs, foto >= 90 px, barcode SKU EAN-13 terbaca 4582586967015',
+      kartu && kartu.lok === 'L4-R1-A' && kartu.zona === 'RACK' && kartu.warna === 'rgb(31, 95, 168)' && kartu.listing === 'MofmoFriends - Key Charm' && kartu.nama === 'Key Charm · Bear' && /MF-KC-001/.test(kartu.meta) && /maks\. 120 pcs/.test(kartu.meta) && kartu.ean && kartu.foto >= 90 && terbacaSku === '4582586967015', JSON.stringify({ kartu, terbacaSku }));
     const lainUnit = await p.evaluate(() => document.querySelectorAll('#alat .label-rak[data-kode^="T2"]').length);
     await p.click('#alatCetak');
     await jeda(150);
     const cetak = await p.evaluate(() => ({ c: window.__cetak, sisa: document.body.classList.contains('cetak-label') }));
-    c('W53 cetak label: label R1-4A berbarcode Code 128 yang terbaca dekoder sungguhan sebagai "R1-4A", cuma unit yang dipilih, tombol cetak memakai lembar cetak khusus',
-      terbaca === 'R1-4A' && lainUnit === 0 && cetak.c === 'kelas' && !cetak.sisa, JSON.stringify({ terbaca, lainUnit, cetak }));
+    c('W53 cetak kartu: barcode lokasi kartu R1-4A berupa Code 128 yang terbaca dekoder sungguhan sebagai kode Jubelio "L4-R1-A", cuma unit yang dipilih, tombol cetak memakai lembar cetak khusus',
+      terbaca === 'L4-R1-A' && lainUnit === 0 && cetak.c === 'kelas' && !cetak.sisa, JSON.stringify({ terbaca, lainUnit, cetak }));
     await p.keyboard.press('Escape');
     await tunggu(p, () => !document.querySelector('#alat.buka'));
+
+    /* 20 Okt: Warehouse condition 3D punya tombol "Print this card" di panel lokasi. Kartunya harus
+       sama dengan kartu Scan rack (htmlLabel yang sama), boleh dipanggil dengan kode WMS atau Jubelio,
+       urut seperti yang diminta, dan kode asing dilewati tanpa kartu kosong. */
+    await p.evaluate(() => { window.__cetak = ''; window.__kartuCetak = null; });
+    const adaCetakKode = await p.evaluate(() => typeof window.WmsAlat.cetakKode === 'function');
+    if (adaCetakKode) { await p.evaluate(() => window.WmsAlat.cetakKode(['L3-T2-A', 'R1-4A', 'ZZ-99'])); await tunggu(p, () => window.__cetak, 3000); await jeda(100); }
+    const ck = await p.evaluate(() => ({ c: window.__cetak, kartu: window.__kartuCetak, sisa: document.body.classList.contains('cetak-label') || !!document.getElementById('lembarCetak') }));
+    c('W68 cetak kartu dari kode: L3-T2-A (kode Jubelio) dan R1-4A (kode WMS) jadi dua kartu urut L3-T2-A lalu L4-R1-A, ZZ-99 dilewati, lembar cetak dibersihkan sesudahnya',
+      adaCetakKode && ck.c === 'kelas' && JSON.stringify(ck.kartu) === '["L3-T2-A","L4-R1-A"]' && !ck.sisa, JSON.stringify({ adaCetakKode, ck }));
 
     /* ---- paspor ---- */
     await bingkai(p).click('#tdRein img.l4-sku');
