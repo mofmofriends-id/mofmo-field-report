@@ -158,7 +158,7 @@
       sp_kartuOk: 'Parcel QR cards ready', sp_kartuW: 'Not enough parcel QR cards', sp_kartuKet: '{a} of {b} cards printed.',
       sp_ujiOk: 'Test data cleaned up', sp_ujiOkKet: 'No cards with a TES or UJI voucher left.', sp_ujiW: 'Test cards still there', sp_ujiWKet: '{n} card(s) with a TES or UJI voucher. Delete them after testing.',
       sp_keHadiah: 'Go to rewards', sp_cetak: 'Print cards', sp_tingkat: 'Add 3 tiers', sp_hapusUji: 'Delete test data',
-      judul: 'Kitabku', judulH: 'Title', tabRingkas: 'Event & rewards', tabCetak: 'Print QR cards', tabStruk: 'Receipt claims', tabPasang: 'Link card', tabTemplate: 'Templates', tutup: 'Close', tp_judul: 'Design templates', tp_ket: 'Saved in Google Drive, folder Arsip Template Mofmo Collection, one folder per event. Files stay private to the Drive owner.', tp_acara: 'Event', tp_berkas: 'Files (PNG, JPG, PDF, AI, PSD, SVG, ZIP; max 15 MB each)', tp_catatan: 'Note (optional)', tp_unggah: 'Upload', tp_kirim: 'Uploading…', tp_kosong: 'No templates archived yet.', tp_final: 'FINAL', tp_jadiFinal: 'Mark final', tp_batalFinal: 'Unmark final', tp_buka: 'Open in Drive', tp_besar: function (n) { return n + ' is larger than 15 MB. Shrink it first or save it straight to Drive.'; }, tp_tanpaAcara: 'Fill in the event name first.', tp_tanpaBerkas: 'Choose a file first.', tp_ok: function (n) { return n + ' file(s) uploaded.'; }, tp_gagal: function (n, p) { return n + ' failed: ' + p; },
+      judul: 'Kitabku', judulH: 'Title', tabRingkas: 'Event & rewards', tabCetak: 'Print QR cards', tabStruk: 'Receipt claims', tabPasang: 'Link card', tabTemplate: 'Templates', tabJadwal: 'Game schedule', jd_tglJudul: 'Edition dates', jd_tglKet: 'Changes the running edition in place: leaderboards, edition cards, and the printed QR stay. For the next edition use New event in Event & rewards.', jd_simpanTgl: 'Save dates', jd_tglOk: 'Edition dates saved.', jd_judul: 'Match schedule', jd_ket: 'Games never open at the same time. Ranked play only during a match of that game (10 ranked games per match); outside matches it is practice. An empty schedule means all games are open for the whole edition.', jd_kosong: 'No matches yet. Use Auto-fill or Add match.', jd_oto: 'Auto-fill', jd_urut: 'Game order', jd_hari: 'Days per game', jd_n: 'Matches per game', jd_jam1: 'Opens', jd_jam2: 'Closes', jd_buat: 'Fill schedule', jd_tambah: 'Add match', jd_simpan: 'Save schedule', jd_belum: 'Not saved yet. Press Save schedule.', jd_ok: function (n) { return n + ' match(es) saved.'; }, jd_game: 'Game', jd_tgl: 'Date', jd_mulai: 'Opens', jd_selesai: 'Closes', jd_hapus: 'Remove', jd_lewat: 'done', jd_jalan: 'running', jd_malam: 'next day', jd_ringkas: function (g, n, a, b) { return g + ': ' + n + ' match, ' + a + ' to ' + b; }, jd_otoKurang: 'The edition is too short for that many days per game.', tutup: 'Close', tp_judul: 'Design templates', tp_ket: 'Saved in Google Drive, folder Arsip Template Mofmo Collection, one folder per event. Files stay private to the Drive owner.', tp_acara: 'Event', tp_berkas: 'Files (PNG, JPG, PDF, AI, PSD, SVG, ZIP; max 15 MB each)', tp_catatan: 'Note (optional)', tp_unggah: 'Upload', tp_kirim: 'Uploading…', tp_kosong: 'No templates archived yet.', tp_final: 'FINAL', tp_jadiFinal: 'Mark final', tp_batalFinal: 'Unmark final', tp_buka: 'Open in Drive', tp_besar: function (n) { return n + ' is larger than 15 MB. Shrink it first or save it straight to Drive.'; }, tp_tanpaAcara: 'Fill in the event name first.', tp_tanpaBerkas: 'Choose a file first.', tp_ok: function (n) { return n + ' file(s) uploaded.'; }, tp_gagal: function (n, p) { return n + ' failed: ' + p; },
       muat: 'Loading…', gagal: 'The Kitabku server could not be reached. Check the signal and try again.', ulang: 'Try again', sesiHabis: 'Your WMS session has ended. Sign in again.',
       kKartu: 'Cards unlocked', kPemain: 'Collectors', kStruk: 'Receipts waiting', kKlaim: 'Rewards claimed', kKode: 'Shopee cards printed', kDipakai: 'scanned',
       acara: 'Active event', tanpaAcara: 'No event yet. Create one before printing cards.', acaraBaru: 'New event', nama: 'Name', cap: 'Stamp', mulai: 'Start', selesai: 'End',
@@ -219,7 +219,7 @@
       sp_kartuOk: 'Kartu QR paket cukup', sp_kartuW: 'Kartu QR paket kurang', sp_kartuKet: '{a} dari {b} kartu sudah dicetak.',
       sp_ujiOk: 'Data uji sudah bersih', sp_ujiOkKet: 'Tidak ada kartu dengan voucher TES atau UJI yang tersisa.', sp_ujiW: 'Kartu uji masih ada', sp_ujiWKet: '{n} kartu bervoucher TES atau UJI. Hapus sesudah tes selesai.',
       sp_keHadiah: 'Ke daftar hadiah', sp_cetak: 'Cetak kartu', sp_tingkat: 'Tambah 3 tingkat', sp_hapusUji: 'Hapus data uji',
-      judul: 'Kitabku', judulH: 'Judul', tabRingkas: 'Event & hadiah', tabCetak: 'Cetak kartu QR', tabStruk: 'Klaim struk', tabPasang: 'Pasang kartu', tabTemplate: 'Template', tutup: 'Tutup', tp_judul: 'Template desain', tp_ket: 'Tersimpan di Google Drive, folder Arsip Template Mofmo Collection, satu folder per event. Berkas tetap privat milik pemilik Drive.', tp_acara: 'Event', tp_berkas: 'Berkas (PNG, JPG, PDF, AI, PSD, SVG, ZIP; maks 15 MB per berkas)', tp_catatan: 'Catatan (boleh kosong)', tp_unggah: 'Unggah', tp_kirim: 'Mengunggah…', tp_kosong: 'Belum ada template yang diarsipkan.', tp_final: 'FINAL', tp_jadiFinal: 'Tandai final', tp_batalFinal: 'Batal final', tp_buka: 'Buka di Drive', tp_besar: function (n) { return n + ' lebih dari 15 MB. Kecilkan dulu atau simpan langsung di Drive.'; }, tp_tanpaAcara: 'Isi nama event dulu.', tp_tanpaBerkas: 'Pilih berkasnya dulu.', tp_ok: function (n) { return n + ' berkas terunggah.'; }, tp_gagal: function (n, p) { return n + ' gagal: ' + p; },
+      judul: 'Kitabku', judulH: 'Judul', tabRingkas: 'Event & hadiah', tabCetak: 'Cetak kartu QR', tabStruk: 'Klaim struk', tabPasang: 'Pasang kartu', tabTemplate: 'Template', tabJadwal: 'Jadwal game', jd_tglJudul: 'Tanggal edisi', jd_tglKet: 'Mengubah edisi yang sedang jalan: leaderboard, kartu edisi, dan QR yang sudah dicetak tetap. Untuk edisi berikutnya pakai Event baru di tab Event & hadiah.', jd_simpanTgl: 'Simpan tanggal', jd_tglOk: 'Tanggal edisi tersimpan.', jd_judul: 'Jadwal match', jd_ket: 'Game tidak boleh buka barengan. Main ranked cuma saat match game itu (10 game ranked per match); di luar match jadi latihan. Jadwal kosong berarti semua game buka sepanjang edisi.', jd_kosong: 'Belum ada match. Pakai Isi otomatis atau Tambah match.', jd_oto: 'Isi otomatis', jd_urut: 'Urutan game', jd_hari: 'Hari per game', jd_n: 'Match per game', jd_jam1: 'Buka', jd_jam2: 'Tutup', jd_buat: 'Isi jadwal', jd_tambah: 'Tambah match', jd_simpan: 'Simpan jadwal', jd_belum: 'Belum disimpan. Tekan Simpan jadwal.', jd_ok: function (n) { return n + ' match tersimpan.'; }, jd_game: 'Game', jd_tgl: 'Tanggal', jd_mulai: 'Buka', jd_selesai: 'Tutup', jd_hapus: 'Hapus', jd_lewat: 'selesai', jd_jalan: 'jalan', jd_malam: 'besoknya', jd_ringkas: function (g, n, a, b) { return g + ': ' + n + ' match, ' + a + ' sampai ' + b; }, jd_otoKurang: 'Edisinya terlalu pendek untuk hari per game sebanyak itu.', tutup: 'Tutup', tp_judul: 'Template desain', tp_ket: 'Tersimpan di Google Drive, folder Arsip Template Mofmo Collection, satu folder per event. Berkas tetap privat milik pemilik Drive.', tp_acara: 'Event', tp_berkas: 'Berkas (PNG, JPG, PDF, AI, PSD, SVG, ZIP; maks 15 MB per berkas)', tp_catatan: 'Catatan (boleh kosong)', tp_unggah: 'Unggah', tp_kirim: 'Mengunggah…', tp_kosong: 'Belum ada template yang diarsipkan.', tp_final: 'FINAL', tp_jadiFinal: 'Tandai final', tp_batalFinal: 'Batal final', tp_buka: 'Buka di Drive', tp_besar: function (n) { return n + ' lebih dari 15 MB. Kecilkan dulu atau simpan langsung di Drive.'; }, tp_tanpaAcara: 'Isi nama event dulu.', tp_tanpaBerkas: 'Pilih berkasnya dulu.', tp_ok: function (n) { return n + ' berkas terunggah.'; }, tp_gagal: function (n, p) { return n + ' gagal: ' + p; },
       muat: 'Memuat…', gagal: 'Server Kitabku belum bisa dihubungi. Cek sinyal lalu coba lagi.', ulang: 'Coba lagi', sesiHabis: 'Sesi WMS sudah habis. Masuk lagi.',
       kKartu: 'Kartu terbuka', kPemain: 'Kolektor', kStruk: 'Struk menunggu', kKlaim: 'Hadiah diambil', kKode: 'Kartu Shopee dicetak', kDipakai: 'dipindai',
       acara: 'Event aktif', tanpaAcara: 'Belum ada event. Buat dulu sebelum mencetak kartu.', acaraBaru: 'Event baru', nama: 'Nama', cap: 'Cap', mulai: 'Mulai', selesai: 'Selesai',
@@ -504,7 +504,7 @@
     A.tab = tab || A.tab || 'ringkas';
     d.classList.add('buka'); d.setAttribute('aria-hidden', 'false'); document.body.classList.add('alat-terbuka');
     var l = d.querySelector('.lembar'); try { l.focus({ preventScroll: true }); } catch (e) { l.focus(); }
-    if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else muatRingkas();
+    if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else muatRingkas();
   }
   function tutup() {
     var d = el('kitabkuAdmin'); if (!d) return;
@@ -517,16 +517,16 @@
     /* menggambar ulang membuang elemen video, jadi kamera yang masih menyala dimatikan dulu */
     if (A.kam && A.kam.aliran) matikanKamera();
     /* 17 Okt, Ferdy: pembelian offline tidak dapat kartu, tab Klaim struk dihapus (htmlStruk dibiarkan, tidak terjangkau) */
-    d.querySelector('.tab-alat').innerHTML = ['ringkas', 'cetak', 'pasang', 'template'].map(function (m) {
+    d.querySelector('.tab-alat').innerHTML = ['ringkas', 'jadwal', 'cetak', 'pasang', 'template'].map(function (m) {
       var on = A.tab === m, n = m === 'struk' && A.ringkas && A.ringkas.angka ? A.ringkas.angka.struk : 0;
-      return '<button type="button" role="tab" data-kbtab="' + m + '" aria-selected="' + on + '" class="' + (on ? 'on' : '') + '">' + esc(t(m === 'ringkas' ? 'tabRingkas' : m === 'cetak' ? 'tabCetak' : m === 'pasang' ? 'tabPasang' : m === 'template' ? 'tabTemplate' : 'tabStruk')) + (n ? ' <b class="kb-lencana">' + n + '</b>' : '') + '</button>';
+      return '<button type="button" role="tab" data-kbtab="' + m + '" aria-selected="' + on + '" class="' + (on ? 'on' : '') + '">' + esc(t(m === 'ringkas' ? 'tabRingkas' : m === 'jadwal' ? 'tabJadwal' : m === 'cetak' ? 'tabCetak' : m === 'pasang' ? 'tabPasang' : m === 'template' ? 'tabTemplate' : 'tabStruk')) + (n ? ' <b class="kb-lencana">' + n + '</b>' : '') + '</button>';
     }).join('');
     /* tab aktif selalu kelihatan di HP (deretan tab digeser ke samping) */
     var on = d.querySelector('.tab-alat .on'); if (on && on.scrollIntoView) try { on.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {}
     var tt = d.querySelector('.tutup-alat'); tt.setAttribute('aria-label', t('tutup')); tt.title = t('tutup');
     tt.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     var isi = A.galat ? '<div class="tolak-alat" role="alert">' + esc(A.galat) + '</div><button type="button" class="btn dua" data-kb="ulang">' + esc(t('ulang')) + '</button>' : '';
-    if (!A.galat) isi = A.tab === 'cetak' ? htmlCetak() : A.tab === 'struk' ? htmlStruk() : A.tab === 'pasang' ? htmlPasang() : A.tab === 'template' ? htmlTemplate() : htmlRingkas();
+    if (!A.galat) isi = A.tab === 'jadwal' ? htmlJadwal() : A.tab === 'cetak' ? htmlCetak() : A.tab === 'struk' ? htmlStruk() : A.tab === 'pasang' ? htmlPasang() : A.tab === 'template' ? htmlTemplate() : htmlRingkas();
     el('kbIsi').innerHTML = isi;
   }
 
@@ -591,6 +591,114 @@
       }).join('') + '</ul></section>';
     }).join('');
     return form + daftar;
+  }
+
+  /* ---------- jadwal game (22 Okt 2026) ----------
+     Ferdy: "Gua yg atur sendiri di wms tanggal edisi game 11.11 serta rotasi masing-masing game dan durasinya".
+     Tanggal edisi diubah di tempat (aksi ubahAcara: id edisi tetap, jadi papan dan kartu edisi tidak reset).
+     Jadwal match disunting di layar lalu disimpan sekaligus (aksi simpanJadwal); semua aturan (bentrok, di luar
+     tanggal, match lewat) diputus server dan pesannya ditampilkan apa adanya. Jam dalam WIB; jam tutup yang lebih
+     awal dari jam buka berarti lewat tengah malam. */
+  var GAME_JD = [['mem', 'Memory Match'], ['triv', 'Animal Quiz'], ['adv', 'Adventure']];
+  function namaGameJd(g) { var x = GAME_JD.filter(function (y) { return y[0] === g; })[0]; return x ? x[1] : g; }
+  function wibJd(iso) { var w = new Date(Date.parse(iso) + 7 * 3600e3).toISOString(); return { tgl: w.slice(0, 10), jam: w.slice(11, 16) }; }
+  function tambahHari(tglS, n) { return new Date(Date.parse(tglS + 'T00:00:00Z') + n * 864e5).toISOString().slice(0, 10); }
+  function barisJd(r) { var a = wibJd(r.mulai), b = wibJd(r.selesai); return { game: r.game, tgl: a.tgl, mulai: a.jam, selesai: b.jam, ms: Date.parse(r.mulai), me: Date.parse(r.selesai) }; }
+  function muatJadwal() {
+    A.jdMuat = true; gambar();
+    panggil('jadwalMatch', {}).then(function (r) {
+      A.jdMuat = false;
+      if (!r || !r.ok) { A.jd = null; A.jdPesan = (r && r.pesan) || t('gagal'); gambar(); return; }
+      var lama = A.jd || {};
+      A.jd = { acara: r.acara, kini: r.kini || Date.now(), rows: (r.match || []).map(barisJd), ubah: false, pesan: lama.pesanSimpan || '', ok: !!lama.pesanSimpan, oto: lama.oto || { u1: 'mem', u2: 'triv', u3: 'adv', hari: '', n: '3', j1: '19:00', j2: '23:00' } };
+      A.jdPesan = ''; gambar();
+    }, function (e) { A.jdMuat = false; A.jdPesan = e.message; gambar(); });
+  }
+  function isoJd(r) {
+    var mulai = r.tgl + 'T' + r.mulai + ':00+07:00', tglTutup = r.selesai <= r.mulai ? tambahHari(r.tgl, 1) : r.tgl;
+    return { game: r.game, mulai: mulai, selesai: tglTutup + 'T' + r.selesai + ':00+07:00' };
+  }
+  function htmlJadwal() {
+    if (A.jdPesan) return '<div class="tolak-alat" role="alert">' + esc(A.jdPesan) + '</div><button type="button" class="btn dua" data-kb="ulang">' + esc(t('ulang')) + '</button>';
+    var J = A.jd; if (!J) { if (!A.jdMuat) setTimeout(muatJadwal, 0); return '<p class="ket-alat">' + esc(t('muat')) + '</p>'; }
+    var ac = J.acara, kini = J.kini, o = J.oto;
+    var opsiGame = function (pilih) { return GAME_JD.map(function (g) { return '<option value="' + g[0] + '"' + (g[0] === pilih ? ' selected' : '') + '>' + g[1] + '</option>'; }).join(''); };
+    var tanggal = '<section class="kb-kotak"><h3>' + esc(t('jd_tglJudul')) + ' <span class="kb-cap">' + esc(ac.cap) + '</span></h3><p class="ket-alat">' + esc(t('jd_tglKet')) + '</p>' +
+      '<div class="kb-form4"><label>' + esc(t('nama')) + '<input id="kbJdNama" maxlength="60" value="' + esc(ac.nama) + '"></label><label>' + esc(t('cap')) + '<input id="kbJdCap" maxlength="12" value="' + esc(ac.cap) + '"></label>' +
+      '<label>' + esc(t('mulai')) + '<input id="kbJdMulai" type="date" value="' + esc(String(ac.mulai || '').slice(0, 10)) + '"></label><label>' + esc(t('selesai')) + '<input id="kbJdSelesai" type="date" value="' + esc(String(ac.selesai || '').slice(0, 10)) + '"></label></div>' +
+      (J.pesanTgl ? '<div class="' + (J.okTgl ? 'kb-hasil' : 'tolak-alat') + '" role="status">' + esc(J.pesanTgl) + '</div>' : '') +
+      '<button type="button" class="btn" data-kb="jdTanggal">' + esc(t('jd_simpanTgl')) + '</button></section>';
+    var oto = '<details class="kb-det" id="kbJdOto"' + (J.rows.length ? '' : ' open') + '><summary>' + esc(t('jd_oto')) + '</summary><div class="kb-form4">' +
+      '<label class="lebar">' + esc(t('jd_urut')) + '<span class="kb-jd-urut"><select id="kbJdUrut1">' + opsiGame(o.u1) + '</select><select id="kbJdUrut2">' + opsiGame(o.u2) + '</select><select id="kbJdUrut3">' + opsiGame(o.u3) + '</select></span></label>' +
+      '<label>' + esc(t('jd_hari')) + '<input id="kbJdHari" type="number" min="1" max="31" inputmode="numeric" value="' + esc(o.hari) + '" placeholder="' + esc(String(Math.max(1, Math.floor(hariEdisiJd(ac) / 3)))) + '"></label>' +
+      '<label>' + esc(t('jd_n')) + '<input id="kbJdN" type="number" min="1" max="10" inputmode="numeric" value="' + esc(o.n) + '"></label>' +
+      '<label>' + esc(t('jd_jam1')) + '<input id="kbJdJam1" type="time" value="' + esc(o.j1) + '"></label><label>' + esc(t('jd_jam2')) + '<input id="kbJdJam2" type="time" value="' + esc(o.j2) + '"></label></div>' +
+      '<button type="button" class="btn dua" data-kb="jdOto">' + esc(t('jd_buat')) + '</button></details>';
+    var tabel = J.rows.length ? '<div class="hpp-gulung"><table class="kb-jd-tabel" id="kbJdTabel"><thead><tr><th>#</th><th>' + esc(t('jd_game')) + '</th><th>' + esc(t('jd_tgl')) + '</th><th>' + esc(t('jd_mulai')) + '</th><th>' + esc(t('jd_selesai')) + '</th><th></th></tr></thead><tbody>' +
+      J.rows.map(function (r, i) {
+        var lewat = r.me && r.me <= kini, jalan = r.ms && r.ms <= kini && !lewat, kunci = lewat ? ' disabled' : '', kunciMulai = lewat || jalan ? ' disabled' : '';
+        return '<tr data-i="' + i + '" class="' + (lewat ? 'lewat' : jalan ? 'jalan' : '') + '"><td>' + (i + 1) + '</td><td><select data-jd="game" data-i="' + i + '"' + kunciMulai + '>' + opsiGame(r.game) + '</select></td>' +
+          '<td><input type="date" data-jd="tgl" data-i="' + i + '" value="' + esc(r.tgl) + '"' + kunciMulai + '></td><td><input type="time" data-jd="mulai" data-i="' + i + '" value="' + esc(r.mulai) + '"' + kunciMulai + '></td>' +
+          '<td><input type="time" data-jd="selesai" data-i="' + i + '" value="' + esc(r.selesai) + '"' + kunci + '>' + (r.selesai && r.mulai && r.selesai <= r.mulai ? '<small class="kb-jd-malam">' + esc(t('jd_malam')) + '</small>' : '') + '</td>' +
+          '<td>' + (lewat ? '<span class="kb-cap">' + esc(t('jd_lewat')) + '</span>' : jalan ? '<span class="kb-cap">' + esc(t('jd_jalan')) + '</span>' : '<button type="button" class="btn dua" data-kb="jdHapus" data-i="' + i + '">' + esc(t('jd_hapus')) + '</button>') + '</td></tr>';
+      }).join('') + '</tbody></table></div>' : '<p class="ket-alat">' + esc(t('jd_kosong')) + '</p>';
+    var ringkas = GAME_JD.map(function (g) {
+      var L = J.rows.filter(function (r) { return r.game === g[0] && r.tgl; }).map(function (r) { return r.tgl; }).sort();
+      return L.length ? '<li>' + esc(t('jd_ringkas')(g[1], L.length, tgl(L[0]), tgl(L[L.length - 1]))) + '</li>' : '';
+    }).join('');
+    var status = J.pesan ? '<div class="' + (J.ok ? 'kb-hasil' : 'tolak-alat') + '" role="' + (J.ok ? 'status' : 'alert') + '" id="kbJdPesan">' + esc(J.pesan) + '</div>' : (J.ubah ? '<div class="tolak-alat" id="kbJdPesan">' + esc(t('jd_belum')) + '</div>' : '');
+    return tanggal + '<section class="kb-kotak" id="kbJadwal"><h3>' + esc(t('jd_judul')) + '</h3><p class="ket-alat">' + esc(t('jd_ket')) + '</p>' + oto + status + tabel +
+      (ringkas ? '<ul class="kb-jd-ringkas">' + ringkas + '</ul>' : '') +
+      '<div class="kb-rw-atur"><button type="button" class="btn dua" data-kb="jdTambah">' + esc(t('jd_tambah')) + '</button> <button type="button" class="btn" data-kb="jdSimpan">' + esc(t('jd_simpan')) + '</button></div></section>';
+  }
+  function hariEdisiJd(ac) { return Math.round((Date.parse(String(ac.selesai).slice(0, 10)) - Date.parse(String(ac.mulai).slice(0, 10))) / 864e5) + 1; }
+  function ketikJd(x) {
+    var J = A.jd, o = J.oto, id = x.id;
+    if (id === 'kbJdUrut1') o.u1 = x.value; else if (id === 'kbJdUrut2') o.u2 = x.value; else if (id === 'kbJdUrut3') o.u3 = x.value;
+    else if (id === 'kbJdHari') o.hari = x.value; else if (id === 'kbJdN') o.n = x.value; else if (id === 'kbJdJam1') o.j1 = x.value; else if (id === 'kbJdJam2') o.j2 = x.value;
+    var f = x.getAttribute && x.getAttribute('data-jd');
+    if (f) {
+      var r = J.rows[Number(x.getAttribute('data-i'))]; if (!r) return;
+      r[f] = x.value; J.ubah = true; J.pesan = ''; J.ok = false;
+      var ps = el('kbJdPesan'); if (ps) { ps.className = 'tolak-alat'; ps.textContent = t('jd_belum'); }
+      else { var tb = el('kbJdTabel'); if (tb) { var d = document.createElement('div'); d.className = 'tolak-alat'; d.id = 'kbJdPesan'; d.textContent = t('jd_belum'); tb.parentNode.parentNode.insertBefore(d, tb.parentNode); } }
+    }
+  }
+  /* blok berurutan per game mulai hari pertama edisi; n match per blok disebar rata (hari pertama dan terakhir blok ikut) */
+  function isiOtoJd() {
+    var J = A.jd, o = J.oto, ac = J.acara, total = hariEdisiJd(ac);
+    var hari = Math.round(Number(o.hari)) || Math.max(1, Math.floor(total / 3)), n = Math.max(1, Math.min(10, Math.round(Number(o.n)) || 3));
+    if (hari * 3 > total) { J.pesan = t('jd_otoKurang'); J.ok = false; gambar(); return; }
+    var urut = [o.u1, o.u2, o.u3], rows = [], awal = String(ac.mulai).slice(0, 10);
+    urut.forEach(function (g, gi) {
+      for (var i = 0; i < n; i++) {
+        var hk = n === 1 ? 0 : Math.round(i * (hari - 1) / (n - 1));
+        rows.push({ game: g, tgl: tambahHari(awal, gi * hari + hk), mulai: o.j1 || '19:00', selesai: o.j2 || '23:00' });
+      }
+    });
+    /* match yang sudah lewat atau sedang jalan tetap dipertahankan (server menolak kalau diubah) */
+    var tetap = J.rows.filter(function (r) { return r.ms && r.ms <= J.kini; });
+    J.rows = tetap.concat(rows.filter(function (r) { return Date.parse(isoJd(r).mulai) > J.kini; }));
+    J.ubah = true; J.pesan = ''; gambar();
+  }
+  function tambahJd() {
+    var J = A.jd, akhir = J.rows[J.rows.length - 1];
+    J.rows.push({ game: akhir ? akhir.game : 'mem', tgl: akhir ? tambahHari(akhir.tgl, 1) : String(J.acara.mulai).slice(0, 10), mulai: '19:00', selesai: '23:00' });
+    J.ubah = true; J.pesan = ''; gambar();
+  }
+  function simpanJd() {
+    var J = A.jd; J.pesan = ''; gambar();
+    panggil('simpanJadwal', { match: J.rows.map(isoJd) }).then(function (r) {
+      if (!r || !r.ok) { J.pesan = (r && r.pesan) || t('gagal'); J.ok = false; bunyi('scanTolak'); gambar(); return; }
+      bunyi('scanOk'); J.pesanSimpan = t('jd_ok')(r.jumlah); A.jd = J; muatJadwal();
+    }, function (e) { J.pesan = e.message; J.ok = false; gambar(); });
+  }
+  function simpanTanggalJd() {
+    var J = A.jd, a = { nama: el('kbJdNama').value, cap: el('kbJdCap').value, mulai: el('kbJdMulai').value, selesai: el('kbJdSelesai').value };
+    panggil('ubahAcara', { acara: a }).then(function (r) {
+      if (!r || !r.ok) { J.pesanTgl = (r && r.pesan) || t('gagal'); J.okTgl = false; bunyi('scanTolak'); gambar(); return; }
+      J.acara = r.acara || a; J.pesanTgl = t('jd_tglOk'); J.okTgl = true; A.ringkas = null; bunyi('scanOk'); gambar();
+    }, function (e) { J.pesanTgl = e.message; J.okTgl = false; gambar(); });
   }
 
   /* ---------- event & hadiah ---------- */
@@ -1359,11 +1467,11 @@
     var d = el('kitabkuAdmin');
     if (e.target === d) { tutup(); return; }
     var x = e.target.closest ? e.target.closest('[data-kb],[data-kbtab]') : null; if (!x) return;
-    if (x.hasAttribute('data-kbtab')) { matikanKamera(); bunyi('klik'); A.tab = x.getAttribute('data-kbtab'); A.pesan = ''; A.tolakYakin = 0; if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (!A.ringkas) muatRingkas(); else gambar(); return; }
+    if (x.hasAttribute('data-kbtab')) { matikanKamera(); bunyi('klik'); A.tab = x.getAttribute('data-kbtab'); A.pesan = ''; A.tolakYakin = 0; if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else if (!A.ringkas) muatRingkas(); else gambar(); return; }
     var a = x.getAttribute('data-kb'), id = Number(x.getAttribute('data-id'));
     if (a !== 'tolak') A.tolakYakin = 0;
     if (a === 'tutup') tutup();
-    else if (a === 'ulang') { if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else muatRingkas(); }
+    else if (a === 'ulang') { if (A.tab === 'jadwal') { A.jdPesan = ''; muatJadwal(); } else if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else muatRingkas(); }
     else if (a === 'tpUnggah') unggahTemplate();
     else if (a === 'tpFinal') finalTemplate(x.getAttribute('data-id'), x.getAttribute('data-final') === '1');
     else if (a === 'pasang') { matikanKamera(); pasangKartu(false); }
@@ -1387,6 +1495,11 @@
     else if (a === 'pngUlang') pngPaket(sumberRiwayat(x.getAttribute('data-i')));
     else if (a === 'pngPaket') pngPaket();
     else if (a === 'edisiSiap') muatEdisi();
+    else if (a === 'jdTanggal') simpanTanggalJd();
+    else if (a === 'jdOto') isiOtoJd();
+    else if (a === 'jdSimpan') simpanJd();
+    else if (a === 'jdTambah') tambahJd();
+    else if (a === 'jdHapus') { A.jd.rows.splice(Number(x.getAttribute('data-i')), 1); A.jd.ubah = true; A.jd.pesan = ''; gambar(); }
     else if (a === 'pdfEdisi') pdfEdisi();
     else if (a === 'pngEdisi') pngEdisi();
     else if (a === 'foto') lihatFoto(id);
@@ -1405,6 +1518,7 @@
     if (x.id === 'kbTpCatatan') A.tp.catatan = x.value;
     if (x.id === 'kbPdfUk' || x.id === 'kbPdfUk2' || x.id === 'kbPdfUkEd') A.ukuranPdf = String(x.value);
     if (x.id === 'kbPsPesanan') A.ps.pesanan = x.value;
+    if (A.jd && x.closest && x.closest('#kbJadwal')) ketikJd(x);
     if (x.id === 'kbPsKartu') A.ps.kartu = x.value;
     if (x.id === 'kbHuKode') {
       A.hu.teks = x.value;
