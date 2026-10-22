@@ -1172,7 +1172,8 @@ html[data-theme="dark"] .jp-status.kuning{background:#4D4127;color:#F2DC9B}
 #kbHu .kb-hu-hapus:disabled{opacity:.45;cursor:not-allowed}
 .kb-vtabel .kb-vhadiah{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:var(--line);color:var(--mut)}
 /* 19 Okt: daftar kartu yang sudah dicetak di tab Cetak kartu QR */
-#kbRiwayat .kb-rw-atur{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 10px}
+#kbRiwayat .kb-rw-atur,#kbEdisi .kb-rw-atur{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:4px 0 10px}
+#kbEdisi .kb-ed-pratinjau{max-width:560px;margin:6px 0 8px}#kbEdisi .kb-ed-pratinjau img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 1px 6px rgba(0,0,0,.18)}#kbEdisi code{word-break:break-all}
 #kbRiwayat .kb-pdf-uk{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:var(--mut)}
 #kbRiwayat .kb-pdf-uk select{height:40px;padding:0 10px;border:1.5px solid var(--line2);border-radius:12px;background:var(--card);color:var(--ink);font:700 14px Nunito,sans-serif}
 .kb-rw-tabel{width:100%;border-collapse:collapse;font-size:14px}
