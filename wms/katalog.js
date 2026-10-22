@@ -22,7 +22,10 @@
  *    "Event +5%" dan "Direct sales 10%". Event memakai KENAIKAN di atas wholesale
  *    (wholesale x (1 + 5%)), bukan margin dari harga jual; direct sales tetap
  *    aturan margin di atas. Mode dan angkanya diingat per perangkat. Lembar untuk
- *    pembeli dalam mode event berjudul harga event, tanpa menyebut kenaikannya.
+ *    pembeli dalam mode event tidak menyebut kenaikannya.
+ *  - 22 Okt, Ferdy: "catalog yg harga 5% bisa hapus ga kata eventnya". Di mode event
+ *    harganya cuma "Harga" / "Price", judul "Daftar harga Mofmofriends", berkas
+ *    katalog-harga-tanggal. Tombol "Event +5%" tetap, itu pilihan admin.
  * Lembar ini cuma membaca; tidak ada yang ditulis ke sistem.
  */
 (function () {
@@ -49,10 +52,10 @@
       cetakJudul: 'Mofmofriends outright purchase price list', cetakKet: function (t) { return 'Prices include tax. Issued ' + t + '.'; },
       kolom: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Outright price before tax', 'Tax %', 'Outright price incl. tax', 'Retail incl. tax'],
       markup: 'Markup', preset: 'Price preset', presetDirect: 'Direct sales 10%', presetEvent: 'Event +5%',
-      jualEv: 'Event price', cetakJudulEv: 'Mofmofriends event price list',
-      xlsxCatatanEv: 'Change the markup in B2 and both event price columns recalculate. The markup is added on top of wholesale. Each SKU keeps its own tax rate from the product master.',
-      rumusEv: function (m) { return 'Event price = wholesale \u00d7 (1 + ' + m + '). The ' + m + ' markup is added on top of wholesale, not taken from the selling price. Each SKU then gets its own tax rate from the product master (PPN 11% for most), so the big number already includes tax.'; },
-      kolomEv: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Event price before tax', 'Tax %', 'Event price incl. tax', 'Retail incl. tax']
+      jualEv: 'Price', cetakJudulEv: 'Mofmofriends price list',
+      xlsxCatatanEv: 'Change the markup in B2 and both price columns recalculate. The markup is added on top of wholesale. Each SKU keeps its own tax rate from the product master.',
+      rumusEv: function (m) { return 'Price = wholesale \u00d7 (1 + ' + m + '). The ' + m + ' markup is added on top of wholesale, not taken from the selling price. Each SKU then gets its own tax rate from the product master (PPN 11% for most), so the big number already includes tax.'; },
+      kolomEv: ['SKU', 'Barcode', 'Name', 'HO stock', 'Total stock', 'Wholesale before tax', 'Price before tax', 'Tax %', 'Price incl. tax', 'Retail incl. tax']
     },
     id: {
       judul: 'Katalog', sub: 'Semua SKU dengan harga jual putus, sudah termasuk pajak', tutup: 'Tutup', cari: 'Cari SKU, nama, atau barcode',
@@ -66,10 +69,10 @@
       cetakJudul: 'Daftar harga beli putus Mofmofriends', cetakKet: function (t) { return 'Harga sudah termasuk pajak. Diterbitkan ' + t + '.'; },
       kolom: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga jual putus sebelum pajak', 'Pajak %', 'Harga jual putus termasuk pajak', 'Retail termasuk pajak'],
       markup: 'Kenaikan', preset: 'Pilihan harga', presetDirect: 'Direct sales 10%', presetEvent: 'Event +5%',
-      jualEv: 'Harga event', cetakJudulEv: 'Daftar harga event Mofmofriends',
-      xlsxCatatanEv: 'Ubah kenaikan di B2, kedua kolom harga event ikut terhitung ulang. Kenaikan ditambahkan di atas wholesale. Tarif pajak tiap SKU tetap dari Master Produk.',
-      rumusEv: function (m) { return 'Harga event = wholesale \u00d7 (1 + ' + m + '). Kenaikan ' + m + ' ditambahkan di atas wholesale, bukan diambil dari harga jual. Sesudah itu ditambah tarif pajak masing-masing SKU dari Master Produk (umumnya PPN 11%), jadi angka besar sudah termasuk pajak.'; },
-      kolomEv: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga event sebelum pajak', 'Pajak %', 'Harga event termasuk pajak', 'Retail termasuk pajak']
+      jualEv: 'Harga', cetakJudulEv: 'Daftar harga Mofmofriends',
+      xlsxCatatanEv: 'Ubah kenaikan di B2, kedua kolom harga ikut terhitung ulang. Kenaikan ditambahkan di atas wholesale. Tarif pajak tiap SKU tetap dari Master Produk.',
+      rumusEv: function (m) { return 'Harga = wholesale \u00d7 (1 + ' + m + '). Kenaikan ' + m + ' ditambahkan di atas wholesale, bukan diambil dari harga jual. Sesudah itu ditambah tarif pajak masing-masing SKU dari Master Produk (umumnya PPN 11%), jadi angka besar sudah termasuk pajak.'; },
+      kolomEv: ['SKU', 'Barcode', 'Nama', 'Stok HO', 'Stok total', 'Wholesale sebelum pajak', 'Harga sebelum pajak', 'Pajak %', 'Harga termasuk pajak', 'Retail termasuk pajak']
     }
   };
   function t(k) { var d = TEKS[id() ? 'id' : 'en']; return d[k] != null ? d[k] : TEKS.en[k]; }
@@ -285,7 +288,7 @@
   }
   function unduhBlob(blob, ekor) {
     var u = URL.createObjectURL(blob), a = document.createElement('a');
-    a.href = u; a.download = (A.mode === 'event' ? 'katalog-harga-event-' : 'katalog-jual-putus-') + tanggal() + '.' + ekor; a.style.display = 'none';
+    a.href = u; a.download = (A.mode === 'event' ? 'katalog-harga-' : 'katalog-jual-putus-') + tanggal() + '.' + ekor; a.style.display = 'none';
     document.body.appendChild(a); a.click();
     setTimeout(function () { URL.revokeObjectURL(u); if (a.parentNode) a.parentNode.removeChild(a); }, 1500);
   }
