@@ -1,5 +1,5 @@
 /* Uji Katalog WMS (wms/katalog.js), 11 Okt 2026.
- * Harapan: "31 pemeriksaan, SEMUA LULUS".
+ * Harapan: "32 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Ferdy: "buat juga fitur catalog yang menampilkan semua
  * SKU yang ada dan harga jual putus, ... kayaknya 10%, di WMS sudah include
@@ -25,8 +25,12 @@
  * dan "Direct sales 10%". Event memakai kenaikan DI ATAS wholesale (175.000 x 1,05
  * = 183.750), bukan margin dari harga jual (175.000 / 0,95 = 184.211); dua aturan
  * ini beda Rp461 per boneka S dan tidak berbunyi kalau tertukar. Direct sales tetap
- * aturan margin lama. Lembar untuk pembeli dalam mode event berjudul harga event dan
- * tetap tidak menyebut kenaikan, wholesale, atau persennya.
+ * aturan margin lama. Lembar untuk pembeli dalam mode event tetap tidak menyebut kenaikan,
+ * wholesale, atau persennya.
+ * Ferdy (22 Okt): "catalog yg harga 5% bisa hapus ga kata eventnya". Harga di mode
+ * event cuma berlabel "Harga" / "Price", judulnya "Daftar harga Mofmofriends", dan nama
+ * berkasnya katalog-harga-tanggal, tanpa kata event di mana pun yang dilihat atau diterima
+ * pembeli (layar, Cetak, JPG, PDF, Excel). Tombol "Event +5%" tetap, itu pilihan admin.
  * Data disusun di sini, papan lama palsu, tanpa jaringan.
  */
 const { chromium } = require('playwright');
@@ -79,7 +83,7 @@ const AKAR = process.env.AKAR || require('path').resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 31;
+const DIHARAPKAN = 32;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
@@ -340,8 +344,8 @@ const PALSU_AWAL = () => {
     await p.keyboard.press('Escape'); await tunggu(p, () => !document.getElementById('katalog').classList.contains('buka'));
     await p.reload(); await siapPapan(p); await jeda(300); await bukaKatalog(p);
     const eUlang = await keadaan();
-    c('K27 tombol "Event +5%": kolom berubah jadi Markup 5, harga Bear 203,963 berlabel "Event price", rumus "x (1 + 5%)" tanpa tanda bagi; diketik 7 tetap mode event (207,848, tombol tidak lagi menyala) dan bertahan sesudah dimuat ulang',
-      e1.m === '5' && e1.label === 'Markup' && e1.tombol === 'direct:false:Direct sales 10%|event:true:Event +5%' && e1.bear === '203963' && e1.lbl === 'Event price' && /× \(1 \+ 5%\)/.test(e1.rumus) && !/÷/.test(e1.rumus) &&
+    c('K27 tombol "Event +5%": kolom berubah jadi Markup 5, harga Bear 203,963 berlabel "Price" (tanpa kata event), rumus "x (1 + 5%)" tanpa tanda bagi; diketik 7 tetap mode event (207,848, tombol tidak lagi menyala) dan bertahan sesudah dimuat ulang',
+      e1.m === '5' && e1.label === 'Markup' && e1.tombol === 'direct:false:Direct sales 10%|event:true:Event +5%' && e1.bear === '203963' && e1.lbl === 'Price' && /× \(1 \+ 5%\)/.test(e1.rumus) && !/÷/.test(e1.rumus) &&
       e7.bear === '207848' && e7.label === 'Markup' && /event:false/.test(e7.tombol) && eUlang.m === '7' && eUlang.bear === '207848' && eUlang.label === 'Markup',
       JSON.stringify([e1, e7, eUlang]).slice(0, 700));
     if (await p.$('#katalog [data-preset=event]')) { await p.click('#katalog [data-preset=event]'); await jeda(200); }
@@ -351,8 +355,8 @@ const PALSU_AWAL = () => {
     let xe2 = {};
     if (fxe && RECALC) { fs.copyFileSync(fxe, fxe + '.ulang.xlsx'); try { execFileSync('python3', [RECALC, fxe + '.ulang.xlsx', '90'], { encoding: 'utf8', timeout: 150000 }); } catch (e) {} xe2 = py(PY_XLSX, fxe + '.ulang.xlsx'); }
     const eb = (xe1.baris || {})['MF-PLU-005'] || {}, eb2 = (xe2.baris || {})['MF-PLU-005'] || {}, ep2 = (xe2.baris || {})['MF-PLU-061'] || {};
-    c('K28 Excel mode event: nama berkas harga-event, B2 = 0,05, kolom "Event price", rumus ROUND(F*(1+$B$2)); dihitung ulang LibreOffice Bear 183.750 / 203.963 dan Pekingese 220.500',
-      uxe && /^katalog-harga-event-\d{4}-\d{2}-\d{2}\.xlsx$/.test(uxe.suggestedFilename()) && xe1.margin === 0.05 && /Event price/.test((xe1.kolom || [])[6] || '') && /Event price/.test((xe1.kolom || [])[8] || '') &&
+    c('K28 Excel mode event: nama berkas katalog-harga-tanggal tanpa kata event, B2 = 0,05, kolom "Price" tanpa event, rumus ROUND(F*(1+$B$2)); dihitung ulang LibreOffice Bear 183.750 / 203.963 dan Pekingese 220.500',
+      uxe && /^katalog-harga-\d{4}-\d{2}-\d{2}\.xlsx$/.test(uxe.suggestedFilename()) && xe1.margin === 0.05 && /^Price before tax$/.test((xe1.kolom || [])[6] || '') && /^Price incl\. tax$/.test((xe1.kolom || [])[8] || '') && !/event/i.test((xe1.kolom || []).join('|')) &&
       /^=ROUND\(F\d+\*\(1\+\$B\$2\),0\)$/.test(eb.rumusG || '') && eb.termasuk === 203963 && eb2.sebelum === 183750 && eb2.termasuk === 203963 && ep2.termasuk === 220500,
       JSON.stringify([uxe && uxe.suggestedFilename(), xe1.margin, xe1.kolom, eb.rumusG, eb2, ep2]).slice(0, 600));
     await p.evaluate(() => { window.__teksKanvas.length = 0; });
@@ -360,9 +364,16 @@ const PALSU_AWAL = () => {
     const cte = await p.evaluate(() => window.__cetak);
     await unduhLewat(p, '#katalog [data-katalog=jpg]'); await jeda(300);
     const tke = await p.evaluate(() => window.__teksKanvas.join(' | '));
-    c('K29 Cetak dan JPG mode event untuk pembeli: berjudul "event price list", Bear Rp203,963, tanpa kata markup, margin, wholesale, outright, atau 5% kenaikan (pajak 5% Pekingese boleh)',
-      cte && /event price list/i.test(cte.teks) && /Rp203,963/.test(cte.teks) && !/markup|margin|wholesale|outright|\b5%(?! tax)/i.test(cte.teks) &&
-      /event price list/i.test(tke) && /Rp203,963/.test(tke) && !/markup|margin|wholesale|outright|\b5%(?! tax)/i.test(tke), JSON.stringify({ cetak: cte && (cte.teks.match(/.{0,30}(markup|margin|wholesale|outright|\b5%(?! tax)).{0,20}/i) || [cte.teks.slice(0, 80)])[0], jpg: (tke.match(/.{0,30}(markup|margin|wholesale|outright|\b5%(?! tax)).{0,20}/i) || [tke.slice(0, 80)])[0] }));
+    c('K29 Cetak dan JPG mode event untuk pembeli: berjudul "Mofmofriends price list", Bear Rp203,963, tanpa kata event, markup, margin, wholesale, outright, atau 5% kenaikan (pajak 5% Pekingese boleh)',
+      cte && /Mofmofriends price list/i.test(cte.teks) && /Rp203,963/.test(cte.teks) && !/event|markup|margin|wholesale|outright|\b5%(?! tax)/i.test(cte.teks) &&
+      /Mofmofriends price list/i.test(tke) && /Rp203,963/.test(tke) && !/event|markup|margin|wholesale|outright|\b5%(?! tax)/i.test(tke), JSON.stringify({ cetak: cte && (cte.teks.match(/.{0,30}(event|markup|margin|wholesale|outright|\b5%(?! tax)).{0,20}/i) || [cte.teks.slice(0, 80)])[0], jpg: (tke.match(/.{0,30}(event|markup|margin|wholesale|outright|\b5%(?! tax)).{0,20}/i) || [tke.slice(0, 80)])[0] }));
+    /* K32 (22 Okt): judul PDF terbaca di tab browser dan di daftar berkas pembeli, jadi ikut diperiksa */
+    const upe = await unduhLewat(p, '#katalog [data-katalog=pdf]');
+    const fpe = await simpanUnduhan(upe, 'event.pdf');
+    const pae = fpe ? py(PY_PDF, fpe) : {};
+    c('K32 PDF mode event: nama berkas katalog-harga-tanggal.pdf dan judul PDF "Mofmofriends price list", tanpa kata event',
+      upe && /^katalog-harga-\d{4}-\d{2}-\d{2}\.pdf$/.test(upe.suggestedFilename()) && /^Mofmofriends price list$/.test(pae.judul || '') && (pae.hal || []).length >= 1,
+      JSON.stringify([upe && upe.suggestedFilename(), pae.judul, (pae.hal || []).length]));
     if (await p.$('#katalog [data-preset=direct]')) { await p.click('#katalog [data-preset=direct]'); await jeda(200); }
     const d1 = await keadaan();
     c('K30 tombol "Direct sales 10%": kembali ke aturan margin (Margin 10, Bear 215,833 berlabel "Outright price", rumus memakai tanda bagi)',
@@ -389,8 +400,8 @@ const PALSU_AWAL = () => {
     const pre = await hp.evaluate(() => Array.prototype.map.call(document.querySelectorAll('#katalog [data-preset]'), b => { const r = b.getBoundingClientRect(); return b.textContent.trim() + ':' + (r.right <= innerWidth + 1 && r.left >= -1 && r.width > 0 ? 'ok' : 'luber'); }).join('|'));
     if (await hp.$('#katalog [data-preset=event]')) { await hp.click('#katalog [data-preset=event]'); await jeda(200); }
     const hpE = await hp.evaluate(() => { const r = document.querySelector('#katalog [data-sku="MF-PLU-005"]'); return { label: ((document.querySelector('#katalog .kt-margin span') || {}).textContent || '').trim(), teks: ((r && r.innerText) || '').replace(/\s+/g, ' '), gulir: document.documentElement.scrollWidth }; });
-    c('K31 HP Indonesia: tombol "Direct sales 10%" dan "Event +5%" utuh di layar; Event mengubah kolom jadi "Kenaikan" dan harga Bear "Harga event Rp203.963", tanpa geser samping',
-      pre === 'Direct sales 10%:ok|Event +5%:ok' && hpE.label === 'Kenaikan' && /Harga event/.test(hpE.teks) && /Rp203\.963/.test(hpE.teks) && hpE.gulir <= 392, JSON.stringify([pre, hpE]));
+    c('K31 HP Indonesia: tombol "Direct sales 10%" dan "Event +5%" utuh di layar; Event mengubah kolom jadi "Kenaikan" dan harga Bear "Harga Rp203.963" tanpa kata event, tanpa geser samping',
+      pre === 'Direct sales 10%:ok|Event +5%:ok' && hpE.label === 'Kenaikan' && /Harga Rp203\.963/.test(hpE.teks) && !/event/i.test(hpE.teks) && hpE.gulir <= 392, JSON.stringify([pre, hpE]));
     await ctx2.close();
   } catch (e) {
     c('MATI di tengah jalan', false, e.stack);
