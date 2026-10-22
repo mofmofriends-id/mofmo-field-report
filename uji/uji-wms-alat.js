@@ -1,5 +1,5 @@
 /* Uji alat WMS (wms/alat.js + rapihan papan), 10 Okt 2026 malam.
- * Harapan: "25 pemeriksaan, SEMUA LULUS".
+ * Harapan: "26 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Sesudah Mofmo Soft disetujui, Ferdy minta empat
  * rapihan dan dua alat baru ("gass", "gaskeun"):
@@ -30,7 +30,7 @@ const AKAR = process.env.AKAR || path.resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 25;
+const DIHARAPKAN = 26;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
@@ -63,7 +63,9 @@ const GUDANG = { ok: true, lokasi: [
   { kode: 'T2-3A', sku: 'S Reindeer', barcode: '4582586963000', isi: 6, kap: 16, zona: 'TABLE', unit: 'T2', level: 3, pos: 'A', peran: 'PICK', persen: 6 / 16, rendah: true },
   { kode: 'X-02', sku: 'S Reindeer', barcode: '4582586963000', isi: 1, kap: 40, zona: 'OVERFLOW', unit: 'X', level: 0, pos: '', peran: 'OVERFLOW', persen: 1 / 40, rendah: false },
   /* 20 Okt: satu baris yang sudah memakai kode Jubelio, seperti sesudah Location Master diganti */
-  { kode: 'L2-R2-B', sku: '', barcode: '', isi: 0, kap: 30, zona: 'RACK', unit: 'R2', level: 2, pos: 'B', peran: 'PICK', persen: 0, rendah: true }
+  { kode: 'L2-R2-B', sku: '', barcode: '', isi: 0, kap: 30, zona: 'RACK', unit: 'R2', level: 2, pos: 'B', peran: 'PICK', persen: 0, rendah: true },
+  /* 22 Okt: staging barang masuk, tanpa SKU tetap */
+  { kode: 'X-IN', sku: '', barcode: '', isi: 214, kap: 0, zona: 'OVERFLOW', unit: 'X', level: 0, pos: '', peran: 'STAGING', persen: 0, rendah: false }
 ] };
 
 /* ---------- papan lama palsu ---------- */
@@ -332,6 +334,17 @@ const KAMERA_PALSU = () => {
       Array.isArray(fc.foto) && fc.foto.length === 2 && fc.foto.every(Boolean) && !fc.sisa, JSON.stringify(fc));
     await p.evaluate((d) => { window.KulitPapan.dasar = d; }, dasarLama);
     await cdp.send('Network.setCacheDisabled', { cacheDisabled: false });
+
+    /* 22 Okt, Ferdy kirim kartu L1-IN-1-01: kotak foto berisi "?" seperti slot rusak. Staging memang
+       tanpa SKU tetap, jadi kotaknya diganti ikon kardus. Slot rak kosong biasa tetap "?". */
+    await p.evaluate(() => { window.__cetak = ''; window.__kartuHtml = null; const pr = window.print; window.__printLama = pr;
+      window.print = function () { window.__kartuHtml = Array.from(document.querySelectorAll('#lembarCetak .label-rak')).map(x => ({ j: x.getAttribute('data-jubelio'), kardus: !!x.querySelector('.label-tengah svg.ikon-kardus'), tanya: (x.querySelector('.foto-sku.inisial') || {}).textContent || '' })); window.__cetak = 'ok'; }; });
+    await p.evaluate(() => window.WmsAlat.cetakKode(['X-IN', 'L2-R2-B']));
+    await tunggu(p, () => window.__cetak, 8000); await jeda(100);
+    const kd = await p.evaluate(() => { window.print = window.__printLama; return window.__kartuHtml; });
+    const kIn = (kd || []).find(x => x.j === 'L1-IN-1-01') || {}, kRak = (kd || []).find(x => x.j === 'L2-R2-B') || {};
+    c('W71 kartu staging L1-IN-1-01 memakai ikon kardus, bukan "?"; slot rak kosong L2-R2-B tetap "?"',
+      kIn.kardus === true && !kIn.tanya && kRak.kardus === false && kRak.tanya === '?', JSON.stringify(kd));
 
     /* ---- paspor ---- */
     await bingkai(p).click('#tdRein img.l4-sku');
