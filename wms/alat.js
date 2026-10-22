@@ -491,7 +491,19 @@
     var w = document.createElement('div'); w.id = 'lembarCetak'; w.innerHTML = hal.join('');
     document.body.appendChild(w); document.body.classList.add('cetak-label'); pasNamaCetak(w);
     var beres = function () { document.body.classList.remove('cetak-label'); if (w.parentNode) w.parentNode.removeChild(w); };
-    try { W.print(); } finally { setTimeout(beres, 0); }
+    /* 22 Okt (pratinjau 88 kartu Ferdy: kotak foto kosong semua): <img> di lembar ini baru dibuat, jadi
+       print() langsung memotret kotak yang belum termuat. Tunggu tiap foto selesai (atau gagal) dan
+       huruf siap, paling lama 15 detik, baru cetak. */
+    return siapGambar(w, 15000).then(function () { try { W.print(); } finally { setTimeout(beres, 0); } });
+  }
+  function siapGambar(akar, batas) {
+    var tunggu = Array.prototype.map.call(akar.querySelectorAll('img'), function (im) {
+      im.loading = 'eager';
+      if (im.complete && im.naturalWidth > 0) return Promise.resolve();
+      return new Promise(function (ok) { im.addEventListener('load', ok, { once: true }); im.addEventListener('error', ok, { once: true }); });
+    });
+    if (document.fonts && document.fonts.ready) tunggu.push(document.fonts.ready);
+    return Promise.race([Promise.all(tunggu), new Promise(function (ok) { setTimeout(ok, batas); })]);
   }
 
   /* ---------- paspor ---------- */
