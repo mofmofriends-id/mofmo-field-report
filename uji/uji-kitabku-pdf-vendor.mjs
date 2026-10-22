@@ -1,7 +1,10 @@
 /* Uji PDF vendor kartu QR paket: A4, 4 kartu per halaman, bleed 3 mm, tanda potong (WMS Kitabku, 19 Okt 2026).
- * Harapan: "9 pemeriksaan, SEMUA LULUS".
- * 19 Okt sore, Ferdy: ukuran kartu bisa dipilih (105x45, 126x54, 140x60, 175x75 mm, bentuk tetap 7:3). Bleed harus tetap
- * 3 mm di semua ukuran (bukan ikut mengecil), dan jumlah kartu per halaman menyesuaikan.
+ * Harapan: "11 pemeriksaan, SEMUA LULUS".
+ * 19 Okt sore, Ferdy: ukuran kartu bisa dipilih. Bleed harus tetap 3 mm di semua ukuran (bukan ikut mengecil), dan jumlah
+ * kartu per halaman menyesuaikan.
+ * 21 Okt, Ferdy (tangkapan layar pilihan vendor): ukurannya cuma 15x7, 15x5, 12x6, 10x5, 12.5x6, 13x8, 8x6 cm. Bentuknya
+ * tidak lagi 7:3, jadi desain 140 x 60 TIDAK boleh ditarik (QR jadi lonjong, gagal discan HP murah): desain diperkecil
+ * atau diperbesar sampai pas lalu diletakkan di tengah, dan sisa ruang sampai garis potong diisi latar kartu, bukan putih.
  *
  * KENAPA UJI INI ADA. Ferdy (19 Okt): kartu QR paket dicetak vendor minggu ini, bukan per paket di hari H. Vendor minta
  * bleed, Ferdy pilih desain tanpa bingkai tepi (pilihan A), kertas A4. File ini langsung masuk mesin cetak, jadi yang
@@ -23,7 +26,7 @@ const { dbPalsu } = await import(SRV + '/kitab-tiruan.mjs');
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 9;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 11;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 500))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -68,25 +71,36 @@ for pg in r.pages:
     if im:
         q = sorted(zxingcpp.read_barcodes(im), key=lambda b: b.position.top_left.y)
         d['qr'] = [b.text for b in q]
+        if q:
+            ps = q[0].position; dx = lambda a, b: ((a.x - b.x) ** 2 + (a.y - b.y) ** 2) ** 0.5
+            d['qrRasio'] = round(dx(ps.top_left, ps.top_right) / max(1, dx(ps.top_left, ps.bottom_left)), 3)
+            d['qrTengahY'] = round((ps.top_left.y + ps.bottom_left.y) / 2 / mm, 1)
+            d['qrSisi'] = round(dx(ps.top_left, ps.top_right) / mm, 2)
         px = lambda x, y: im.getpixel((int(x * mm), int(y * mm)))
         tengah = 10.5 + 3 + h / 2
         d['bleedKiri'] = px(kx + 1, tengah); d['bleedKanan'] = px(kx + w + 6 - 1, tengah); d['luar'] = px(kx - 7, tengah)
         d['dalamKiri'] = px(kx + 3.6, tengah)
-        d['tandaH'] = px(kx - 6, 13.5); d['tandaV'] = px(kx + 3, 5); d['slot2'] = px(105, 10.5 + (h + 10) + 3 + h / 2)
+        d['tandaH'] = px(kx - 6, 13.5); d['tandaV'] = px(kx + 3, 5); d['slot2'] = px(105, 10.5 + (h + 10) + 3 + h / 2); d['slot3'] = px(105, 10.5 + 2 * (h + 10) + 3 + h / 2)
+        d['sudutKiriAtas'] = px(kx + 3 + 1.5, 10.5 + 3 + 1.5); d['sudutKiriBawah'] = px(kx + 3 + 1.5, 10.5 + 3 + h - 1.5)
+        d['sudutKananAtas'] = px(kx + 3 + w - 1.5, 10.5 + 3 + 1.5); d['sudutKananBawah'] = px(kx + 3 + w - 1.5, 10.5 + 3 + h - 1.5)
     out['hal'].append(d)
 print(json.dumps(out))`;
 const baca = (f, w, h) => JSON.parse(execFileSync('python3', ['-c', PY, f, JSON.stringify({ w, h })]).toString()).hal;
 const krem = (c) => c[0] > 200 && c[1] > 185 && c[2] > 140 && c[0] + c[1] + c[2] < 740, hijau = (c) => c[1] > c[0] && c[0] + c[1] + c[2] < 320, putih = (c) => c.every((x) => x > 245), gelap = (c) => c.every((x) => x < 90);
 const qrUrut = (urut) => urut.map((k) => 'https://mofmofriends.id/#k=' + k).join();
+/* empat sudut di dalam garis potong terisi latar kartu (krem kiri, hijau kanan), QR tidak ditarik (rasio sisi ~1) */
+const penuh = (h) => krem(h.sudutKiriAtas) && krem(h.sudutKiriBawah) && hijau(h.sudutKananAtas) && hijau(h.sudutKananBawah);
+const qrPersegi = (h) => Math.abs((h.qrRasio || 0) - 1) < 0.03;
 async function unduhPdf(ukuran) {
   if (ukuran) await p.selectOption('#kbPdfUk', ukuran);
   const [dl] = await Promise.all([p.waitForEvent('download', { timeout: 120000 }), p.click('[data-kb=pdfVendor]')]);
   const f = path.join(os.tmpdir(), 'pdf-vendor-' + Date.now() + '.pdf'); await dl.saveAs(f); await p.waitForTimeout(300);
+  if (process.env.SIMPAN_PDF) fs.copyFileSync(f, path.join(process.env.SIMPAN_PDF, dl.suggestedFilename()));
   return { f, nama: dl.suggestedFilename() };
 }
-let urut = [];
+let urut = [], QR_15x7 = 0;
 
-await bagian('A. buat 5 kartu lalu unduh PDF vendor ukuran standar 140 x 60', async () => {
+await bagian('A. buat 5 kartu lalu unduh PDF vendor ukuran bawaan 15 x 7 cm', async () => {
   await p.goto('http://localhost:' + srv.address().port + '/uji.html');
   await p.evaluate(() => { window.__cetak = 0; window.print = () => { window.__cetak++; setTimeout(() => window.dispatchEvent(new Event('afterprint')), 50); }; });
   await p.evaluate(() => WmsKitabku.buka('cetak')); await p.waitForTimeout(600);
@@ -94,27 +108,32 @@ await bagian('A. buat 5 kartu lalu unduh PDF vendor ukuran standar 140 x 60', as
   await p.click('[data-kb=buatPaket]'); await p.waitForFunction(() => window.__cetak > 0, null, { timeout: 30000 }); await p.waitForTimeout(500);
   urut = Object.keys(db.st.kode);
   const { f, nama } = await unduhPdf(null);
-  c('A1 tombol Unduh PDF vendor ada sesudah kartu dibuat; nama berkas menyebut edisi, jumlah, A4, dan ukuran standar 140x60', /^kartu-paket-11\.11-5-vendor-A4-140x60\.pdf$/.test(nama), nama);
-  const H = baca(f, 140, 60);
+  c('A1 tombol Unduh PDF vendor ada sesudah kartu dibuat; nama berkas menyebut edisi, jumlah, A4, dan ukuran bawaan 150x70', /^kartu-paket-11\.11-5-vendor-A4-150x70\.pdf$/.test(nama), nama);
+  const H = baca(f, 150, 70); QR_15x7 = H[0].qrSisi;
   c('A2 dua halaman A4 (595 x 842 pt), masing-masing satu gambar 2480 x 3508 px (300 dpi)', H.length === 2 && H.every((h) => Math.abs(h.mb[2] - 595.3) < 0.6 && Math.abs(h.mb[3] - 841.9) < 0.6 && h.n === 1 && h.ukuran[0] === 2480 && h.ukuran[1] === 3508), JSON.stringify(H.map((h) => [h.mb, h.n, h.ukuran])));
   const qr = H.flatMap((h) => h.qr || []);
-  c('A3 QR terbaca semua: 4 di halaman 1, 1 di halaman 2, urut sama dengan kode dari server', H[0].qr.length === 4 && H[1].qr.length === 1 && qr.join() === qrUrut(urut), JSON.stringify(qr));
+  c('A3 QR terbaca semua: 3 di halaman 1, 2 di halaman 2, urut sama dengan kode dari server', H[0].qr.length === 3 && H[1].qr.length === 2 && qr.join() === qrUrut(urut), JSON.stringify(qr));
   c('A4 latar diteruskan ke area bleed (krem di kiri, hijau di kanan, di luar garis potong); di luar bleed putih', krem(H[0].bleedKiri) && hijau(H[0].bleedKanan) && putih(H[0].luar), JSON.stringify([H[0].bleedKiri, H[0].bleedKanan, H[0].luar]));
-  c('A5 tanda potong hitam tepat di garis potong atas kartu 1 dan garis kiri; slot kosong di halaman 2 putih', gelap(H[0].tandaH) && gelap(H[0].tandaV) && putih(H[1].slot2), JSON.stringify([H[0].tandaH, H[0].tandaV, H[1].slot2]));
+  c('A5 tanda potong hitam tepat di garis potong atas kartu 1 dan garis kiri; slot ketiga di halaman 2 putih', gelap(H[0].tandaH) && gelap(H[0].tandaV) && putih(H[1].slot3), JSON.stringify([H[0].tandaH, H[0].tandaV]));
+  const opsi = await p.evaluate(() => [...document.querySelectorAll('#kbPdfUk option')].map((o) => o.textContent.trim()));
+  c('A6 pilihan ukuran persis daftar vendor, dalam cm dan minimal pesanannya; 15 x 7 cm terpilih',
+    JSON.stringify(opsi.map((x) => x.replace(/\s*\(.*$/, ''))) === JSON.stringify(['15 × 7 cm', '15 × 5 cm', '12 × 6 cm', '10 × 5 cm', '12.5 × 6 cm', '13 × 8 cm', '8 × 6 cm']) &&
+    /min\.? 12 pcs/.test(opsi[0]) && /min\.? 25 pcs/.test(opsi[6]) && (await p.$eval('#kbPdfUk', (x) => x.value)) === '150x70', JSON.stringify(opsi));
+  c('A7 15 x 7 cm: QR tetap persegi (desain tidak ditarik) dan keempat sudut sampai garis potong terisi latar kartu', qrPersegi(H[0]) && penuh(H[0]), JSON.stringify([H[0].qrRasio, H[0].sudutKiriAtas, H[0].sudutKiriBawah, H[0].sudutKananAtas, H[0].sudutKananBawah]));
 });
 
-await bagian('B. pilih ukuran kartu', async () => {
-  const kecil = await unduhPdf('105');
-  const K = baca(kecil.f, 105, 45);
-  c('B1 105 x 45 mm: muat 5 kartu per halaman (5 kartu = 1 halaman), QR terbaca urut, nama berkas menyebut 105x45',
-    /-vendor-A4-105x45\.pdf$/.test(kecil.nama) && K.length === 1 && (K[0].qr || []).join() === qrUrut(urut), JSON.stringify({ nama: kecil.nama, hal: K.length, qr: K[0] && K[0].qr }));
-  c('B2 105 x 45 mm: bleed tetap 3 mm (krem sampai 3 mm di luar garis potong, putih di luarnya), tanda potong di garis potong',
-    krem(K[0].bleedKiri) && hijau(K[0].bleedKanan) && putih(K[0].luar) && gelap(K[0].tandaH) && gelap(K[0].tandaV), JSON.stringify([K[0].bleedKiri, K[0].bleedKanan, K[0].luar, K[0].tandaH, K[0].tandaV]));
-  const besar = await unduhPdf('175');
-  const B = baca(besar.f, 175, 75);
-  c('B3 175 x 75 mm: 3 kartu per halaman (5 kartu = 2 halaman), QR terbaca urut, bleed dan tanda potong benar',
-    /-vendor-A4-175x75\.pdf$/.test(besar.nama) && B.length === 2 && B[0].qr.length === 3 && B.flatMap((h) => h.qr).join() === qrUrut(urut) && krem(B[0].bleedKiri) && putih(B[0].luar) && gelap(B[0].tandaH) && gelap(B[0].tandaV),
-    JSON.stringify({ nama: besar.nama, hal: B.length, qr: B.map((h) => (h.qr || []).length), px: [B[0].bleedKiri, B[0].luar, B[0].tandaH, B[0].tandaV] }));
+await bagian('B. ukuran vendor lain: 8 x 6, 13 x 8, 15 x 5 cm', async () => {
+  const cek = async (kunci, w, h, per) => {
+    const x = await unduhPdf(kunci), H = baca(x.f, w, h), hal = Math.ceil(5 / per);
+    return { nama: x.nama, H, ok: new RegExp('-vendor-A4-' + w + 'x' + h + '\\.pdf$').test(x.nama) && H.length === hal && H[0].qr.length === Math.min(per, 5) && H.flatMap((y) => y.qr).join() === qrUrut(urut) &&
+      krem(H[0].bleedKiri) && hijau(H[0].bleedKanan) && putih(H[0].luar) && gelap(H[0].tandaH) && gelap(H[0].tandaV) && qrPersegi(H[0]) && penuh(H[0]) };
+  };
+  const k = await cek('80x60', 80, 60, 4);
+  c('B1 8 x 6 cm: 4 per halaman, QR terbaca urut dan tetap persegi, bleed 3 mm, tanda potong, sudut terisi', k.ok, JSON.stringify({ nama: k.nama, hal: k.H.length, qr: k.H.map((y) => (y.qr || []).length), r: k.H[0].qrRasio, s: [k.H[0].sudutKiriAtas, k.H[0].sudutKananBawah, k.H[0].luar] }));
+  const t = await cek('130x80', 130, 80, 3);
+  c('B2 13 x 8 cm: 3 per halaman, sama ketatnya, dan desain di tengah tinggi kartu (QR di tengah, bukan menempel ke atas)', t.ok && Math.abs(t.H[0].qrTengahY - (10.5 + 3 + 40)) < 6, JSON.stringify({ nama: t.nama, hal: t.H.length, qr: t.H.map((y) => (y.qr || []).length), r: t.H[0].qrRasio, y: t.H[0].qrTengahY, s: [t.H[0].sudutKiriAtas, t.H[0].sudutKananBawah] }));
+  const l = await cek('150x50', 150, 50, 4);
+  c('B3 15 x 5 cm (lebih pipih dari desain): 4 per halaman, sama ketatnya; desain diperkecil mengikuti tinggi (QR = 15x7 x (50/60)/(150/140)), bukan dipotong', l.ok && Math.abs(l.H[0].qrSisi / QR_15x7 - (50 / 60) / (150 / 140)) < 0.03, JSON.stringify({ nama: l.nama, hal: l.H.length, qr: l.H.map((y) => (y.qr || []).length), r: l.H[0].qrRasio, sisi: [l.H[0].qrSisi, QR_15x7], s: [l.H[0].sudutKiriAtas, l.H[0].sudutKananBawah] }));
   c('B4 tanpa galat JavaScript', errs.length === 0, errs.join(' | '));
 });
 

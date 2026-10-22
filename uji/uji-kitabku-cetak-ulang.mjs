@@ -102,13 +102,13 @@ await bagian('A. daftar cetakan dan unduh ulang', async () => {
   c('A1 tab Cetak kartu QR menampilkan cetakan edisi aktif, terbaru dulu: TESVENDOR 3 kartu bertanda uji, lalu MOFMO11 6 kartu (2 terpasang)',
     B.length === 2 && /^TESVENDOR\b/.test(B[0][1]) && /uji/i.test(B[0][1]) && B[0][2] === '3' && B[1][1] === 'MOFMO11' && B[1][2] === '6' && B[1][3] === '2' && B[1][4] === '0', JSON.stringify(B));
   const a = await unduh('#kbRiwayat tr[data-cetakan="1"] [data-kb=pdfUlang]');
-  const H = baca(a.f, 140, 60), qr = H.flatMap((h) => h.qr || []);
-  c('A2 unduh ulang PDF MOFMO11 (140 x 60): 2 halaman, QR persis 6 kode cetakan itu dengan urutan yang sama, bleed benar',
-    /^kartu-paket-11\.11-6-vendor-A4-140x60\.pdf$/.test(a.nama) && H.length === 2 && qr.join() === qrUrut(MOF) && krem(H[0].bleedKiri) && putih(H[0].luar), JSON.stringify({ nama: a.nama, qr }));
-  const k = await unduh('#kbRiwayat tr[data-cetakan="1"] [data-kb=pdfUlang]', '105');
-  const K = baca(k.f, 105, 45);
-  c('A3 pilih 105 x 45 di daftar: 6 kartu jadi 2 halaman (5 + 1), QR urut sama, nama berkas menyebut 105x45',
-    /-vendor-A4-105x45\.pdf$/.test(k.nama) && K.length === 2 && K[0].qr.length === 5 && K.flatMap((h) => h.qr).join() === qrUrut(MOF), JSON.stringify({ nama: k.nama, hal: K.map((h) => (h.qr || []).length) }));
+  const H = baca(a.f, 150, 70), qr = H.flatMap((h) => h.qr || []);
+  c('A2 unduh ulang PDF MOFMO11 (bawaan 15 x 7 cm, 21 Okt ikut ukuran vendor): 2 halaman, QR persis 6 kode cetakan itu dengan urutan yang sama, bleed benar',
+    /^kartu-paket-11\.11-6-vendor-A4-150x70\.pdf$/.test(a.nama) && H.length === 2 && qr.join() === qrUrut(MOF) && krem(H[0].bleedKiri) && putih(H[0].luar), JSON.stringify({ nama: a.nama, qr }));
+  const k = await unduh('#kbRiwayat tr[data-cetakan="1"] [data-kb=pdfUlang]', '80x60');
+  const K = baca(k.f, 80, 60);
+  c('A3 pilih 8 x 6 cm di daftar: 6 kartu jadi 2 halaman (4 + 2), QR urut sama, nama berkas menyebut 80x60',
+    /-vendor-A4-80x60\.pdf$/.test(k.nama) && K.length === 2 && K[0].qr.length === 4 && K.flatMap((h) => h.qr).join() === qrUrut(MOF), JSON.stringify({ nama: k.nama, hal: K.map((h) => (h.qr || []).length) }));
   await p.fill('#kbPJml', '2'); await p.fill('#kbPVKode', 'CADANGAN'); await p.fill('#kbPVSampai', SAMPAI);
   await p.click('[data-kb=buatPaket]'); await p.waitForFunction(() => window.__cetak > 0, null, { timeout: 30000 }); await p.waitForTimeout(1200);
   const B2 = await baris();
