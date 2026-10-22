@@ -293,11 +293,11 @@
     var nama = namaSlot(l), st = status(l), persen = l.kap ? Math.round(l.isi / l.kap * 100) : 0;
     var lain = (X.perBc[String(l.barcode || '')] || []).filter(function (x) { return x.kode !== l.kode; });
     hasil('<article class="kartu-slot">' +
-      '<div class="slot-kepala"><b class="slot-kode">' + esc(l.kode) + '</b><span class="slot-meta">' + esc(metaSlot(l)) + '</span>' + (l.peran ? '<span class="chip-alat peran">' + esc(l.peran) + '</span>' : '') + '</div>' +
+      '<div class="slot-kepala"><b class="slot-kode">' + esc(kodeJubelio(l.kode)) + '</b><span class="slot-meta">' + esc(metaSlot(l)) + '</span>' + (l.peran ? '<span class="chip-alat peran">' + esc(l.peran) + '</span>' : '') + '</div>' +
       '<div class="slot-isi">' + fotoHtml(nama, l.sku, 'besar') + '<div class="slot-nama"><b>' + esc(nama) + '</b><small>' + esc(l.sku || '') + (l.barcode ? ' · ' + esc(l.barcode) : '') + '</small></div></div>' +
       '<div class="slot-angka"><b class="angka-besar">' + nf(l.isi) + '</b><span class="dari"> / ' + nf(l.kap) + ' ' + esc(t('kapasitas')) + '</span><span class="status-alat s-' + st.k + '">' + esc(st.t) + '</span></div>' +
       '<div class="batang-alat"><i class="s-' + st.k + '" style="width:' + Math.max(0, Math.min(100, persen)) + '%"></i></div>' +
-      (lain.length ? '<div class="lain-alat"><span class="lbl">' + esc(t('alsoAt')) + '</span>' + lain.map(function (x) { return '<button type="button" class="chip-alat" data-slot="' + esc(x.kode) + '">' + esc(x.kode) + ' <b>' + nf(x.isi) + '</b></button>'; }).join('') + '</div>' : '') +
+      (lain.length ? '<div class="lain-alat"><span class="lbl">' + esc(t('alsoAt')) + '</span>' + lain.map(function (x) { return '<button type="button" class="chip-alat" data-slot="' + esc(x.kode) + '">' + esc(kodeJubelio(x.kode)) + ' <b>' + nf(x.isi) + '</b></button>'; }).join('') + '</div>' : '') +
       (l.barcode ? '<button type="button" class="btn dua tombol-paspor" data-paspor-buka="' + esc(l.barcode) + '">' + esc(t('paspor')) + ' →</button>' : '') +
       '</article>');
   }
@@ -308,7 +308,7 @@
       '<div class="slot-isi">' + fotoHtml(nama, ls[0] && ls[0].sku, 'besar') + '<div class="slot-nama"><b>' + esc(nama) + '</b><small>' + esc(p && p.s ? p.s + ' · ' : '') + esc(bc) + '</small></div></div>' +
       '<div class="slot-angka"><b class="angka-besar">' + nf(total) + '</b><span class="dari"> pcs ' + esc(t('diRak')) + '</span></div>' +
       '<span class="lbl">' + esc(t('lokasiSku')) + '</span>' +
-      (ls.length ? '<div class="daftar-slot">' + ls.map(function (l) { var st = status(l); return '<button type="button" class="baris-slot" data-slot="' + esc(l.kode) + '"><b>' + esc(l.kode) + '</b><span>' + esc(metaSlot(l)) + '</span><span class="num">' + nf(l.isi) + ' / ' + nf(l.kap) + '</span><span class="status-alat s-' + st.k + '">' + esc(st.t) + '</span></button>'; }).join('') + '</div>' : '<p class="ket-alat">' + esc(t('belumAdaDiRak')) + '</p>') +
+      (ls.length ? '<div class="daftar-slot">' + ls.map(function (l) { var st = status(l); return '<button type="button" class="baris-slot" data-slot="' + esc(l.kode) + '"><b>' + esc(kodeJubelio(l.kode)) + '</b><span>' + esc(metaSlot(l)) + '</span><span class="num">' + nf(l.isi) + ' / ' + nf(l.kap) + '</span><span class="status-alat s-' + st.k + '">' + esc(st.t) + '</span></button>'; }).join('') + '</div>' : '<p class="ket-alat">' + esc(t('belumAdaDiRak')) + '</p>') +
       (p ? '<button type="button" class="btn dua tombol-paspor" data-paspor-buka="' + esc(bc) + '">' + esc(t('paspor')) + ' →</button>' : '') +
       '</article>');
   }
@@ -329,7 +329,7 @@
       var ls = X.perBc[String(p.b)] || [], total = ls.reduce(function (s, l) { return s + (Number(l.isi) || 0); }, 0);
       return '<button type="button" class="baris-sku" data-paspor-buka="' + esc(p.b) + '">' + fotoHtml(p.n) + '<span class="nama"><b>' + esc(p.n) + '</b><small>' + esc(p.s || '') + ' · ' + esc(p.b) + '</small></span><span class="num">' + nf(total) + ' pcs ' + esc(t('diRak')) + '</span></button>';
     }).join('') + '</div>';
-    if (c.lok.length) h += '<p class="lbl">' + esc(t('slot')) + '</p><div class="lain-alat">' + c.lok.map(function (l) { return '<button type="button" class="chip-alat" data-slot="' + esc(l.kode) + '">' + esc(l.kode) + ' <b>' + nf(l.isi) + '</b></button>'; }).join('') + '</div>';
+    if (c.lok.length) h += '<p class="lbl">' + esc(t('slot')) + '</p><div class="lain-alat">' + c.lok.map(function (l) { return '<button type="button" class="chip-alat" data-slot="' + esc(l.kode) + '">' + esc(kodeJubelio(l.kode)) + ' <b>' + nf(l.isi) + '</b></button>'; }).join('') + '</div>';
     hasil(h);
   }
 
@@ -601,7 +601,7 @@
       '<p class="koreksi-paspor">' + esc(t('koreksi')) + ' <b data-paspor="koreksi">' + koreksi + '</b></p>' +
       '<div class="dua-kolom">' +
       '<section class="kotak-paspor"><h3>' + esc(t('diGudangJudul')) + '</h3>' +
-        (ls.length ? '<div class="daftar-slot">' + ls.map(function (l) { var st = status(l); return '<button type="button" class="baris-slot" data-slot="' + esc(l.kode) + '" data-paspor-lokasi="' + esc(l.kode) + '" data-isi="' + esc(l.isi) + '"><b>' + esc(l.kode) + '</b><span>' + esc(metaSlot(l)) + '</span><span class="num">' + nf(l.isi) + ' / ' + nf(l.kap) + '</span><span class="status-alat s-' + st.k + '">' + esc(st.t) + '</span></button>'; }).join('') + '</div>' : '<p class="ket-alat">' + esc(t('belumAdaDiRak')) + '</p>') +
+        (ls.length ? '<div class="daftar-slot">' + ls.map(function (l) { var st = status(l); return '<button type="button" class="baris-slot" data-slot="' + esc(l.kode) + '" data-paspor-lokasi="' + esc(l.kode) + '" data-isi="' + esc(l.isi) + '"><b>' + esc(kodeJubelio(l.kode)) + '</b><span>' + esc(metaSlot(l)) + '</span><span class="num">' + nf(l.isi) + ' / ' + nf(l.kap) + '</span><span class="status-alat s-' + st.k + '">' + esc(st.t) + '</span></button>'; }).join('') + '</div>' : '<p class="ket-alat">' + esc(t('belumAdaDiRak')) + '</p>') +
         '<p class="belum-paspor">' + esc(t('belumLokasi')) + ' <b data-paspor="belumLokasi">' + nf(belum) + '</b></p></section>' +
       '<section class="kotak-paspor"><h3>' + esc(t('diGeraiJudul')) + '</h3>' +
         (tokoK.length ? '<table class="tabel-paspor"><tbody>' + tokoK.map(function (k) { var x = r.toko[k]; return '<tr data-paspor-toko="' + esc(k) + '" data-stok="' + esc(x.stok) + '"><td><b>' + esc(k) + '</b><small>' + esc(x.lok.n || '') + '</small></td><td class="num">' + nf(x.terima) + '<small>' + esc(t('terima')) + '</small></td><td class="num">' + nf(x.laku) + '<small>' + esc(t('terjual')) + '</small></td><td class="num"><b>' + nf(x.stok) + '</b><small>' + esc(t('stok')) + '</small></td></tr>'; }).join('') + '</tbody></table>' : '<p class="ket-alat">—</p>') +

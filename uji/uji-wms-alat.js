@@ -1,5 +1,5 @@
 /* Uji alat WMS (wms/alat.js + rapihan papan), 10 Okt 2026 malam.
- * Harapan: "26 pemeriksaan, SEMUA LULUS".
+ * Harapan: "27 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Sesudah Mofmo Soft disetujui, Ferdy minta empat
  * rapihan dan dua alat baru ("gass", "gaskeun"):
@@ -30,7 +30,7 @@ const AKAR = process.env.AKAR || path.resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 26;
+const DIHARAPKAN = 27;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
@@ -227,8 +227,8 @@ const KAMERA_PALSU = () => {
     await tembak(p, 'r1-4a');
     const s1 = await teksAlat(p);
     const s1f = await p.evaluate(() => { const i = document.querySelector('#alatHasil img.foto-sku'); return { src: i ? i.getAttribute('src') : '', suara: window.__wms && window.__wms.Suara ? window.__wmsSuaraTerakhir : '' }; });
-    c('W50 scan label rak R1-4A (huruf kecil juga): isi slot tampil (key charm Bear, 74 dari 120, foto SKU), bunyi scan ok',
-      /R1-4A/.test(s1) && /key charm - Bear/i.test(s1) && /\b74\b/.test(s1) && /\b120\b/.test(s1) && /img\/sku\/kc_bear\.webp$/.test(s1f.src) && s1f.suara === 'scanOk', JSON.stringify([s1.slice(0, 200), s1f]));
+    c('W50 scan label rak R1-4A (huruf kecil juga): isi slot tampil berkepala kode Jubelio L4-R1-A (key charm Bear, 74 dari 120, foto SKU), bunyi scan ok',
+      /L4-R1-A/.test(s1) && /key charm - Bear/i.test(s1) && /\b74\b/.test(s1) && /\b120\b/.test(s1) && /img\/sku\/kc_bear\.webp$/.test(s1f.src) && s1f.suara === 'scanOk', JSON.stringify([s1.slice(0, 200), s1f]));
 
     await tembak(p, '4582586963000');
     const s2 = await teksAlat(p);
@@ -238,8 +238,8 @@ const KAMERA_PALSU = () => {
     await tembak(p, 'ZZ-99');
     const s4 = await teksAlat(p);
     const s4s = await p.evaluate(() => window.__wmsSuaraTerakhir);
-    c('W51 scan barcode SKU menyebut semua lokasinya (T2-3A, X-02); ketik nama "rein" memberi daftar SKU yang bisa dibuka paspornya; kode asing ditolak dengan bunyi tolak',
-      /T2-3A/.test(s2) && /X-02/.test(s2) && /Reindeer/.test(s2) && /Reindeer/.test(s3) && s3t >= 1 && /not found/i.test(s4) && s4s === 'scanTolak', JSON.stringify([s2.slice(0, 160), s3.slice(0, 120), s3t, s4.slice(0, 120), s4s]));
+    c('W51 scan barcode SKU menyebut semua lokasinya dengan kode Jubelio (L3-T2-A, L1-OF-1-02); ketik nama "rein" memberi daftar SKU yang bisa dibuka paspornya; kode asing ditolak dengan bunyi tolak',
+      /L3-T2-A/.test(s2) && /L1-OF-1-02/.test(s2) && /Reindeer/.test(s2) && /Reindeer/.test(s3) && s3t >= 1 && /not found/i.test(s4) && s4s === 'scanTolak', JSON.stringify([s2.slice(0, 160), s3.slice(0, 120), s3t, s4.slice(0, 120), s4s]));
 
     /* 20 Okt, Ferdy: kode rak Jubelio diganti jadi L{level}-{rak}-{posisi} (R1-4A = L4-R1-A,
        T2-3A = L3-T2-A, X-02 = L1-OF-1-02) dan barcode kartu peraga memakai kode Jubelio itu.
@@ -256,15 +256,23 @@ const KAMERA_PALSU = () => {
     for (const k of ['R2-2B', 'L1-R2-2-B', 'L2-R2-B']) { await tembak(p, k); lamaKeBaru.push((await teksAlat(p)).slice(0, 160)); }
     c('W69 Location Master berkode Jubelio: label lama R2-2B dan L1-R2-2-B membuka L2-R2-B, kode barunya juga',
       lamaKeBaru.every(x => /L2-R2-B/.test(x) && !/not found/i.test(x)), JSON.stringify(lamaKeBaru));
-    c('W66 scan kode rak Jubelio: L4-R1-A membuka R1-4A (Bear, 74), l3-t2-a membuka T2-3A, format lama L1-R1-4-A juga R1-4A, L1-OF-1-02 membuka X-02',
-      /R1-4A/.test(jub[0]) && /Bear/.test(jub[0]) && /\b74\b/.test(jub[0]) && /T2-3A/.test(jub[1]) && /Reindeer/.test(jub[1]) && /R1-4A/.test(jub[2]) && /X-02/.test(jub[3]) && !/not found/i.test(jub.join(' ')), JSON.stringify(jub));
+    c('W66 scan kode rak Jubelio: L4-R1-A membuka lokasi L4-R1-A (Bear, 74), l3-t2-a membuka L3-T2-A, format lama L1-R1-4-A juga L4-R1-A, L1-OF-1-02 membuka L1-OF-1-02',
+      /L4-R1-A/.test(jub[0]) && /Bear/.test(jub[0]) && /\b74\b/.test(jub[0]) && /L3-T2-A/.test(jub[1]) && /Reindeer/.test(jub[1]) && /L4-R1-A/.test(jub[2]) && /L1-OF-1-02/.test(jub[3]) && !/not found/i.test(jub.join(' ')), JSON.stringify(jub));
+
+    /* 22 Okt, Ferdy tes label baru pakai Scan: label L7-T2-B kebaca, tapi kepala hasilnya masih menulis
+       kode WMS lama "T2-7B". Label, Jubelio, dan layar harus satu bahasa: kepala hasil, chip "juga di",
+       dan daftar lokasi SKU memakai kode Jubelio, dari label baru maupun label lama. */
+    const kepala = [];
+    for (const k of ['L3-T2-A', 'T2-3A', 'X-02']) { await tembak(p, k); kepala.push(await p.evaluate(() => { const e = document.querySelector('#alatHasil .slot-kode'); const ch = Array.from(document.querySelectorAll('#alatHasil .lain-alat .chip-alat')).map(x => x.textContent.replace(/\s+/g, ' ').trim()); return { k: e ? e.textContent.trim() : null, ch }; })); }
+    c('W72 kepala hasil scan memakai kode Jubelio: L3-T2-A dan label lama T2-3A sama-sama berkepala L3-T2-A, X-02 berkepala L1-OF-1-02, chip "juga di" juga kode Jubelio',
+      kepala[0].k === 'L3-T2-A' && kepala[1].k === 'L3-T2-A' && kepala[2].k === 'L1-OF-1-02' && kepala[0].ch.some(x => /^L1-OF-1-02\b/.test(x)) && !kepala.some(x => x.ch.some(y => /^(T2-3A|X-02)\b/.test(y))), JSON.stringify(kepala));
 
     const adaKamera = await p.evaluate(() => !!document.getElementById('alatKamera'));
     if (adaKamera) await p.click('#alatKamera');
     await tunggu(p, () => /T2-3A/.test((document.getElementById('alatHasil') || {}).innerText || '') && !document.querySelector('#alat video'), 5000);
     const kam = await p.evaluate(() => ({ hasil: (document.getElementById('alatHasil') || {}).innerText || '', stop: window.__stop, video: !!document.querySelector('#alat video'), format: window.__format }));
-    c('W52 kamera HP: BarcodeDetector melihat label T2-3A, slotnya tampil, kamera dimatikan (trek berhenti, video hilang)',
-      adaKamera && /T2-3A/.test(kam.hasil) && /Reindeer/.test(kam.hasil) && kam.stop >= 1 && !kam.video && Array.isArray(kam.format) && kam.format.indexOf('code_128') > -1, JSON.stringify(kam).slice(0, 300));
+    c('W52 kamera HP: BarcodeDetector melihat label T2-3A, slotnya tampil sebagai L3-T2-A, kamera dimatikan (trek berhenti, video hilang)',
+      adaKamera && /L3-T2-A/.test(kam.hasil) && /Reindeer/.test(kam.hasil) && kam.stop >= 1 && !kam.video && Array.isArray(kam.format) && kam.format.indexOf('code_128') > -1, JSON.stringify(kam).slice(0, 300));
 
     /* ---- cetak label ---- */
     await p.click('#alat [data-tab=label]');

@@ -162,7 +162,7 @@ async function main() {
     await p.fill('#alatKode', 'T2-3A'); await p.press('#alatKode', 'Enter'); await jeda(500);
     const t9 = await p.evaluate(() => (document.getElementById('alatHasil') || {}).innerText || '');
     await luring(false);
-    c('B9 Scan & cari tanpa sinyal tetap menemukan T2-3A (S Reindeer) dari peta tersimpan, dengan keterangan bahwa datanya simpanan HP', /T2-3A/.test(t9) && /S Reindeer/.test(t9) && /tersimpan di HP/.test(t9), t9.slice(0, 300));
+    c('B9 Scan & cari tanpa sinyal tetap menemukan T2-3A (tampil sebagai kode Jubelio L3-T2-A, S Reindeer) dari peta tersimpan, dengan keterangan bahwa datanya simpanan HP', /L3-T2-A/.test(t9) && /S Reindeer/.test(t9) && /tersimpan di HP/.test(t9), t9.slice(0, 300));
     const lebar = await (async () => { await p.setViewportSize({ width: 390, height: 844 }); await p.click('#alat [data-tab=petik]'); await jeda(200); return p.evaluate(() => Math.max(document.documentElement.scrollWidth, document.getElementById('alat').scrollWidth)); })();
     c('B10 HP 390 px tanpa geser samping; tanpa dialog peramban; tanpa tanda pisah panjang', lebar <= 392 && DIALOG.length === 0 && !(await p.evaluate(() => /—/.test(document.getElementById('alat').innerText))), lebar + ' ' + DIALOG.join('|'));
   } catch (e) { c('B MATI di tengah jalan', false, e.stack); }
