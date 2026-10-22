@@ -434,6 +434,9 @@
     var total = m.length + 2 * tenang;
     return '<svg class="ean13 ' + kelas + '" viewBox="0 0 ' + total + ' 1" preserveAspectRatio="none" shape-rendering="crispEdges" role="img" aria-label="' + esc(t) + '"><rect width="' + total + '" height="1" fill="#fff"/><g fill="#1b1410">' + batang + '</g></svg>';
   }
+  /* 22 Okt: staging barang masuk tidak punya SKU tetap; kotak fotonya ikon kardus, bukan "?" */
+  var KARDUS = '<span class="foto-sku kartu kardus" aria-hidden="true"><svg class="ikon-kardus" viewBox="0 0 64 64" fill="none" stroke="#5c4a3d" stroke-width="3" stroke-linejoin="round" stroke-linecap="round">' +
+    '<path d="M8 22 32 12l24 10v24L32 56 8 46z" fill="#e8cfa6"/><path d="M8 22l24 10 24-10M32 32v24" /><path d="M20 17l24 10v8" stroke-width="2.5"/></svg></span>';
   function htmlLabel(l) {
     var nama = namaSlot(l), p = X.prodBc[String(l.barcode || '')] || null, bc = String(l.barcode || '');
     var jub = kodeJubelio(l.kode), sh = namaShopee(bc, nama);
@@ -442,7 +445,7 @@
     var meta = [p && p.s ? '<b class="label-kodesku">' + esc(p.s) + '</b>' : '', Number(l.kap) > 0 ? esc('maks. ' + nf(l.kap) + ' pcs') : ''].filter(Boolean).join(' · ');
     return '<div class="label-rak" data-kode="' + esc(l.kode) + '" data-jubelio="' + esc(jub) + '"><span class="label-strip" style="background:' + warna + '"></span>' +
       '<div class="label-atas"><b class="label-lok">' + esc(jub) + '</b>' + (zona ? '<span class="label-zona" style="background:' + warna + '">' + esc(zona) + '</span>' : '') + '</div>' +
-      '<div class="label-tengah">' + fotoHtml(nama, l.sku, 'kartu') +
+      '<div class="label-tengah">' + (zona === 'STAGING' && !bc ? KARDUS : fotoHtml(nama, l.sku, 'kartu')) +
         '<div class="label-sku">' + (sh.listing ? '<span class="label-listing">' + esc(sh.listing) + '</span>' : '') +
         '<b class="label-nama">' + esc(sh.pendek || t('kosongSlot')) + '</b>' +
         (meta ? '<span class="label-meta">' + meta + '</span>' : '') +
