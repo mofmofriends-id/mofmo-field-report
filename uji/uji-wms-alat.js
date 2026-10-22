@@ -1,5 +1,5 @@
 /* Uji alat WMS (wms/alat.js + rapihan papan), 10 Okt 2026 malam.
- * Harapan: "24 pemeriksaan, SEMUA LULUS".
+ * Harapan: "25 pemeriksaan, SEMUA LULUS".
  *
  * KENAPA UJI INI ADA. Sesudah Mofmo Soft disetujui, Ferdy minta empat
  * rapihan dan dua alat baru ("gass", "gaskeun"):
@@ -30,10 +30,12 @@ const AKAR = process.env.AKAR || path.resolve(__dirname, '..');
 const API = 'https://script.google.com/macros/s/AKfycbzslW9akcAS2EINjrdcllgpGpuQzz_I2jHtNyEWixS-yl2HSsqE5kfTDjDGR8H_Zcq9xA/exec';
 const SUPA = 'https://oloxoxmfbfxxibksxeug.supabase.co/functions/v1/wms';
 const KODE_BENAR = 'KODE-PALSU-UJI';
-const DIHARAPKAN = 24;
+const DIHARAPKAN = 25;
 const jenis = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.svg': 'image/svg+xml', '.webp': 'image/webp' };
 const srv = http.createServer((q, s) => {
   let p = decodeURIComponent(q.url.split('?')[0]); if (p.endsWith('/')) p += 'index.html';
+  /* W70: jalur foto lambat (700 ms), isinya foto asli wms/img/... */
+  if (p.startsWith('/uji70/')) { const f = path.join(AKAR, 'wms/img', p.slice(7)); return setTimeout(() => { if (!fs.existsSync(f)) { s.writeHead(404); return s.end('x'); } s.writeHead(200, { 'Content-Type': 'image/webp' }); s.end(fs.readFileSync(f)); }, 700); }
   const f = path.join(AKAR, p);
   if (!f.startsWith(AKAR) || !fs.existsSync(f)) { s.writeHead(404); return s.end('x'); }
   s.writeHead(200, { 'Content-Type': jenis[path.extname(f)] || 'application/octet-stream' }); s.end(fs.readFileSync(f));
@@ -110,7 +112,7 @@ const KAMERA_PALSU = () => {
     detect() { window.__deteksi++; return Promise.resolve(window.__deteksi >= 2 ? [{ rawValue: 'T2-3A', format: 'code_128' }] : []); } };
   const md = { getUserMedia: function () { const c = document.createElement('canvas'); c.width = 64; c.height = 48; const s = c.captureStream(5); s.getTracks().forEach(t => { const st = t.stop.bind(t); t.stop = function () { window.__stop++; st(); }; }); return Promise.resolve(s); } };
   try { Object.defineProperty(navigator, 'mediaDevices', { value: md, configurable: true }); } catch (e) {}
-  window.print = function () { window.__cetak = document.body.classList.contains('cetak-label') ? 'kelas' : 'tanpa'; window.__kartuCetak = Array.from(document.querySelectorAll('#lembarCetak .label-rak')).map(x => x.getAttribute('data-jubelio')); };
+  window.print = function () { window.__cetak = document.body.classList.contains('cetak-label') ? 'kelas' : 'tanpa'; window.__kartuCetak = Array.from(document.querySelectorAll('#lembarCetak .label-rak')).map(x => x.getAttribute('data-jubelio')); window.__fotoCetak = Array.from(document.querySelectorAll('#lembarCetak img.foto-sku')).map(i => i.complete && i.naturalWidth > 0); };
 };
 
 (async () => {
@@ -311,6 +313,25 @@ const KAMERA_PALSU = () => {
     const ck = await p.evaluate(() => ({ c: window.__cetak, kartu: window.__kartuCetak, sisa: document.body.classList.contains('cetak-label') || !!document.getElementById('lembarCetak') }));
     c('W68 cetak kartu dari kode: L3-T2-A (kode Jubelio) dan R1-4A (kode WMS) jadi dua kartu urut L3-T2-A lalu L4-R1-A, ZZ-99 dilewati, lembar cetak dibersihkan sesudahnya',
       adaCetakKode && ck.c === 'kelas' && JSON.stringify(ck.kartu) === '["L3-T2-A","L4-R1-A"]' && !ck.sisa, JSON.stringify({ adaCetakKode, ck }));
+
+    /* 22 Okt, Ferdy kirim pratinjau cetak 88 kartu: kotak foto SKU kosong semua. Lembar cetak dibuat
+       lalu window.print() dipanggil di detik yang sama, sebelum <img> baru sempat dimuat. Di sini
+       cache dimatikan dan foto SKU sengaja ditahan 700 ms, seperti jaringan HP/kantor: saat print()
+       dipanggil, semua foto di lembar cetak harus sudah termuat. */
+    const cdp = await p.context().newCDPSession(p);
+    await cdp.send('Network.clearBrowserCache'); await cdp.send('Network.setCacheDisabled', { cacheDisabled: true });
+    /* alamat foto dipindah ke jalur baru supaya tidak terambil dari cache memori dokumen (foto yang sama
+       sudah tampil di W65); server uji menjawab jalur itu dengan foto asli sesudah 700 ms. Lewat server,
+       bukan page.route, karena service worker WMS ikut menyambar permintaan gambar. */
+    const dasarLama = await p.evaluate(() => { const d = window.KulitPapan.dasar; window.KulitPapan.dasar = location.origin + '/uji70/'; return d; });
+    await p.evaluate(() => { window.__cetak = ''; window.__kartuCetak = null; window.__fotoCetak = null; });
+    await p.evaluate(() => window.WmsAlat.cetakKode(['L3-T2-A', 'R1-4A']));
+    await tunggu(p, () => window.__cetak, 15000).catch(() => {}); await jeda(100);
+    const fc = await p.evaluate(() => ({ foto: window.__fotoCetak, kartu: window.__kartuCetak, sisa: document.body.classList.contains('cetak-label') || !!document.getElementById('lembarCetak') }));
+    c('W70 foto SKU sudah termuat saat print() dipanggil walau jaringan lambat (2 kartu, 2 foto, lembar dibersihkan sesudahnya)',
+      Array.isArray(fc.foto) && fc.foto.length === 2 && fc.foto.every(Boolean) && !fc.sisa, JSON.stringify(fc));
+    await p.evaluate((d) => { window.KulitPapan.dasar = d; }, dasarLama);
+    await cdp.send('Network.setCacheDisabled', { cacheDisabled: false });
 
     /* ---- paspor ---- */
     await bingkai(p).click('#tdRein img.l4-sku');
