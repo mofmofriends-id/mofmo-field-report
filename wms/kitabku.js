@@ -642,9 +642,14 @@
           '<td><input type="time" data-jd="selesai" data-i="' + i + '" value="' + esc(r.selesai) + '"' + kunci + '>' + (r.selesai && r.mulai && r.selesai <= r.mulai ? '<small class="kb-jd-malam">' + esc(t('jd_malam')) + '</small>' : '') + '</td>' +
           '<td>' + (lewat ? '<span class="kb-cap">' + esc(t('jd_lewat')) + '</span>' : jalan ? '<span class="kb-cap">' + esc(t('jd_jalan')) + '</span>' : '<button type="button" class="btn dua" data-kb="jdHapus" data-i="' + i + '">' + esc(t('jd_hapus')) + '</button>') + '</td></tr>';
       }).join('') + '</tbody></table></div>' : '<p class="ket-alat">' + esc(t('jd_kosong')) + '</p>';
+    /* 22 Okt sore, Ferdy: ringkasan menyebut jam buka match pertama dan jam TUTUP match terakhir (match 18.00 sampai
+       05.00 dulu tertulis "7 Nov to 7 Nov"). Waktu diambil dari isoJd, jadi tutup lewat tengah malam ikut tanggal besoknya. */
+    var jamJd = function (iso) { var w = String(iso); return tgl(w.slice(0, 10)) + ' ' + (bhs() === 'en' ? w.slice(11, 16) : w.slice(11, 13) + '.' + w.slice(14, 16)); };
     var ringkas = GAME_JD.map(function (g) {
-      var L = J.rows.filter(function (r) { return r.game === g[0] && r.tgl; }).map(function (r) { return r.tgl; }).sort();
-      return L.length ? '<li>' + esc(t('jd_ringkas')(g[1], L.length, tgl(L[0]), tgl(L[L.length - 1]))) + '</li>' : '';
+      var L = J.rows.filter(function (r) { return r.game === g[0] && r.tgl && r.mulai && r.selesai; }).map(isoJd);
+      if (!L.length) return '';
+      var buka = L.map(function (x) { return x.mulai; }).sort()[0], tutup = L.map(function (x) { return x.selesai; }).sort()[L.length - 1];
+      return '<li>' + esc(t('jd_ringkas')(g[1], L.length, jamJd(buka), jamJd(tutup))) + '</li>';
     }).join('');
     var status = J.pesan ? '<div class="' + (J.ok ? 'kb-hasil' : 'tolak-alat') + '" role="' + (J.ok ? 'status' : 'alert') + '" id="kbJdPesan">' + esc(J.pesan) + '</div>' : (J.ubah ? '<div class="tolak-alat" id="kbJdPesan">' + esc(t('jd_belum')) + '</div>' : '');
     return tanggal + '<section class="kb-kotak" id="kbJadwal"><h3>' + esc(t('jd_judul')) + '</h3><p class="ket-alat">' + esc(t('jd_ket')) + '</p>' + oto + status + tabel +

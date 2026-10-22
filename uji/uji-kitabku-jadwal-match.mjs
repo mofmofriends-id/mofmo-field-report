@@ -18,7 +18,7 @@ const { dbPalsu } = await import(SRV + '/kitab-tiruan.mjs');
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 8;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 9;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 600))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -91,6 +91,11 @@ await bagian('C. ubah, bentrok, tengah malam', async () => {
   c('C2 Tambah match: 22.00 sampai 02.00 tersimpan sebagai lewat tengah malam (tutup 11 Nov 02.00)', n === 10 && db.st.match['acara-uji-1111'].length === 10 && ada && ada.game === 'triv' && ada.selesai === '2026-11-10T19:00:00.000Z', JSON.stringify([n, ada, (await teks()).slice(0, 200)]));
   await p.click('#kbJdTabel tbody tr:nth-child(3) [data-kb=jdHapus]'); await p.waitForTimeout(150); await p.click('[data-kb=jdSimpan]'); await p.waitForTimeout(500);
   c('C3 Hapus satu match lalu simpan: tinggal 9, match 4 Nov hilang', db.st.match['acara-uji-1111'].length === 9 && !db.st.match['acara-uji-1111'].some((x) => x.mulai === '2026-11-04T12:00:00.000Z'), JSON.stringify(db.st.match['acara-uji-1111'].map((x) => x.mulai)));
+  /* 22 Okt sore, Ferdy (tangkapan layar "Adventure: 1 match, 7 Nov 2026 to 7 Nov 2026" untuk match 7 Nov 18.00 sampai
+     8 Nov 05.00): "soalnya notes dibwh nulisnya". Ringkasan harus menyebut jam buka match pertama dan jam TUTUP match
+     terakhir, termasuk tanggal besoknya kalau lewat tengah malam. */
+  const rk = await p.evaluate(() => [...document.querySelectorAll('.kb-jd-ringkas li')].map((li) => li.textContent));
+  c('D1 ringkasan di bawah tabel: Animal Quiz 4 match, 5 Nov 2026 19.00 sampai 11 Nov 2026 02.00 (tutup lewat tengah malam ikut tanggal besoknya)', rk.some((x) => x === 'Animal Quiz: 4 match, 5 Nov 2026 19.00 sampai 11 Nov 2026 02.00'), JSON.stringify(rk));
   c('C4 HP 390 tanpa geser samping halaman dan tanpa galat JavaScript', !(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) && errs.length === 0, errs.join(' | '));
 });
 
