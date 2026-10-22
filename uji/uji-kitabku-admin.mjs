@@ -79,7 +79,7 @@ await bagian('A. pintu: tiket WMS', async () => {
   /* 17 Okt, Ferdy: pembelian offline tidak dapat kartu, klaim struk dihapus dari web Kitab dan dari WMS.
      Dulu A4 memeriksa lencana tab struk; sekarang tab dan kartu angka "Struk menunggu" harus hilang. */
   const tabs = await p.evaluate(() => [...document.querySelectorAll('[data-kbtab]')].map((x) => x.getAttribute('data-kbtab')));
-  c('A4 tab Klaim struk dan kartu Struk menunggu tidak ada lagi', !tabs.includes('struk') && tabs.length === 4 && !/Struk menunggu/.test(t), JSON.stringify(tabs) + ' ' + t.slice(0, 200));
+  c('A4 tab Klaim struk dan kartu Struk menunggu tidak ada lagi', !tabs.includes('struk') && JSON.stringify(tabs) === JSON.stringify(['ringkas', 'jadwal', 'cetak', 'pasang', 'template']) && /* 22 Okt: tab Jadwal game ditambahkan */ !/Struk menunggu/.test(t), JSON.stringify(tabs) + ' ' + t.slice(0, 200));
 });
 
 await bagian('B. event dan hadiah', async () => {
