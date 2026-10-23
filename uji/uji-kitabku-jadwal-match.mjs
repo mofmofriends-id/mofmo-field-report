@@ -18,7 +18,7 @@ const { dbPalsu } = await import(SRV + '/kitab-tiruan.mjs');
 const require = createRequire('/home/claude/fieldreport/uji/uji-wms-alat.js');
 const { chromium } = require('playwright');
 
-let gagal = 0, jalan = 0; const DIHARAPKAN = 13;
+let gagal = 0, jalan = 0; const DIHARAPKAN = 16;
 const c = (n, ok, k) => { jalan++; if (!ok) gagal++; console.log((ok ? 'LULUS ' : 'GAGAL ') + n + (ok ? '' : '\n   -> ' + String(k).replace(/\s*\n\s*/g, ' | ').slice(0, 600))); };
 async function bagian(nama, fn) { console.log('\n=== ' + nama + ' ==='); try { await fn(); } catch (e) { gagal++; console.log('GAGAL ' + nama + ' MATI -> ' + (e && e.stack || e)); } }
 
@@ -68,7 +68,7 @@ await bagian('B. isi otomatis lalu simpan', async () => {
   await isiNilai('#kbJdHari', '4'); await isiNilai('#kbJdN', '3'); await isiNilai('#kbJdJam1', '19:00'); await isiNilai('#kbJdJam2', '23:00');
   await p.click('[data-kb=jdOto]'); await p.waitForTimeout(300);
   const r = await baris();
-  const harap = ['mem 2026-11-01 19:00 2026-11-01 23:00', 'mem 2026-11-03 19:00 2026-11-03 23:00', 'mem 2026-11-04 19:00 2026-11-04 23:00', 'triv 2026-11-05 19:00 2026-11-05 23:00', 'triv 2026-11-07 19:00 2026-11-07 23:00', 'triv 2026-11-08 19:00 2026-11-08 23:00', 'adv 2026-11-09 19:00 2026-11-09 23:00', 'adv 2026-11-11 19:00 2026-11-11 23:00', 'adv 2026-11-12 19:00 2026-11-12 23:00'];
+  const harap = ['mem 2026-11-01 19:00 2026-11-01 23:00 5', 'mem 2026-11-03 19:00 2026-11-03 23:00 5', 'mem 2026-11-04 19:00 2026-11-04 23:00 5', 'triv 2026-11-05 19:00 2026-11-05 23:00 5', 'triv 2026-11-07 19:00 2026-11-07 23:00 5', 'triv 2026-11-08 19:00 2026-11-08 23:00 5', 'adv 2026-11-09 19:00 2026-11-09 23:00 5', 'adv 2026-11-11 19:00 2026-11-11 23:00 5', 'adv 2026-11-12 19:00 2026-11-12 23:00 5'];
   c('B1 isi otomatis (Match, Quiz, Adventure; 4 hari, 3 match, 19.00-23.00): 9 match tersebar di blok tiap game, belum tersimpan', JSON.stringify(r) === JSON.stringify(harap) && !(db.st.match['acara-uji-1111'] || []).length && /belum disimpan/i.test(await teks()), JSON.stringify(r));
   await p.click('[data-kb=jdSimpan]'); await p.waitForTimeout(500);
   const s = (db.st.match['acara-uji-1111'] || []).map((x) => x.game + ' ' + x.mulai + ' ' + x.selesai);
@@ -115,6 +115,21 @@ await bagian('C. ubah, bentrok, tengah malam', async () => {
   await p.click('[data-kb=jdSimpan]'); await p.waitForTimeout(500);
   const m1b = db.st.match['acara-uji-1111'].find((x) => x.mulai === '2026-11-02T12:00:00.000Z');
   c('E4 tanggal selesai dibuat 2 Nov (01.00 sebelum 19.00): ditolak dengan pesan, jadwal server tetap 3 Nov 01.00', m1b && m1b.selesai === '2026-11-02T18:00:00.000Z' && !/match tersimpan/i.test(await teks()), JSON.stringify(m1b) + ' | ' + (await teks()).slice(0, 300));
+  /* 22 Okt sore, Ferdy: "bisa ga diatur dari kita untuk batasan entry masing2 games per match?", per baris match,
+     1 sampai 5. Kolom Batas entry; isi otomatis dan Tambah match memakai 5. */
+  const th2 = await p.evaluate(() => [...document.querySelectorAll('#kbJdTabel thead th')].map((x) => x.textContent.trim()));
+  const nilaiEntry = await p.evaluate(() => [...document.querySelectorAll('#kbJdTabel input[data-jd=jatah]')].map((x) => x.value));
+  c('F1 kolom Batas entry sesudah Tutup, tiap baris dari server membawa angkanya (bawaan 5)', th2[6] === 'Batas entry' && nilaiEntry.length >= 9 && nilaiEntry.every((v) => v === '5'), JSON.stringify([th2, nilaiEntry]));
+  /* E4 meninggalkan baris 1 yang ditolak server (tanggal selesai 2 Nov); dikembalikan dulu supaya simpan berikut sah */
+  await isiNilai('#kbJdTabel tbody tr:nth-child(1) input[data-jd=tglTutup]', '2026-11-03');
+  await isiNilai('#kbJdTabel tbody tr:nth-child(2) input[data-jd=jatah]', '3');
+  await p.click('[data-kb=jdSimpan]'); await p.waitForTimeout(500);
+  const m2 = db.st.match['acara-uji-1111'].filter((x) => x.game === 'mem').map((x) => x.jatah);
+  c('F2 batas entry match ke-2 diganti 3 lalu simpan: tersimpan di server (match lain tetap 5)', JSON.stringify(m2) === JSON.stringify([5, 3]) || JSON.stringify(m2.slice(0, 2)) === JSON.stringify([5, 3]), JSON.stringify(db.st.match['acara-uji-1111'].map((x) => x.game + '=' + x.jatah)));
+  await isiNilai('#kbJdTabel tbody tr:nth-child(2) input[data-jd=jatah]', '7');
+  await p.click('[data-kb=jdSimpan]'); await p.waitForTimeout(500);
+  const t7 = await teks();
+  c('F3 batas entry 7: ditolak dengan pesan "1 sampai 5", server tetap 3', /1 sampai 5/.test(t7) && db.st.match['acara-uji-1111'].filter((x) => x.game === 'mem')[1].jatah === 3, t7.slice(0, 400));
   c('C4 HP 390 tanpa geser samping halaman dan tanpa galat JavaScript', !(await p.evaluate(() => document.documentElement.scrollWidth > innerWidth + 1)) && errs.length === 0, errs.join(' | '));
 });
 
