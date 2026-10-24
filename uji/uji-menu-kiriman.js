@@ -235,8 +235,9 @@ const PALSU_AWAL = () => {
     /* ================= menu ================= */
     await jeda(1600); /* pasangMenu sudah jalan beberapa kali */
     const m0 = await bacaMenu(p);
-    c('M1 grup atas: Summary, Inventory, Sales, Shipments, Field, Data quality; Warehouse (outbound) tidak tampil walau pasangMenu jalan tiap 700 ms',
-      m0.atas === 'ringkasan,stok,laku,rencana,kinerja,sehat', JSON.stringify(m0));
+    /* 24 Okt, Ferdy: "kitabku naikin diatas data quality" (grup Kitabku, uji-kitabku-saklar.js) */
+    c('M1 grup atas: Summary, Inventory, Sales, Shipments, Field, Kitabku, Data quality; Warehouse (outbound) tidak tampil walau pasangMenu jalan tiap 700 ms',
+      m0.atas === 'ringkasan,stok,laku,rencana,kinerja,kitabku,sehat', JSON.stringify(m0));
     const asli = await fe(p, () => window.HALAMAN.filter(g => g[0] === 'outbound').length + '/' + window.HALAMAN.length);
     c('M2 HALAMAN asli tidak dirusak: grup outbound tetap satu di sana (pasangMenu tidak menyisipkan ulang, tidak ganda)', asli === '1/7', asli);
 

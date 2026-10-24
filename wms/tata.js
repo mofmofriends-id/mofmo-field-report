@@ -61,6 +61,7 @@
       w_alis: 'Shipments · outbound · USB scanner or phone camera', w_judul: 'Outbound · Offline',
       m_obdOff: 'Outbound · Offline', m_obdShp: 'Outbound · Shopee', m_kirim: 'Shipments', m_stok: 'Inventory',
       m_ringkasStok: 'Stock overview', m_ringkasKirim: 'Overview',
+      m_kb_ringkas: 'Events & rewards', m_kb_cetak: 'QR cards', m_kb_struk: 'Receipt claims', m_kb_saklar: 'Feature switches', m_kb_libat: 'Engagement',
       s_alis: function (n) { return 'Inventory · ' + n + ' SKUs with stock'; }, s_judul: 'Stock overview',
       s_ho: 'HO warehouse', s_hoKet: 'pcs in our warehouse', s_keluar: 'Outbound', s_keluarKet: 'picking to staging', s_jalan: 'In transit', s_jalanKet: 'on the way to stores and buyers', s_gerai: 'Store shelves', s_geraiKet: function (n) { return 'pcs across ' + n + ' stores'; },
       s_alur: 'Where the stock is right now', s_alurKet: 'Every pcs in one line. Outbound stages open Shipments.', s_tahap: { HO: 'HO racks', PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'In transit', GERAI: 'Store shelves' },
@@ -115,6 +116,7 @@
       w_alis: 'Pengiriman · outbound · scanner USB atau kamera HP', w_judul: 'Outbound · Offline',
       m_obdOff: 'Outbound · Offline', m_obdShp: 'Outbound · Shopee', m_kirim: 'Pengiriman', m_stok: 'Persediaan',
       m_ringkasStok: 'Ringkasan stok', m_ringkasKirim: 'Ringkasan',
+      m_kb_ringkas: 'Event & hadiah', m_kb_cetak: 'Kartu QR', m_kb_struk: 'Klaim struk', m_kb_saklar: 'Saklar fitur', m_kb_libat: 'Keterlibatan pemain',
       s_alis: function (n) { return 'Persediaan · ' + n + ' SKU berstok'; }, s_judul: 'Ringkasan stok',
       s_ho: 'Gudang HO', s_hoKet: 'pcs di gudang kita', s_keluar: 'Outbound', s_keluarKet: 'picking sampai staging', s_jalan: 'Dalam perjalanan', s_jalanKet: 'menuju gerai dan pembeli', s_gerai: 'Rak gerai', s_geraiKet: function (n) { return 'pcs di ' + n + ' gerai'; },
       s_alur: 'Posisi stok saat ini', s_alurKet: 'Semua pcs dalam satu alur. Tahap outbound membuka Pengiriman.', s_tahap: { HO: 'Rak HO', PICKING: 'Picking', PACKING: 'Packing', STAGING: 'Staging', TRANSIT: 'Dalam perjalanan', GERAI: 'Rak gerai' },
@@ -642,11 +644,16 @@
     var asli = fw.gambarPanel;
     if (typeof asli === 'function' && !asli.__l4t) {
       var bungkus = function () {
+        /* grup Kitabku dilepas dulu supaya papan tidak menulis ulang menu yang sebenarnya tidak berubah,
+           lalu dipasang lagi (elemen yang sama kalau keadaannya sama, jadi klik yang sedang berjalan tidak hilang) */
+        var simpan = lepasKitab(fw);
         var H = fw.HALAMAN, B = H;
         try { B = susunMenu(H); } catch (e) { B = H; }
-        if (B === H) return asli.apply(this, arguments);
-        fw.HALAMAN = B;
-        try { return asli.apply(this, arguments); } finally { fw.HALAMAN = H; }
+        try {
+          if (B === H) return asli.apply(this, arguments);
+          fw.HALAMAN = B;
+          try { return asli.apply(this, arguments); } finally { fw.HALAMAN = H; }
+        } finally { try { pasangKitab(fw, simpan); } catch (eK) { if (W.console) W.console.warn('tata kitabku', eK); } }
       };
       bungkus.__l4t = true; fw.gambarPanel = bungkus;
       try { bungkus(); } catch (e) {}
@@ -666,6 +673,66 @@
       };
       sub.__l4t = true; fw.pasangSubJudul = sub;
     }
+  }
+
+  /* ---------- Menu: grup Kitabku tepat di atas Data Quality (24 Okt 2026) ----------
+     Ferdy: "kitabku naikin diatas data quality". Kitabku tidak punya halaman papan; sub menunya membuka
+     lembar Kitabku (kitabku.js, di jendela WMS) di tab yang sesuai, sama dengan menu Alat > Kitabku.
+     Grupnya ditempel ke #panel sesudah papan menggambar menu (HALAMAN papan tidak diubah), dan kliknya
+     ditangkap di fase capture supaya klik menu papan (HAL = data-hal) tidak ikut jalan. */
+  var KITAB_MENU = ['ringkas', 'cetak', 'struk', 'saklar', 'libat'];
+  var IKON_KITAB = '<svg class="ikn" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.5C10.2 5 7.6 4.5 4 4.8v13c3.6-.3 6.2.2 8 1.7 1.8-1.5 4.4-2 8-1.7v-13c-3.6-.3-6.2.2-8 1.7z"/><path d="M12 6.5v13"/></svg>';
+  A.kitabBuka = (function () { try { return W.localStorage.getItem('wms_menu_kitabku') === '1'; } catch (e) { return false; } })();
+  function kunciKitab() { return (A.kitabBuka ? '1' : '0') + (id() ? 'id' : 'en'); }
+  function lepasKitab(fw) {
+    var pn = fw.document.getElementById('panel'); if (!pn) return [];
+    var L = Array.prototype.slice.call(pn.querySelectorAll('[data-l4t-kitab-blok]'));
+    L.forEach(function (n) { n.parentNode.removeChild(n); });
+    return L;
+  }
+  function pasangKitab(fw, simpan) {
+    var d = fw.document, pn = d.getElementById('panel'); if (!pn) return;
+    lepasKitab(fw);
+    var L = simpan && simpan.length && simpan[0].getAttribute('data-l4t-kunci') === kunciKitab() ? simpan : null;
+    if (!L) {
+      var kepala = d.createElement('a');
+      kepala.setAttribute('tabindex', '0'); kepala.setAttribute('role', 'button'); kepala.setAttribute('data-hal', 'kitabku');
+      kepala.setAttribute('data-l4t-kitab', 'grup'); kepala.setAttribute('data-l4t-kitab-blok', ''); kepala.setAttribute('data-l4t-kunci', kunciKitab());
+      kepala.setAttribute('aria-expanded', A.kitabBuka ? 'true' : 'false');
+      if (A.kitabBuka) kepala.className = 'induk';
+      kepala.innerHTML = '<span class="iknKotak">' + IKON_KITAB + '</span><span class="pnlNama">Kitabku</span>';
+      L = [kepala];
+      if (A.kitabBuka) {
+        var anak = d.createElement('div'); anak.className = 'anak'; anak.setAttribute('data-l4t-kitab-blok', '');
+        anak.innerHTML = KITAB_MENU.map(function (k) { return '<a tabindex="0" data-hal="kitabku-' + k + '" data-l4t-kitab="' + k + '">' + esc(t('m_kb_' + k)) + '</a>'; }).join('');
+        L.push(anak);
+      }
+    }
+    var dq = pn.querySelector(':scope > a[data-hal="sehat"]');
+    L.forEach(function (n) { pn.insertBefore(n, dq || null); });
+  }
+  function aksiKitab(fw, k) {
+    if (k === 'grup') {
+      A.kitabBuka = !A.kitabBuka;
+      try { W.localStorage.setItem('wms_menu_kitabku', A.kitabBuka ? '1' : '0'); } catch (e) {}
+      pasangKitab(fw, null);
+      try { var g = fw.document.querySelector('#panel [data-l4t-kitab=grup]'); if (g) g.focus(); } catch (e) {}
+      return;
+    }
+    /* laci menu HP ditutup, karena klik ini tidak sampai ke pendengar laci di nav */
+    var b = fw.document.body; if (b && b.classList.contains('l4-laci')) { b.classList.remove('l4-laci'); var bg = fw.document.querySelector('.l4-burger'); if (bg) bg.setAttribute('aria-expanded', 'false'); }
+    if (W.WmsKitabku) W.WmsKitabku.buka(k);
+  }
+  function pasangKlikKitab(fw) {
+    var d = fw.document;
+    var tangkap = function (e) {
+      if (e.type === 'keydown' && e.key !== 'Enter' && e.key !== ' ') return;
+      var x = e.target && e.target.closest ? e.target.closest('[data-l4t-kitab]') : null; if (!x) return;
+      e.preventDefault(); e.stopPropagation(); if (e.stopImmediatePropagation) e.stopImmediatePropagation();
+      aksiKitab(fw, x.getAttribute('data-l4t-kitab'));
+    };
+    d.addEventListener('click', tangkap, true);
+    d.addEventListener('keydown', tangkap, true);
   }
 
   /* ---------- Shipments: jalur offline, dan tautan balik di surat jalan ---------- */
@@ -1113,6 +1180,7 @@
     var d = fw.document;
     if (!d.getElementById('l4TataGaya')) { var g = d.createElement('style'); g.id = 'l4TataGaya'; g.textContent = GAYA; d.head.appendChild(g); }
     var isi = d.getElementById('isi'); if (!isi) return;
+    pasangKlikKitab(fw);
     var jadwal = null;
     var lihat = function () { if (jadwal) return; jadwal = fw.setTimeout(function () { jadwal = null; try { terapkan(fw); } catch (e) { if (W.console) W.console.warn('tata', e); } }, 0); };
     new fw.MutationObserver(lihat).observe(isi, { childList: true, attributes: true, attributeFilter: ['class'] });

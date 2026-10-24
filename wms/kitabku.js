@@ -206,7 +206,46 @@
       v_kode: 'Code', v_cetak: 'Printed', v_pasang: 'Linked', v_hadiah: 'Reward', v_dibagi: 'Given', v_dipakai: 'Used', v_laju: 'Usage rate', v_total: 'Total', v_awas: 'more than given, the code may have spread outside Kitab', v_unggah: 'Upload Shopee report (.xlsx / .csv)',
       v_kosong: 'No vouchers in this edition yet.', v_hasil: '{n} Kitab vouchers updated from {f} ({c}).', v_c_jumlah: 'usage column', v_c_pesanan: 'counted per order', v_c_baris: 'counted per row',
       v_lewat: 'Skipped, not Kitab vouchers: {d}.', v_gagal: 'No voucher code column found in {f}. Use the Shopee voucher report or an order export that lists voucher codes.', v_gagalBaca: 'The file could not be read: {e}',
-      kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.'
+      kamGagal: 'The camera could not be opened. Allow camera access for this site in the browser settings, or use the scanner or type the code.',
+      /* 24 Okt: saklar fitur dan keterlibatan pemain */
+      tabSaklar: 'Feature switches', tabLibat: 'Engagement',
+      sk_judul: 'Feature switches', sk_ket: 'Turn Kitabku features on step by step without a new deploy. "Staff only" shows a feature to staff accounts first; percentages pick players at random and keep them in the same group.',
+      sk_rilis: 'New in this release', sk_rilisKet: '{a} of {n} switched on', sk_belum: 'never turned on',
+      sk_m_off: 'Off', sk_m_staf: 'Staff only', sk_m_10: '10%', sk_m_50: '50%', sk_m_semua: 'Everyone',
+      sk_s_live: 'Live', sk_s_rollout: 'Rolling out', sk_s_off: 'Off',
+      sk_daruratJudul: 'Something broke after the deploy?', sk_daruratKet: 'Turns every feature in this release back off. Cards, scans and vouchers keep working. You will be asked to confirm.',
+      sk_matikan: 'Turn all new features off', sk_yakin: 'Turn all {n} features off for every player now?', sk_ya: 'Yes, turn all off', sk_batal: 'Cancel', sk_matiOk: 'All new features are off.',
+      sk_ubahOk: '{f} is now {m}.', sk_simpan: 'Saving…',
+      sk_staf: 'Staff accounts', sk_stafKet: 'Players on this list see features set to "Staff only". Add them by Kitabku ID, for example Rina#1234.', sk_tambah: 'Add', sk_hapus: 'Remove',
+      sk_stafKosong: 'No staff accounts yet. "Staff only" features stay hidden from everyone until one is added.', sk_stafSalah: 'Use the Kitabku ID with its 4-digit tag, for example Rina#1234.',
+      sk_log: 'Recent changes', sk_logKosong: 'No changes yet.',
+      skf_kirim: 'Send a spare card', skd_kirim: 'Give a duplicate card to a friend by QR or Name#ID, max 3 a day',
+      skf_ucapan: 'Greeting cards', skd_ucapan: 'Baddies, Fluffy Healing and Sweetheart cards to go with a gift',
+      skf_minta: 'Request a card', skd_minta: 'Ask a friend for a card you are missing',
+      skf_kurir: 'Mofmo Post courier', skd_kurir: 'Shiba walks the rucksack over, unzip to open',
+      skf_balas: 'Sticker replies', skd_balas: 'Thank the sender with a sticker',
+      skf_bond: 'Fluff Bonds', skd_bond: 'Friendship level that grows with every exchange',
+      skf_surat: 'Mailbox', skd_surat: 'One inbox for gifts, requests and replies',
+      skf_buddy: 'Buddy in the corner', skd_buddy: 'A plush buddy with day and night (WIB) moods',
+      skf_slot: 'Sleeping slots', skd_slot: 'Empty card slots shown as sleeping plushies',
+      skf_unbox: 'Rare card unbox', skd_unbox: 'Special opening animation for rare cards',
+      skf_cap: 'Vegetable Cap stamps', skd_cap: 'Daily stamp, cap reward on day 7',
+      skf_elus: 'Pet the card', skd_elus: 'Tap a card to pet it and get a small reaction',
+      skf_loading: 'Loading Shiba', skd_loading: 'Shiba animation while pages load',
+      skf_podium: 'Felt podium', skd_podium: 'Felt-style top 3 on the leaderboard',
+      skf_tenang: 'Calm mode', skd_tenang: 'Fewer animations and sounds for players who want quiet',
+      skf_freeze: 'Streak freeze', skd_freeze: '1 Napping Cap per week keeps a streak alive',
+      skf_share: 'Share to Story', skd_share: '9:16 image with a QR to Kitabku',
+      skf_notif: 'Gentle notifications', skd_notif: 'Max 2 a day, plus a 20:00 WIB streak reminder',
+      lb_judul: 'Engagement', lb_ket: 'How players use Kitabku in the chosen period, so we know which switch to turn up next.', lb_hari: '{n} days',
+      lb_aktif: 'Daily active players', lb_aktifKet: 'today · avg {r} over {n} days', lb_kirim: 'Cards sent as gifts', lb_kirimKet: '{n} from requests',
+      lb_baru: 'New players from gifts', lb_baruKet: '{p}% of gifts', lb_share: 'Shares to Story', lb_shareMati: 'switch is off', lb_shareKet: 'in {n} days',
+      lb_grafikKet: 'last {n} days', lb_grafikKosong: 'No activity in this period yet.',
+      lb_buddy: 'Most picked buddies', lb_buddyKet: 'players who picked each Buddy in the corner', lb_buddyKosong: 'No buddy picked yet.',
+      lb_corong: 'From gift to new player', lb_corongKet: 'the Kitabku funnel the gift feature feeds',
+      lb_c_kirim: 'Gifts sent', lb_c_dibuka: 'Opened by recipient', lb_c_penerimaBaru: 'Recipient was new to Kitabku', lb_c_scanSendiri: 'New player scanned own box',
+      lb_fitur: 'By feature', lb_fiturKet: 'usage in this period next to each feature\'s current switch', lb_kFitur: 'Feature', lb_kPakai: 'Usage', lb_kSaklar: 'Switch',
+      lb_u_kirim: '{n} cards', lb_u_minta: '{n} requests, {d} fulfilled', lb_u_elus: '{n} pets', lb_u_share: '{n} shares', lb_u_notif: '{n} opened', lb_notif: 'Notifications opened'
     },
     id: {
       sp_judul: 'Siap edisi {cap}?', sp_sebelum: 'Mulai {t}, {d} hari lagi. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_hariIni: 'Mulai hari ini, {t}. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_jalan: 'Sedang berjalan, selesai {t}.', sp_skor: '{a} dari {b} siap', sp_kaki: 'Dicek ulang tiap tab ini dibuka. Tidak ada yang diubah otomatis; tombol cuma membawa ke tempat membetulkannya.',
@@ -267,7 +306,45 @@
       v_kode: 'Kode', v_cetak: 'Dicetak', v_pasang: 'Terpasang', v_hadiah: 'Hadiah', v_dibagi: 'Dibagikan', v_dipakai: 'Dipakai', v_laju: 'Tingkat pakai', v_total: 'Total', v_awas: 'lebih dari yang dibagikan, kode mungkin tersebar di luar Kitab', v_unggah: 'Unggah laporan Shopee (.xlsx / .csv)',
       v_kosong: 'Belum ada voucher di edisi ini.', v_hasil: '{n} voucher Kitab diperbarui dari {f} ({c}).', v_c_jumlah: 'kolom jumlah penggunaan', v_c_pesanan: 'dihitung per pesanan', v_c_baris: 'dihitung per baris',
       v_lewat: 'Dilewati, bukan voucher Kitab: {d}.', v_gagal: 'Kolom kode voucher tidak ditemukan di {f}. Pakai laporan voucher Shopee atau ekspor pesanan yang memuat kode voucher.', v_gagalBaca: 'Berkas tidak bisa dibaca: {e}',
-      kamGagal: 'Kamera tidak bisa dibuka. Beri izin kamera untuk situs ini di pengaturan browser, atau pakai scanner atau ketik kodenya.'
+      kamGagal: 'Kamera tidak bisa dibuka. Beri izin kamera untuk situs ini di pengaturan browser, atau pakai scanner atau ketik kodenya.',
+      tabSaklar: 'Saklar fitur', tabLibat: 'Keterlibatan pemain',
+      sk_judul: 'Saklar fitur', sk_ket: 'Nyalakan fitur Kitabku bertahap tanpa deploy ulang. "Staf saja" menampilkan fitur ke akun staf lebih dulu; persentase memilih pemain secara acak dan menjaga mereka di kelompok yang sama.',
+      sk_rilis: 'Baru di rilis ini', sk_rilisKet: '{a} dari {n} menyala', sk_belum: 'belum pernah dinyalakan',
+      sk_m_off: 'Mati', sk_m_staf: 'Staf saja', sk_m_10: '10%', sk_m_50: '50%', sk_m_semua: 'Semua',
+      sk_s_live: 'Aktif', sk_s_rollout: 'Bertahap', sk_s_off: 'Mati',
+      sk_daruratJudul: 'Ada yang rusak setelah deploy?', sk_daruratKet: 'Mematikan kembali semua fitur di rilis ini. Kartu, scan, dan voucher tetap berjalan. Ada konfirmasi lebih dulu.',
+      sk_matikan: 'Matikan semua fitur baru', sk_yakin: 'Matikan ke-{n} fitur untuk semua pemain sekarang?', sk_ya: 'Ya, matikan semua', sk_batal: 'Batal', sk_matiOk: 'Semua fitur baru sudah mati.',
+      sk_ubahOk: '{f} sekarang {m}.', sk_simpan: 'Menyimpan…',
+      sk_staf: 'Akun staf', sk_stafKet: 'Pemain di daftar ini melihat fitur yang diatur "Staf saja". Tambahkan lewat Kitabku ID, misalnya Rina#1234.', sk_tambah: 'Tambah', sk_hapus: 'Hapus',
+      sk_stafKosong: 'Belum ada akun staf. Fitur "Staf saja" tidak terlihat oleh siapa pun sampai ada akun staf.', sk_stafSalah: 'Pakai Kitabku ID lengkap dengan tag 4 angka, misalnya Rina#1234.',
+      sk_log: 'Perubahan terakhir', sk_logKosong: 'Belum ada perubahan.',
+      skf_kirim: 'Kirim kartu dobel', skd_kirim: 'Berikan kartu dobel ke teman lewat QR atau Nama#ID, maks. 3 sehari',
+      skf_ucapan: 'Kartu ucapan', skd_ucapan: 'Kartu Baddies, Fluffy Healing, dan Sweetheart untuk menyertai kiriman',
+      skf_minta: 'Minta kartu', skd_minta: 'Minta kartu yang belum dimiliki ke teman',
+      skf_kurir: 'Kurir Mofmo Post', skd_kurir: 'Shiba mengantar ransel, buka ritsleting untuk membuka kiriman',
+      skf_balas: 'Balasan stiker', skd_balas: 'Ucapkan terima kasih ke pengirim dengan stiker',
+      skf_bond: 'Fluff Bonds', skd_bond: 'Tingkat pertemanan yang naik setiap tukar kartu',
+      skf_surat: 'Kotak surat', skd_surat: 'Satu kotak masuk untuk kiriman, permintaan, dan balasan',
+      skf_buddy: 'Buddy di pojok', skd_buddy: 'Boneka pendamping dengan suasana siang dan malam (WIB)',
+      skf_slot: 'Slot tidur', skd_slot: 'Slot kartu kosong tampil sebagai boneka yang tertidur',
+      skf_unbox: 'Unboxing kartu langka', skd_unbox: 'Animasi pembukaan khusus untuk kartu langka',
+      skf_cap: 'Stempel Vegetable Cap', skd_cap: 'Stempel harian, hadiah topi di hari ke-7',
+      skf_elus: 'Elus kartu', skd_elus: 'Ketuk kartu untuk mengelus, ada reaksi kecil',
+      skf_loading: 'Shiba pemuat', skd_loading: 'Animasi Shiba saat halaman dimuat',
+      skf_podium: 'Podium flanel', skd_podium: 'Tiga teratas papan peringkat bergaya flanel',
+      skf_tenang: 'Mode tenang', skd_tenang: 'Animasi dan suara dikurangi untuk pemain yang ingin tenang',
+      skf_freeze: 'Pembeku streak', skd_freeze: '1 Napping Cap per minggu menjaga streak tetap berjalan',
+      skf_share: 'Bagikan ke Story', skd_share: 'Gambar 9:16 dengan QR ke Kitabku',
+      skf_notif: 'Notifikasi lembut', skd_notif: 'Maks. 2 sehari, ditambah pengingat streak pukul 20.00 WIB',
+      lb_judul: 'Keterlibatan pemain', lb_ket: 'Cara pemain memakai Kitabku pada periode terpilih, sebagai dasar memilih saklar yang dinaikkan berikutnya.', lb_hari: '{n} hari',
+      lb_aktif: 'Pemain aktif harian', lb_aktifKet: 'hari ini · rata-rata {r} dalam {n} hari', lb_kirim: 'Kartu dikirim sebagai hadiah', lb_kirimKet: '{n} dari permintaan',
+      lb_baru: 'Pemain baru dari hadiah', lb_baruKet: '{p}% dari kiriman', lb_share: 'Dibagikan ke Story', lb_shareMati: 'saklar mati', lb_shareKet: 'dalam {n} hari',
+      lb_grafikKet: '{n} hari terakhir', lb_grafikKosong: 'Belum ada aktivitas pada periode ini.',
+      lb_buddy: 'Buddy paling banyak dipilih', lb_buddyKet: 'pemain yang memilih tiap Buddy di pojok', lb_buddyKosong: 'Belum ada buddy yang dipilih.',
+      lb_corong: 'Dari hadiah ke pemain baru', lb_corongKet: 'corong Kitabku yang diisi fitur kirim kartu',
+      lb_c_kirim: 'Kiriman terkirim', lb_c_dibuka: 'Dibuka penerima', lb_c_penerimaBaru: 'Penerima baru di Kitabku', lb_c_scanSendiri: 'Pemain baru scan kotak sendiri',
+      lb_fitur: 'Per fitur', lb_fiturKet: 'pemakaian periode ini di samping saklar tiap fitur saat ini', lb_kFitur: 'Fitur', lb_kPakai: 'Pemakaian', lb_kSaklar: 'Saklar',
+      lb_u_kirim: '{n} kartu', lb_u_minta: '{n} permintaan, {d} dipenuhi', lb_u_elus: '{n} elusan', lb_u_share: '{n} kali', lb_u_notif: '{n} dibuka', lb_notif: 'Notifikasi dibuka'
     }
   };
   var BULAN = { en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], id: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] };
@@ -482,6 +559,194 @@
     }, function (e) { A.galat = e.message; gambar(); });
   }
 
+  /* ---------- Saklar fitur (24 Okt 2026, Ferdy setuju mockup WmsSwitch) ----------
+     Server: aksi admin saklar, ubahSaklar, matikanSemua, tambahStaf, hapusStaf di Edge Function kitab.
+     Fitur rilis baru dinyalakan bertahap tanpa deploy: off, staf, 10, 50, semua. Layar baru menulis mode
+     baru sesudah server menjawab ok, lalu membaca ulang saklar dari server supaya log ikut terbarui.
+     Login WMS memakai satu kode bersama tanpa nama orang, jadi "oleh" ditulis WMS. */
+  var SK_FITUR = ['kirim', 'ucapan', 'minta', 'kurir', 'balas', 'bond', 'surat', 'buddy', 'slot', 'unbox', 'cap', 'elus', 'loading', 'podium', 'tenang', 'freeze', 'share', 'notif'];
+  var SK_MODE = ['off', 'staf', '10', '50', 'semua'];
+  A.sk = { data: null, memuat: false, sibuk: '', pesan: '', ok: false, yakin: false, ke: '', stafPesan: '' };
+  function namaOleh() { var S = M().S || {}; return String(S.nama || S.pengguna || 'WMS').slice(0, 40); }
+  function statusSk(m) { return m === 'semua' ? 'live' : (!m || m === 'off') ? 'off' : 'rollout'; }
+  function labelMode(m) { var k = 'sk_m_' + m; return TEKS.en[k] != null ? t(k) : String(m == null ? '' : m); }
+  function namaFitur(f) { var k = 'skf_' + f; return TEKS.en[k] != null ? t(k) : String(f || ''); }
+  function cariSk(f) { var L = (A.sk.data && A.sk.data.saklar) || []; for (var i = 0; i < L.length; i++) if (L[i] && L[i].fitur === f) return L[i]; return null; }
+  function jamSk(iso) {
+    var ms = Date.parse(iso); if (!iso || !isFinite(ms)) return '';
+    var w = new Date(ms + 7 * 3600e3).toISOString();
+    return Number(w.slice(8, 10)) + ' ' + BULAN[bhs()][Number(w.slice(5, 7)) - 1] + ' ' + w.slice(11, 13) + (bhs() === 'id' ? '.' : ':') + w.slice(14, 16);
+  }
+  function simpanDataSk(h) { A.sk.data = { saklar: Array.isArray(h.saklar) ? h.saklar : [], log: Array.isArray(h.log) ? h.log : [], staf: Array.isArray(h.staf) ? h.staf : [] }; }
+  /* diam: dibaca ulang sesudah ubah, tanpa layar memuat; galatnya jadi pesan kecil, bukan halaman galat */
+  function muatSaklar(diam) {
+    if (!diam) { A.galat = ''; A.sk.memuat = true; A.sk.yakin = false; gambar(); }
+    return panggil('saklar').then(function (h) {
+      A.sk.memuat = false;
+      if (!h || !h.ok) throw new Error((h && h.pesan) || t('gagal'));
+      simpanDataSk(h);
+      if (A.tab === 'saklar' || (A.tab === 'libat' && A.lb.data)) gambar();
+    }).catch(function (e) {
+      A.sk.memuat = false;
+      if (diam) { A.sk.pesan = e.message; A.sk.ok = false; } else A.galat = e.message;
+      if (A.tab === 'saklar') gambar();
+    });
+  }
+  function ubahSaklar(f, m) {
+    var x = cariSk(f);
+    if (A.sk.sibuk || SK_MODE.indexOf(m) < 0 || (x && x.mode === m)) return;
+    A.sk.sibuk = f; A.sk.pesan = ''; A.sk.yakin = false; gambar();
+    var oleh = namaOleh();
+    panggil('ubahSaklar', { fitur: f, mode: m, oleh: oleh }).then(function (r) {
+      A.sk.sibuk = '';
+      if (!r || !r.ok) { A.sk.pesan = (r && r.pesan) || t('gagal'); A.sk.ok = false; bunyi('scanTolak'); gambar(); return; }
+      if (!x) { x = { fitur: f }; if (A.sk.data) A.sk.data.saklar.push(x); }
+      x.mode = m; x.oleh = oleh; x.diubah = new Date().toISOString();
+      A.sk.pesan = teksIsi('sk_ubahOk', { f: namaFitur(f), m: labelMode(m) }); A.sk.ok = true; bunyi('scanOk'); gambar();
+      return muatSaklar(true);
+    }, function (e) { A.sk.sibuk = ''; A.sk.pesan = e.message; A.sk.ok = false; bunyi('scanTolak'); gambar(); });
+  }
+  function matikanSemua() {
+    if (A.sk.sibuk) return;
+    A.sk.sibuk = '*'; A.sk.pesan = ''; gambar();
+    panggil('matikanSemua', { oleh: namaOleh() }).then(function (r) {
+      A.sk.sibuk = ''; A.sk.yakin = false;
+      if (!r || !r.ok) { A.sk.pesan = (r && r.pesan) || t('gagal'); A.sk.ok = false; bunyi('scanTolak'); gambar(); return; }
+      ((A.sk.data && A.sk.data.saklar) || []).forEach(function (x) { x.mode = 'off'; });
+      A.sk.pesan = t('sk_matiOk'); A.sk.ok = true; bunyi('scanOk'); gambar();
+      return muatSaklar(true);
+    }, function (e) { A.sk.sibuk = ''; A.sk.yakin = false; A.sk.pesan = e.message; A.sk.ok = false; gambar(); });
+  }
+  function tambahStaf() {
+    var ke = String(A.sk.ke || '').trim();
+    if (!/^[^#]{1,40}#\d{4}$/.test(ke)) { A.sk.stafPesan = t('sk_stafSalah'); bunyi('scanTolak'); gambar(); fokusSk(); return; }
+    A.sk.stafPesan = ''; A.sk.sibuk = 'staf'; gambar();
+    panggil('tambahStaf', { ke: ke }).then(function (r) {
+      A.sk.sibuk = '';
+      if (!r || !r.ok) { A.sk.stafPesan = (r && r.pesan) || t('gagal'); bunyi('scanTolak'); gambar(); fokusSk(); return; }
+      var L = A.sk.data ? A.sk.data.staf : [];
+      if (r.staf && !L.some(function (s) { return s.id === r.staf.id; })) L.push(r.staf);
+      A.sk.ke = ''; bunyi('scanOk'); gambar(); fokusSk();
+    }, function (e) { A.sk.sibuk = ''; A.sk.stafPesan = e.message; gambar(); });
+  }
+  function hapusStaf(sid) {
+    if (A.sk.sibuk || !sid) return;
+    A.sk.sibuk = 'staf'; A.sk.stafPesan = ''; gambar();
+    panggil('hapusStaf', { id: sid }).then(function (r) {
+      A.sk.sibuk = '';
+      if (!r || !r.ok) { A.sk.stafPesan = (r && r.pesan) || t('gagal'); gambar(); return; }
+      if (A.sk.data) A.sk.data.staf = A.sk.data.staf.filter(function (s) { return String(s.id) !== String(sid); });
+      gambar();
+    }, function (e) { A.sk.sibuk = ''; A.sk.stafPesan = e.message; gambar(); });
+  }
+  function fokusSk() { setTimeout(function () { var x = el('kbSkStaf'); if (x) try { x.focus({ preventScroll: true }); } catch (e) {} }, 0); }
+  function htmlSaklar() {
+    var S = A.sk;
+    if (!S.data) return '<p class="ket-alat">' + esc(t('muat')) + '</p>';
+    var D = S.data, nyala = 0;
+    var baris = SK_FITUR.map(function (f) {
+      var x = cariSk(f) || { fitur: f, mode: 'off' }, st = statusSk(x.mode);
+      if (st !== 'off') nyala++;
+      var seg = SK_MODE.map(function (m) {
+        return '<button type="button" data-kb="skMode" data-fitur="' + f + '" data-mode="' + m + '" aria-pressed="' + (x.mode === m) + '"' + (S.sibuk ? ' disabled' : '') + '>' + esc(labelMode(m)) + '</button>';
+      }).join('');
+      var oleh = x.oleh || x.diubah ? [x.oleh || '', jamSk(x.diubah)].filter(Boolean).join(' · ') : t('sk_belum');
+      return '<li class="kb-sk-baris" data-sk-fitur="' + f + '"' + (S.sibuk === f ? ' aria-busy="true"' : '') + '><div class="kb-sk-nama"><span><b>' + esc(namaFitur(f)) + '</b> <span class="kb-sk-pil" data-sk-status="' + st + '">' + esc(t('sk_s_' + st)) + '</span></span><small>' + esc(t('skd_' + f)) + '</small></div>' +
+        '<div class="kb-sk-seg" role="group" aria-label="' + esc(namaFitur(f)) + '">' + seg + '</div><small class="kb-sk-oleh">' + esc(S.sibuk === f ? t('sk_simpan') : oleh) + '</small></li>';
+    }).join('');
+    var pesan = S.pesan ? '<p id="kbSkPesan" class="kb-sk-pesan' + (S.ok ? ' ok' : '') + '" role="' + (S.ok ? 'status' : 'alert') + '">' + esc(S.pesan) + '</p>' : '';
+    var darurat = '<section class="kb-sk-darurat"><div><b>' + esc(t('sk_daruratJudul')) + '</b><small>' + esc(t('sk_daruratKet')) + '</small></div>' +
+      (S.yakin ? '<div class="kb-sk-yakin" role="alertdialog" aria-label="' + esc(t('sk_matikan')) + '"><span>' + esc(teksIsi('sk_yakin', { n: SK_FITUR.length })) + '</span><button type="button" class="btn kb-sk-mati" data-kb="skMatiYa"' + (S.sibuk ? ' disabled' : '') + '>' + esc(t('sk_ya')) + '</button><button type="button" class="btn dua" data-kb="skMatiBatal">' + esc(t('sk_batal')) + '</button></div>'
+        : '<button type="button" class="btn kb-sk-mati" data-kb="skMatiTanya"' + (S.sibuk ? ' disabled' : '') + '>' + esc(t('sk_matikan')) + '</button>') + '</section>';
+    var staf = D.staf || [];
+    var kotakStaf = '<section class="kb-kotak"><h3>' + esc(t('sk_staf')) + '</h3><p class="ket-alat">' + esc(t('sk_stafKet')) + '</p>' +
+      '<div class="kb-sk-tambah"><input id="kbSkStaf" value="' + esc(S.ke) + '" placeholder="Name#1234" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Kitabku ID"><button type="button" class="btn" data-kb="skStafTambah"' + (S.sibuk ? ' disabled' : '') + '>' + esc(t('sk_tambah')) + '</button></div>' +
+      (S.stafPesan ? '<p id="kbSkStafPesan" class="kb-sk-pesan" role="alert">' + esc(S.stafPesan) + '</p>' : '') +
+      '<ul class="kb-sk-staf" data-sk-staf-daftar>' + (staf.length ? staf.map(function (s) {
+        return '<li data-sk-staf="' + esc(s.id) + '"><b>' + esc(s.nama) + (s.tag ? '#' + esc(s.tag) : '') + '</b><button type="button" class="btn dua" data-kb="skStafHapus" data-sid="' + esc(s.id) + '"' + (S.sibuk ? ' disabled' : '') + '>' + esc(t('sk_hapus')) + '</button></li>';
+      }).join('') : '<li class="kb-sk-kosong">' + esc(t('sk_stafKosong')) + '</li>') + '</ul></section>';
+    var log = (D.log || []).slice(0, 20);
+    var kotakLog = '<section class="kb-kotak kb-sk-log"><h3>' + esc(t('sk_log')) + '</h3><ol id="kbSkLog">' + log.map(function (l) {
+      return '<li><b>' + esc(jamSk(l.waktu)) + '</b> ' + esc(namaFitur(l.fitur)) + ': ' + esc(labelMode(l.dari)) + ' → ' + esc(labelMode(l.ke)) + (l.oleh ? ' (' + esc(l.oleh) + ')' : '') + '</li>';
+    }).join('') + '</ol>' + (log.length ? '' : '<p class="ket-alat">' + esc(t('sk_logKosong')) + '</p>') + '</section>';
+    return '<div id="kbSaklar" class="kb-sk"><h2 class="kb-sk-judul">' + esc(t('sk_judul')) + '</h2><p class="ket-alat">' + esc(t('sk_ket')) + '</p>' + pesan +
+      '<section class="kb-kotak"><h3>' + esc(t('sk_rilis')) + ' <small class="ket-alat">' + esc(teksIsi('sk_rilisKet', { a: nyala, n: SK_FITUR.length })) + '</small></h3><ul class="kb-sk-daftar">' + baris + '</ul></section>' +
+      darurat + kotakStaf + kotakLog + '</div>';
+  }
+
+  /* ---------- Keterlibatan pemain (24 Okt 2026, Ferdy setuju mockup WmsEngage) ----------
+     Server: aksi admin statKitab {hari: 7|14|30}. Grafik digambar SVG sendiri, WMS tidak memuat pustaka luar.
+     Kolom saklar di ringkasan per fitur dibaca dari aksi saklar; kalau gagal, kolomnya memakai bacaan terakhir atau kosong. */
+  A.lb = { hari: 14, data: null, memuat: false };
+  function muatLibat() {
+    A.galat = ''; A.lb.memuat = true; gambar();
+    /* saklar selalu dibaca ulang: bisa sudah diubah orang lain sejak tab Saklar terakhir dibuka */
+    panggil('saklar').then(function (h) { if (h && h.ok) { simpanDataSk(h); if (A.tab === 'libat' && A.lb.data) gambar(); } }, function () {});
+    var hari = A.lb.hari;
+    return panggil('statKitab', { hari: hari }).then(function (h) {
+      if (hari !== A.lb.hari) return;
+      A.lb.memuat = false;
+      if (!h || !h.ok) throw new Error((h && h.pesan) || t('gagal'));
+      A.lb.data = h; if (A.tab === 'libat') gambar();
+    }).catch(function (e) { if (hari !== A.lb.hari) return; A.lb.memuat = false; A.galat = e.message; if (A.tab === 'libat') gambar(); });
+  }
+  function bulatAtas(n) { if (n <= 4) return 4; var p = Math.pow(10, Math.floor(Math.log(n / 4) / Math.LN10)), s = [1, 2, 2.5, 5, 10].map(function (k) { return k * p; }).filter(function (k) { return k * 4 >= n; })[0]; return s * 4; }
+  function grafikLibat(akt) {
+    if (!akt.length) return '<p class="ket-alat">' + esc(t('lb_grafikKosong')) + '</p>';
+    var W0 = 560, H0 = 200, kiri = 34, kanan = 16, atas = 18, bawah = 26, lebar = W0 - kiri - kanan, tinggi = H0 - atas - bawah;
+    var maks = bulatAtas(Math.max.apply(null, akt.map(function (a) { return Number(a.n) || 0; }))), n = akt.length;
+    var x = function (i) { return kiri + (n === 1 ? lebar / 2 : i * lebar / (n - 1)); }, y = function (v) { return atas + tinggi - (Number(v) || 0) / maks * tinggi; };
+    var grid = [0, 1, 2, 3, 4].map(function (k) { var v = maks * k / 4, yy = y(v).toFixed(1); return '<line x1="' + kiri + '" x2="' + (W0 - kanan) + '" y1="' + yy + '" y2="' + yy + '" class="kb-lb-grid"/><text x="' + (kiri - 6) + '" y="' + yy + '" dy="4" text-anchor="end">' + nf(v) + '</text>'; }).join('');
+    var titik = akt.map(function (a, i) { return x(i).toFixed(1) + ',' + y(a.n).toFixed(1); }).join(' ');
+    var akhir = akt[n - 1];
+    return '<svg viewBox="0 0 ' + W0 + ' ' + H0 + '" role="img" aria-label="' + esc(t('lb_aktif')) + '">' + grid +
+      '<polyline points="' + titik + '" class="kb-lb-garis"/><circle cx="' + x(n - 1).toFixed(1) + '" cy="' + y(akhir.n).toFixed(1) + '" r="4.5" class="kb-lb-titik"/>' +
+      '<text x="' + x(n - 1).toFixed(1) + '" y="' + (y(akhir.n) - 9).toFixed(1) + '" text-anchor="end" class="kb-lb-label">' + nf(akhir.n) + '</text>' +
+      '<text x="' + kiri + '" y="' + (H0 - 6) + '">' + esc(tglPendekSk(akt[0].tgl)) + '</text><text x="' + (W0 - kanan) + '" y="' + (H0 - 6) + '" text-anchor="end">' + esc(tglPendekSk(akhir.tgl)) + '</text></svg>';
+  }
+  function tglPendekSk(s) { var m = String(s || '').match(/^(\d{4})-(\d{2})-(\d{2})/); return m ? Number(m[3]) + ' ' + BULAN[bhs()][Number(m[2]) - 1] : String(s || ''); }
+  function htmlLibat() {
+    var L = A.lb, D = L.data;
+    var chip = '<div class="kb-lb-chip" role="group" aria-label="' + esc(t('lb_judul')) + '">' + [7, 14, 30].map(function (n) {
+      return '<button type="button" data-kb="lbHari" data-hari="' + n + '" aria-pressed="' + (L.hari === n) + '">' + esc(teksIsi('lb_hari', { n: n })) + '</button>';
+    }).join('') + '</div>';
+    var kepala = '<div id="kbLibat" class="kb-lb"><h2 class="kb-sk-judul">' + esc(t('lb_judul')) + '</h2><p class="ket-alat">' + esc(t('lb_ket')) + '</p>' + chip;
+    if (!D || L.memuat && D.hari !== L.hari) return kepala + '<p class="ket-alat">' + esc(t('muat')) + '</p></div>';
+    var akt = Array.isArray(D.aktif) ? D.aktif : [], hari = Number(D.hari) || L.hari;
+    var kini = akt.length ? Number(akt[akt.length - 1].n) || 0 : 0, rata = akt.length ? Math.round(akt.reduce(function (s, a) { return s + (Number(a.n) || 0); }, 0) / akt.length) : 0;
+    var C = D.corong || {}, kirim = Number(D.kirim) || 0, baru = Number(C.scanSendiri) || 0;
+    var modeShare = (cariSk('share') || {}).mode;
+    var ubin = function (k, judul, angka, ket) { return '<div class="kb-kpi" data-lb-kpi="' + k + '"><span>' + esc(judul) + '</span><b>' + nf(angka) + '</b><small>' + esc(ket) + '</small></div>'; };
+    var kpi = '<div class="kb-kpis kb-lb-kpis">' +
+      ubin('aktif', t('lb_aktif'), kini, teksIsi('lb_aktifKet', { r: nf(rata), n: akt.length })) +
+      ubin('kirim', t('lb_kirim'), kirim, teksIsi('lb_kirimKet', { n: nf(D.dariMinta) })) +
+      ubin('baru', t('lb_baru'), baru, teksIsi('lb_baruKet', { p: kirim > 0 ? Math.round(baru / kirim * 100) : 0 })) +
+      ubin('share', t('lb_share'), D.share, A.sk.data && statusSk(modeShare) === 'off' ? t('lb_shareMati') : teksIsi('lb_shareKet', { n: hari })) + '</div>';
+    var grafik = '<section class="kb-kotak" id="kbLbGrafik"><h3>' + esc(t('lb_aktif')) + '</h3><p class="ket-alat">' + esc(teksIsi('lb_grafikKet', { n: akt.length })) + '</p>' + grafikLibat(akt) + '</section>';
+    var B = (Array.isArray(D.buddy) ? D.buddy : []).slice().sort(function (a, b) { return (Number(b.n) || 0) - (Number(a.n) || 0); }).slice(0, 8);
+    var bMaks = B.length ? Math.max(1, Number(B[0].n) || 0) : 1;
+    var buddy = '<section class="kb-kotak"><h3>' + esc(t('lb_buddy')) + '</h3><p class="ket-alat">' + esc(t('lb_buddyKet')) + '</p>' + (B.length ? '<ol class="kb-lb-bar" data-lb-buddy>' + B.map(function (x) {
+      var f = FOTO_KARTU[x.kartu];
+      return '<li>' + (f ? '<img src="' + DASAR + 'img/kartu/' + f + '.webp" alt="">' : '<i class="kb-lb-tanpa" aria-hidden="true"></i>') + '<b>' + esc(x.nama || namaKartu(x.kartu)) + '</b><span class="kb-lb-trek"><span class="kb-lb-isi" style="width:' + Math.round((Number(x.n) || 0) / bMaks * 100) + '%"></span></span><span class="kb-lb-n">' + nf(x.n) + '</span></li>';
+    }).join('') + '</ol>' : '<p class="ket-alat" data-lb-buddy>' + esc(t('lb_buddyKosong')) + '</p>') + '</section>';
+    var c0 = Number(C.kirim) || 0;
+    var corong = '<section class="kb-kotak"><h3>' + esc(t('lb_corong')) + '</h3><p class="ket-alat">' + esc(t('lb_corongKet')) + '</p><ol class="kb-lb-corong">' + ['kirim', 'dibuka', 'penerimaBaru', 'scanSendiri'].map(function (k) {
+      var v = Number(C[k]) || 0, p = c0 > 0 ? Math.round(v / c0 * 100) : 0;
+      return '<li data-lb-corong="' + k + '"><div><b>' + esc(t('lb_c_' + k)) + '</b><span><span class="kb-lb-n">' + nf(v) + '</span> · ' + p + '%</span></div><span class="kb-lb-trek"><span class="kb-lb-isi" style="width:' + Math.min(100, p) + '%"></span></span></li>';
+    }).join('') + '</ol></section>';
+    var pakai = [
+      ['kirim', namaFitur('kirim'), teksIsi('lb_u_kirim', { n: nf(D.kirim) }), 'kirim'],
+      ['minta', namaFitur('minta'), teksIsi('lb_u_minta', { n: nf(D.minta), d: nf(D.mintaDipenuhi) }), 'minta'],
+      ['elus', namaFitur('elus'), teksIsi('lb_u_elus', { n: nf(D.elus) }), 'elus'],
+      ['share', namaFitur('share'), teksIsi('lb_u_share', { n: nf(D.share) }), 'share'],
+      ['notif', t('lb_notif'), teksIsi('lb_u_notif', { n: nf(D.notifBuka) }), 'notif']
+    ];
+    var fitur = '<section class="kb-kotak"><h3>' + esc(t('lb_fitur')) + '</h3><p class="ket-alat">' + esc(t('lb_fiturKet')) + '</p><div class="kb-lb-gulir"><table id="kbLbFitur" class="kb-lb-tabel"><thead><tr><th>' + esc(t('lb_kFitur')) + '</th><th class="num">' + esc(t('lb_kPakai')) + '</th><th>' + esc(t('lb_kSaklar')) + '</th></tr></thead><tbody>' +
+      pakai.map(function (r) { var x = cariSk(r[3]); return '<tr data-lb-fitur="' + r[0] + '"><th scope="row">' + esc(r[1]) + '</th><td class="num">' + esc(r[2]) + '</td><td>' + (x ? '<span class="kb-sk-pil" data-sk-status="' + statusSk(x.mode) + '">' + esc(labelMode(x.mode)) + '</span>' : '') + '</td></tr>'; }).join('') +
+      '</tbody></table></div></section>';
+    return kepala + kpi + '<div class="kb-lb-dua">' + grafik + buddy + '</div><div class="kb-lb-dua">' + corong + fitur + '</div></div>';
+  }
+
   /* ---------- kerangka lembar (pakai gaya .alat-latar milik alat.js) ---------- */
   function pastikanDom() {
     if (el('kitabkuAdmin')) return el('kitabkuAdmin');
@@ -493,6 +758,7 @@
     d.addEventListener('input', ketik);
     d.addEventListener('change', ketik);
     d.addEventListener('keydown', tombolScan);
+    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target && e.target.id === 'kbSkStaf') { e.preventDefault(); tambahStaf(); } });
     /* scan berikutnya menimpa isi lama, bukan menyambung di belakangnya */
     d.addEventListener('focusin', function (e) { var x = e.target; if (x && (x.id === 'kbPsPesanan' || x.id === 'kbPsKartu') && x.select) x.select(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.classList.contains('buka')) { e.preventDefault(); tutup(); } });
@@ -504,7 +770,7 @@
     A.tab = tab || A.tab || 'ringkas';
     d.classList.add('buka'); d.setAttribute('aria-hidden', 'false'); document.body.classList.add('alat-terbuka');
     var l = d.querySelector('.lembar'); try { l.focus({ preventScroll: true }); } catch (e) { l.focus(); }
-    if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else muatRingkas();
+    if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else if (A.tab === 'saklar') muatSaklar(); else if (A.tab === 'libat') muatLibat(); else muatRingkas();
   }
   function tutup() {
     var d = el('kitabkuAdmin'); if (!d) return;
@@ -516,17 +782,21 @@
     var d = el('kitabkuAdmin'); if (!d) return;
     /* menggambar ulang membuang elemen video, jadi kamera yang masih menyala dimatikan dulu */
     if (A.kam && A.kam.aliran) matikanKamera();
-    /* 17 Okt, Ferdy: pembelian offline tidak dapat kartu, tab Klaim struk dihapus (htmlStruk dibiarkan, tidak terjangkau) */
-    d.querySelector('.tab-alat').innerHTML = ['ringkas', 'jadwal', 'cetak', 'pasang', 'template'].map(function (m) {
+    /* 17 Okt, Ferdy: pembelian offline tidak dapat kartu, tab Klaim struk dihapus dari deretan tab.
+       24 Okt: menu kiri Kitabku > Receipt claims masih membukanya, jadi tabnya tampil selama sedang dibuka. */
+    var tabs = ['ringkas', 'jadwal', 'cetak', 'pasang', 'template', 'saklar', 'libat'];
+    if (A.tab === 'struk') tabs.splice(3, 0, 'struk');
+    d.querySelector('.lembar').classList.toggle('kb-lebar', A.tab === 'saklar' || A.tab === 'libat');
+    d.querySelector('.tab-alat').innerHTML = tabs.map(function (m) {
       var on = A.tab === m, n = m === 'struk' && A.ringkas && A.ringkas.angka ? A.ringkas.angka.struk : 0;
-      return '<button type="button" role="tab" data-kbtab="' + m + '" aria-selected="' + on + '" class="' + (on ? 'on' : '') + '">' + esc(t(m === 'ringkas' ? 'tabRingkas' : m === 'jadwal' ? 'tabJadwal' : m === 'cetak' ? 'tabCetak' : m === 'pasang' ? 'tabPasang' : m === 'template' ? 'tabTemplate' : 'tabStruk')) + (n ? ' <b class="kb-lencana">' + n + '</b>' : '') + '</button>';
+      return '<button type="button" role="tab" data-kbtab="' + m + '" aria-selected="' + on + '" class="' + (on ? 'on' : '') + '">' + esc(t(m === 'ringkas' ? 'tabRingkas' : m === 'jadwal' ? 'tabJadwal' : m === 'cetak' ? 'tabCetak' : m === 'pasang' ? 'tabPasang' : m === 'template' ? 'tabTemplate' : m === 'saklar' ? 'tabSaklar' : m === 'libat' ? 'tabLibat' : 'tabStruk')) + (n ? ' <b class="kb-lencana">' + n + '</b>' : '') + '</button>';
     }).join('');
     /* tab aktif selalu kelihatan di HP (deretan tab digeser ke samping) */
     var on = d.querySelector('.tab-alat .on'); if (on && on.scrollIntoView) try { on.scrollIntoView({ block: 'nearest', inline: 'nearest' }); } catch (e) {}
     var tt = d.querySelector('.tutup-alat'); tt.setAttribute('aria-label', t('tutup')); tt.title = t('tutup');
     tt.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
     var isi = A.galat ? '<div class="tolak-alat" role="alert">' + esc(A.galat) + '</div><button type="button" class="btn dua" data-kb="ulang">' + esc(t('ulang')) + '</button>' : '';
-    if (!A.galat) isi = A.tab === 'jadwal' ? htmlJadwal() : A.tab === 'cetak' ? htmlCetak() : A.tab === 'struk' ? htmlStruk() : A.tab === 'pasang' ? htmlPasang() : A.tab === 'template' ? htmlTemplate() : htmlRingkas();
+    if (!A.galat) isi = A.tab === 'jadwal' ? htmlJadwal() : A.tab === 'cetak' ? htmlCetak() : A.tab === 'struk' ? htmlStruk() : A.tab === 'pasang' ? htmlPasang() : A.tab === 'template' ? htmlTemplate() : A.tab === 'saklar' ? htmlSaklar() : A.tab === 'libat' ? htmlLibat() : htmlRingkas();
     el('kbIsi').innerHTML = isi;
   }
 
@@ -1486,11 +1756,18 @@
     var d = el('kitabkuAdmin');
     if (e.target === d) { tutup(); return; }
     var x = e.target.closest ? e.target.closest('[data-kb],[data-kbtab]') : null; if (!x) return;
-    if (x.hasAttribute('data-kbtab')) { matikanKamera(); bunyi('klik'); A.tab = x.getAttribute('data-kbtab'); A.pesan = ''; A.tolakYakin = 0; if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else if (!A.ringkas) muatRingkas(); else gambar(); return; }
+    if (x.hasAttribute('data-kbtab')) { matikanKamera(); bunyi('klik'); A.tab = x.getAttribute('data-kbtab'); A.pesan = ''; A.tolakYakin = 0; if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'jadwal') muatJadwal(); else if (A.tab === 'saklar') muatSaklar(); else if (A.tab === 'libat') muatLibat(); else if (!A.ringkas) muatRingkas(); else gambar(); return; }
     var a = x.getAttribute('data-kb'), id = Number(x.getAttribute('data-id'));
     if (a !== 'tolak') A.tolakYakin = 0;
     if (a === 'tutup') tutup();
-    else if (a === 'ulang') { if (A.tab === 'jadwal') { A.jdPesan = ''; muatJadwal(); } else if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else muatRingkas(); }
+    else if (a === 'ulang') { if (A.tab === 'jadwal') { A.jdPesan = ''; muatJadwal(); } else if (A.tab === 'struk') muatStruk(); else if (A.tab === 'pasang') { A.galat = ''; gambar(); fokusPs(); } else if (A.tab === 'template') muatTemplate(); else if (A.tab === 'saklar') muatSaklar(); else if (A.tab === 'libat') muatLibat(); else muatRingkas(); }
+    else if (a === 'skMode') ubahSaklar(x.getAttribute('data-fitur'), x.getAttribute('data-mode'));
+    else if (a === 'skMatiTanya') { A.sk.yakin = true; A.sk.pesan = ''; gambar(); var ya = document.querySelector('[data-kb=skMatiBatal]'); if (ya) ya.focus(); }
+    else if (a === 'skMatiBatal') { A.sk.yakin = false; gambar(); }
+    else if (a === 'skMatiYa') matikanSemua();
+    else if (a === 'skStafTambah') tambahStaf();
+    else if (a === 'skStafHapus') hapusStaf(x.getAttribute('data-sid'));
+    else if (a === 'lbHari') { var hr = Number(x.getAttribute('data-hari')); if (hr !== A.lb.hari) { A.lb.hari = hr; muatLibat(); } }
     else if (a === 'tpUnggah') unggahTemplate();
     else if (a === 'tpFinal') finalTemplate(x.getAttribute('data-id'), x.getAttribute('data-final') === '1');
     else if (a === 'pasang') { matikanKamera(); pasangKartu(false); }
@@ -1533,6 +1810,7 @@
     }
     if (x.getAttribute && x.getAttribute('data-vpakai') != null) ketikPakai(x);
     if (x.id === 'kbVoucherBerkas' && e.type === 'change' && x.files && x.files[0]) unggahVoucher(x.files[0]);
+    if (x.id === 'kbSkStaf') A.sk.ke = x.value;
     if (x.id === 'kbTpAcara') A.tp.acara = x.value;
     if (x.id === 'kbTpCatatan') A.tp.catatan = x.value;
     if (x.id === 'kbPdfUk' || x.id === 'kbPdfUk2' || x.id === 'kbPdfUkEd') A.ukuranPdf = String(x.value);

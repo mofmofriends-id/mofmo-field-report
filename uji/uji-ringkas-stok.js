@@ -253,7 +253,7 @@ const PALSU_AWAL = () => {
     await ke(p, 'stok'); await jeda(800);
     const m1 = await bacaMenu(p);
     c('A1 Inventory terbuka: Stock overview paling atas (Warehouse condition tidak jadi menu sendiri, ada di Kondisi persediaan › Gudang), anak lama tetap, Rack replenishment tetap terakhir',
-      /^l4stok=Stock overview\|bukubesar=/.test(m1.anak) && !/l4rak/.test(m1.anak) && /\|kondisi=/.test(m1.anak) && /\|obdIsiUlang=Isi ulang rak$/.test(m1.anak) && m1.atas === 'ringkasan,stok,laku,rencana,kinerja,sehat', JSON.stringify(m1));
+      /^l4stok=Stock overview\|bukubesar=/.test(m1.anak) && !/l4rak/.test(m1.anak) && /\|kondisi=/.test(m1.anak) && /\|obdIsiUlang=Isi ulang rak$/.test(m1.anak) && m1.atas === 'ringkasan,stok,laku,rencana,kinerja,kitabku,sehat' /* 24 Okt: grup Kitabku di atas Data quality */, JSON.stringify(m1));
     await ke(p, 'rencana'); await jeda(800);
     const m2 = await bacaMenu(p);
     c('A2 Shipments terbuka: Overview paling atas, lalu Outbound · Offline, Outbound · Shopee, lalu anak lama',

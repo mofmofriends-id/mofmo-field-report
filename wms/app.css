@@ -1281,3 +1281,85 @@ html[data-theme="dark"] #kbHs .kb-hs-angka{background:#3a2023;color:#f3c2c6;bord
 #kitabkuAdmin .kb-jd-tabel tr.lewat{opacity:.55}#kitabkuAdmin .kb-jd-tabel tr.jalan td:first-child{box-shadow:inset 3px 0 0 #2f8a4a}
 #kitabkuAdmin .kb-jd-malam{display:block;font-size:10.5px;color:var(--mut)}
 #kitabkuAdmin .kb-jd-ringkas{margin:8px 0 4px 18px;padding:0;font-size:13px;color:var(--mut)}
+
+/* ---------- Kitabku: saklar fitur dan keterlibatan pemain (kitabku.js, 24 Okt 2026) ---------- */
+.kitabku-latar .lembar.kb-lebar{width:min(1120px,100%)}
+.kb-sk,.kb-lb{display:flex;flex-direction:column;gap:14px;min-width:0}
+.kb-sk-judul{margin:0;font-family:var(--judul);font-size:30px;line-height:1.1}
+.kb-sk-daftar{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.kb-sk-baris{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(110px,150px);gap:8px 16px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.kb-sk-baris:first-child{border-top:0}
+.kb-sk-nama{display:flex;flex-direction:column;gap:2px;min-width:0}
+.kb-sk-nama b{font-size:15.5px}
+.kb-sk-nama small{color:var(--mut);font-weight:600;font-size:13px}
+.kb-sk-pil{display:inline-flex;align-items:center;height:22px;padding:0 9px;border-radius:999px;font-size:12px;font-weight:800;vertical-align:1px;white-space:nowrap}
+.kb-sk-pil[data-sk-status=live]{background:var(--okBg);color:var(--okInk)}
+.kb-sk-pil[data-sk-status=rollout]{background:var(--accSoft);color:var(--accText)}
+.kb-sk-pil[data-sk-status=off]{background:var(--soft);color:var(--mut)}
+.kb-sk-seg{display:inline-flex;gap:2px;padding:3px;border:1.5px solid var(--line);border-radius:14px;background:var(--soft)}
+.kb-sk-seg button{height:36px;padding:0 12px;border:0;border-radius:10px;background:transparent;color:var(--ink);font-weight:800;font-size:14px;cursor:pointer;white-space:nowrap}
+.kb-sk-seg button:hover:not(:disabled){background:var(--accSoft)}
+.kb-sk-seg button[aria-pressed=true]{background:var(--acc);color:var(--accInk)}
+.kb-sk-seg button:disabled{cursor:progress;opacity:.7}
+.kb-sk-seg button:focus-visible,.kb-lb-chip button:focus-visible{outline:2px solid var(--acc);outline-offset:1px}
+.kb-sk-oleh{color:var(--mut);font-size:12.5px;font-weight:700;text-align:right}
+.kb-sk-pesan{margin:0;padding:10px 14px;border-radius:14px;background:var(--wBg);color:var(--wInk);font-weight:800}
+.kb-sk-pesan.ok{background:var(--okBg);color:var(--okInk)}
+.kb-sk-darurat{display:flex;align-items:center;gap:12px 18px;flex-wrap:wrap;padding:14px 16px;border-radius:20px;background:var(--wBg);color:var(--wInk)}
+.kb-sk-darurat>div:first-child{display:flex;flex-direction:column;gap:2px;flex:1 1 260px;min-width:0}
+.kb-sk-darurat b{font-size:16px}
+.kb-sk-darurat small{font-weight:700;font-size:13.5px}
+.btn.kb-sk-mati{height:44px;background:var(--wInk);color:var(--wBg)}
+.kb-sk-yakin{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:800}
+.kb-sk-yakin .btn{height:44px}
+.kb-sk-tambah{display:flex;gap:8px;min-width:0}
+.kb-sk-tambah input{flex:1;min-width:0}
+.kb-sk-tambah .btn{height:42px}
+.kb-sk-staf{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.kb-sk-staf li{display:inline-flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1.5px solid var(--line);border-radius:999px;font-weight:700;min-width:0;max-width:100%}
+.kb-sk-staf li b{overflow-wrap:anywhere}
+.kb-sk-staf .btn{height:32px;padding:0 12px;font-size:13px}
+.kb-sk-staf li.kb-sk-kosong{border:0;padding:0;color:var(--mut)}
+.kb-sk-log{border-style:dashed}
+#kbSkLog{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px;font-size:14.5px}
+#kbSkLog:empty{display:none}
+.kb-lb-chip{display:flex;flex-wrap:wrap;gap:4px;padding:4px;border:1.5px solid var(--line);border-radius:16px;background:var(--soft);align-self:flex-start;max-width:100%}
+.kb-lb-chip button{height:38px;padding:0 16px;border:0;border-radius:12px;background:transparent;color:var(--ink);font-weight:800;cursor:pointer}
+.kb-lb-chip button[aria-pressed=true]{background:var(--acc);color:var(--accInk)}
+.kb-lb-kpis{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.kb-lb-dua{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:14px}
+.kb-lb-dua>.kb-kotak{min-width:0}
+#kbLbGrafik svg{width:100%;height:auto;display:block}
+#kbLbGrafik text{font:700 11px var(--font);fill:var(--mut)}
+#kbLbGrafik .kb-lb-label{fill:var(--ink);font-weight:800}
+.kb-lb-grid{stroke:var(--line);stroke-width:1}
+.kb-lb-garis{fill:none;stroke:var(--acc);stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.kb-lb-titik{fill:var(--acc)}
+.kb-lb-bar{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.kb-lb-bar li{display:grid;grid-template-columns:32px minmax(0,7em) minmax(0,1fr) 3.2em;gap:10px;align-items:center}
+.kb-lb-bar li b{overflow-wrap:anywhere;line-height:1.15}
+.kb-lb-bar .kb-lb-n{text-align:right}
+.kb-lb-bar img,.kb-lb-tanpa{width:32px;height:32px;object-fit:contain;border-radius:10px;display:block}
+.kb-lb-tanpa{background:var(--soft)}
+.kb-lb-trek{display:block;height:10px;border-radius:999px;background:var(--track);overflow:hidden}
+.kb-lb-isi{display:block;height:100%;border-radius:999px;background:var(--bar)}
+.kb-lb-n{font-weight:900;font-variant-numeric:tabular-nums}
+.kb-lb-corong{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.kb-lb-corong li>div{display:flex;justify-content:space-between;gap:10px;margin-bottom:4px;font-size:14.5px}
+.kb-lb-corong li>div span{color:var(--mut);font-weight:700;white-space:nowrap}
+.kb-lb-corong li>div .kb-lb-n{color:var(--ink)}
+.kb-lb-corong .kb-lb-trek{height:12px}
+.kb-lb-corong .kb-lb-isi{background:var(--acc)}
+.kb-lb-gulir{overflow-x:auto;min-width:0}
+.kb-lb-tabel{width:100%;border-collapse:collapse;font-size:14.5px}
+.kb-lb-tabel th,.kb-lb-tabel td{padding:8px 6px;border-top:1px solid var(--line);border-bottom:0;text-align:left;vertical-align:middle;white-space:normal}
+.kb-lb-tabel tbody th{font:800 14.5px var(--font);letter-spacing:0;text-transform:none;color:var(--ink)}
+.kb-lb-tabel thead th{border-top:0;border-bottom:1.5px solid var(--line)}
+.kb-lb-tabel .num{text-align:right;font-variant-numeric:tabular-nums}
+@media (max-width:760px){
+  .kb-sk-baris{grid-template-columns:minmax(0,1fr)}
+  .kb-sk-seg{display:flex;width:100%}
+  .kb-sk-seg button{flex:1 1 auto;min-width:0;padding:0 6px;font-size:13px;white-space:normal;line-height:1.1}
+  .kb-sk-oleh{text-align:left}
+  .kb-sk-judul{font-size:26px}
+}
