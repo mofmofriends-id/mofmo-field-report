@@ -586,8 +586,9 @@
     /* Mockup B (12 Okt): enam alat di balik satu tombol "Alat" di kepala. Daftarnya
        ditempel ke body (position fixed) supaya tidak terpotong #kopKanan, yang di HP
        digeser samping. Menutup sesudah alat dipilih, klik di luar, Esc, atau Tab. */
-    var DAFTAR_ALAT = [['laporan', 'laporanPendek', 'ketLaporan', 'laporan'], ['kontrol', 'kontrolPendek', 'ketKontrol', 'kontrol'], ['jadwal', 'jadwalMenu', 'ketJadwal', 'jadwal'],
-      ['katalog', 'katalogPendek', 'ketKatalog', 'katalog'], ['kitabku', null, 'ketKitabku', 'buku'], ['tanya', 'tanyaMenu', 'ketTanya', 'tanya']];
+    /* 25 Okt, Ferdy: Jadwal PIC dan Kitabku pindah ke bawah daftar */
+    var DAFTAR_ALAT = [['laporan', 'laporanPendek', 'ketLaporan', 'laporan'], ['kontrol', 'kontrolPendek', 'ketKontrol', 'kontrol'], ['katalog', 'katalogPendek', 'ketKatalog', 'katalog'],
+      ['tanya', 'tanyaMenu', 'ketTanya', 'tanya'], ['jadwal', 'jadwalMenu', 'ketJadwal', 'jadwal'], ['kitabku', null, 'ketKitabku', 'buku']];
     function bukaAlat(k) { if (k === 'laporan') H.laporan(); else if (k === 'kontrol') H.kontrol(); else if (k === 'jadwal') H.jadwal(); else if (k === 'katalog') H.katalog(); else if (k === 'kitabku') H.kitabku(); else if (k === 'tanya') H.tanya(); }
     function pasangMenuAlat(kanan) {
       var bt = tombol('', C.teks.alatLabel, function () {}, 'alat');

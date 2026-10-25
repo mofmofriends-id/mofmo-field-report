@@ -29,7 +29,8 @@ const papan = denganMenu => '<!doctype html><html lang="en"><head><meta charset=
   '<div id="layarIsi"><header><div class="bungkus"><div class="gbrLogo"></div><div style="flex:1;min-width:0"><h1>Data dashboard</h1><p>last 12 months</p></div><div id="kopKanan"><button>↻</button><button>EN</button><button>♪</button><button>Sign out</button></div></div></header>' +
   '<div class="rangka">' + (denganMenu ? '<nav class="panel" id="panel"></nav>' : '') + '<div class="utama"><div class="isiRail" id="rail"><div id="isi">HAL ringkasan</div></div></div></div></div>' +
   '<script>' + (denganMenu ? menu : '') + 'function buka(){google.script.run.withSuccessHandler(function(){document.getElementById("layarKode").style.display="none";document.getElementById("layarIsi").style.display="block";' + (denganMenu ? 'gambarPanel();' : '') + 'window.__siap=1;}).dataPapan(document.getElementById("kode").value);}<\/script></body></html>';
-const ALAT = ['laporan', 'kontrol', 'jadwal', 'katalog', 'kitabku', 'tanya'];
+/* 25 Okt, Ferdy: "pindahin ke bwh aja deh itu pic schedule dan kitabku" (Jadwal PIC dan Kitabku jadi dua butir terakhir) */
+const ALAT = ['laporan', 'kontrol', 'katalog', 'tanya', 'jadwal', 'kitabku'];
 
 (async () => {
   let chromium;
@@ -94,9 +95,9 @@ const ALAT = ['laporan', 'kontrol', 'jadwal', 'katalog', 'kitabku', 'tanya'];
     if (fr) { await klik(fr, '#kopKanan [data-wms=alat]'); await jeda(250); }
     const s3 = fr ? await kepala(fr) : {};
     if (process.env.FOTO) await p.screenshot({ path: path.join(process.env.FOTO, 'alat-laptop.png') });
-    c('3 klik Alat: daftar terbuka di bawah tombol, di dalam layar, urut Laporan, Kontrol, Jadwal PIC, Katalog, Kitabku, Tanya WMS, masing-masing berketerangan',
+    c('3 klik Alat: daftar terbuka di bawah tombol, di dalam layar, urut Laporan, Kontrol, Katalog, Tanya WMS, Jadwal PIC, Kitabku, masing-masing berketerangan',
       s3.terbuka && s3.exp === 'true' && s3.dalam && s3.bawah && (s3.item || []).map(x => x.k).join(',') === ALAT.join(',') &&
-      (s3.item || []).map(x => x.n).join(',') === 'Laporan,Kontrol,Jadwal PIC,Katalog,Kitabku,Tanya WMS' && (s3.item || []).every(x => x.ket.length > 5), JSON.stringify(s3));
+      (s3.item || []).map(x => x.n).join(',') === 'Laporan,Kontrol,Katalog,Tanya WMS,Jadwal PIC,Kitabku' && (s3.item || []).every(x => x.ket.length > 5), JSON.stringify(s3));
     if (fr) { await klik(fr, '[data-wms-menu=alat] [data-wms=laporan]'); await jeda(300); }
     await p.waitForFunction(() => { const d = document.getElementById('laporan'); return d && d.classList.contains('buka'); }, null, { timeout: 6000 }).catch(() => {});
     const s4 = fr ? await kepala(fr) : {};
@@ -138,7 +139,7 @@ const ALAT = ['laporan', 'kontrol', 'jadwal', 'katalog', 'kitabku', 'tanya'];
     ({ ctx, p, fr } = await buka(1366, 768, { bhs: 'en' }));
     if (fr) { await klik(fr, '#kopKanan [data-wms=alat]'); await jeda(250); }
     const s7 = fr ? await kepala(fr) : {};
-    c('7 bahasa Inggris: tombol Tools, butir Report, Controls, PIC schedule, Catalog, Kitabku, Ask WMS', s7.teks === 'Tools' && (s7.item || []).map(x => x.n).join(',') === 'Report,Controls,PIC schedule,Catalog,Kitabku,Ask WMS', JSON.stringify(s7));
+    c('7 bahasa Inggris: tombol Tools, butir Report, Controls, Catalog, Ask WMS, PIC schedule, Kitabku', s7.teks === 'Tools' && (s7.item || []).map(x => x.n).join(',') === 'Report,Controls,Catalog,Ask WMS,PIC schedule,Kitabku', JSON.stringify(s7));
     await ctx.close();
 
     /* ---- malam ---- */
