@@ -34,7 +34,9 @@ const srv = http.createServer((q, s) => {
 });
 
 /* ---------- server Kitabku palsu ---------- */
-const FITUR = ['kirim', 'ucapan', 'minta', 'kurir', 'balas', 'bond', 'surat', 'buddy', 'slot', 'unbox', 'cap', 'elus', 'loading', 'podium', 'tenang', 'freeze', 'share', 'notif'];
+/* 25 Okt: delapan fitur gemas ikut kontrak (migrasi-gemas-25okt.sql), jadi 28 baris (plus kapsuledisi dan fotokartu) */
+const FITUR = ['kirim', 'ucapan', 'minta', 'kurir', 'balas', 'bond', 'surat', 'buddy', 'slot', 'unbox', 'cap', 'elus', 'loading', 'podium', 'tenang', 'freeze', 'share', 'notif',
+  'adopsi', 'ultah', 'kamar', 'kapsul', 'suratbuddy', 'musim', 'foto', 'lemari', 'kapsuledisi', 'fotokartu'];
 let SK, modeSrv = 'normal'; /* normal | habis (perluMasuk) | galat ({ok:false,pesan}) | kosong (tabel belum ada) */
 const panggilan = [];
 function setel() {
@@ -259,7 +261,7 @@ const PALSU_AWAL = () => {
     const B0 = await baris(p);
     const harap = { kirim: ['semua', 'live'], minta: ['50', 'rollout'], buddy: ['10', 'rollout'], cap: ['staf', 'rollout'] };
     const salah0 = B0.filter((r) => { const h = harap[r.f] || ['off', 'off']; return r.mode !== h[0] || r.status !== h[1]; });
-    c('K1 18 baris berurutan sesuai kontrak; tombol yang menyala dan status (Live, Rolling out, Off) sama dengan mode di server',
+    c('K1 28 baris berurutan sesuai kontrak; tombol yang menyala dan status (Live, Rolling out, Off) sama dengan mode di server',
       B0.map((r) => r.f).join(',') === FITUR.join(',') && salah0.length === 0, JSON.stringify(salah0.length ? salah0 : B0.map((r) => r.f)));
     const rk = B0.find((r) => r.f === 'kirim') || {}, rf = B0.find((r) => r.f === 'freeze') || {};
     c('K2 terakhir diubah: nama dan jam WIB (14:40 UTC = 21:40 WIB); fitur yang belum pernah dinyalakan tidak menulis nama',
@@ -285,7 +287,7 @@ const PALSU_AWAL = () => {
     await p.click('#kbSaklar [data-kb=skMatiYa]');
     await tunggu(p, () => Array.from(document.querySelectorAll('#kbSaklar [data-kb=skMode][aria-pressed=true]')).every((x) => x.getAttribute('data-mode') === 'off'), null, 4000); await jeda(200);
     const Bm = await baris(p), mt = terakhir('matikanSemua');
-    c('K6 sesudah konfirmasi: matikanSemua terkirim sekali dengan oleh, semua baris Off', jumlah('matikanSemua') === nMati0 + 1 && mt && mt.oleh === 'WMS' && Bm.length === 18 && Bm.every((r) => r.mode === 'off' && r.status === 'off'), JSON.stringify([mt, Bm.filter((r) => r.mode !== 'off')]));
+    c('K6 sesudah konfirmasi: matikanSemua terkirim sekali dengan oleh, semua baris Off', jumlah('matikanSemua') === nMati0 + 1 && mt && mt.oleh === 'WMS' && Bm.length === FITUR.length && Bm.every((r) => r.mode === 'off' && r.status === 'off'), JSON.stringify([mt, Bm.filter((r) => r.mode !== 'off')]));
     const nStaf0 = jumlah('tambahStaf');
     await p.fill('#kbSkStaf', 'rina tanpa tag'); await p.click('#kbSaklar [data-kb=skStafTambah]'); await jeda(300);
     const pesanS = await p.evaluate(() => ((document.getElementById('kbSkStafPesan') || {}).textContent || '').trim());
@@ -353,8 +355,8 @@ const PALSU_AWAL = () => {
     await p.click('[data-kbtab=saklar]'); await tunggu(p, () => !!document.querySelector('#kbSaklar [data-sk-fitur]'), null, 4000); await jeda(200);
     const Bk = await baris(p);
     const kosongTeks = await p.evaluate(() => ({ staf: ((document.querySelector('#kbSaklar [data-sk-staf-daftar]') || {}).textContent || '').trim(), log: document.querySelectorAll('#kbSkLog li').length, alert: !!document.querySelector('#kitabkuAdmin .tolak-alat') }));
-    c('R3 tabel saklar belum ada di server (semua off, daftar kosong): tetap tampil 18 baris Off, staf dan log kosong dengan keterangan, tanpa galat',
-      Bk.length === 18 && Bk.every((r) => r.mode === 'off') && kosongTeks.staf.length > 0 && kosongTeks.log === 0 && !kosongTeks.alert, JSON.stringify(kosongTeks));
+    c('R3 tabel saklar belum ada di server (semua off, daftar kosong): tetap tampil 28 baris Off, staf dan log kosong dengan keterangan, tanpa galat',
+      Bk.length === FITUR.length && Bk.every((r) => r.mode === 'off') && kosongTeks.staf.length > 0 && kosongTeks.log === 0 && !kosongTeks.alert, JSON.stringify(kosongTeks));
     modeSrv = 'normal';
     const emas = await p.evaluate(() => /\u2014/.test(document.getElementById('kitabkuAdmin').innerText));
     await p.click('[data-kbtab=libat]'); await tunggu(p, () => !!document.querySelector('#kbLibat [data-lb-kpi=aktif]'), null, 4000); await jeda(200);

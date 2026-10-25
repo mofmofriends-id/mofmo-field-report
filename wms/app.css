@@ -1315,6 +1315,23 @@ html[data-theme="dark"] #kbHs .kb-hs-angka{background:#3a2023;color:#f3c2c6;bord
 .kb-sk-tambah{display:flex;gap:8px;min-width:0}
 .kb-sk-tambah input{flex:1;min-width:0}
 .kb-sk-tambah .btn{height:42px}
+/* 25 Okt: tanggal ulang tahun karakter */
+.kb-ul-daftar{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:8px}
+.kb-ul-baris{display:flex;align-items:center;gap:8px;min-width:0}
+.kb-ul-baris label{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.kb-ul-baris input{width:78px;flex:none;text-align:center}
+.kb-ul-baris .btn{height:38px;flex:none}
+.kb-ul-segera{display:flex;flex-direction:column;gap:8px;margin-bottom:14px}
+.kb-ul-kepala{display:flex;flex-wrap:wrap;align-items:center;gap:10px;justify-content:space-between}
+.kb-ul-kal{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.kb-ul-kal li{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start;padding:12px;border:1px solid var(--garis,rgba(0,0,0,.12));border-radius:14px;min-width:0}
+.kb-ul-kal li.dekat{border-width:2px}
+.kb-ul-tgl{flex:0 0 84px;display:flex;flex-direction:column}
+.kb-ul-tgl b{font-size:18px}
+.kb-ul-info{flex:1 1 140px;display:flex;flex-direction:column;min-width:0}
+.kb-ul-cap{flex:2 1 260px;display:flex;flex-direction:column;gap:6px;min-width:0}
+.kb-ul-cap span{overflow-wrap:anywhere}
+.kb-ul-cap .btn{align-self:flex-start;height:36px}
 .kb-sk-staf{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
 .kb-sk-staf li{display:inline-flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1.5px solid var(--line);border-radius:999px;font-weight:700;min-width:0;max-width:100%}
 .kb-sk-staf li b{overflow-wrap:anywhere}
