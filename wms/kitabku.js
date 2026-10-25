@@ -229,7 +229,7 @@
       skf_buddy: 'Buddy in the corner', skd_buddy: 'A plush buddy with day and night (WIB) moods',
       skf_slot: 'Sleeping slots', skd_slot: 'Empty card slots shown as sleeping plushies',
       skf_unbox: 'Rare card unbox', skd_unbox: 'Special opening animation for rare cards',
-      skf_cap: 'Vegetable Cap stamps', skd_cap: 'Daily stamp, cap reward on day 7',
+      skf_cap: 'Streak trial (7-day streak)', skd_cap: 'Daily stamps; every 7-day streak lends an item for a week: cap only, or cap, bag, charm and toy in turn while Buddy wardrobe is on',
       skf_elus: 'Pet the card', skd_elus: 'Tap a card to pet it and get a small reaction',
       skf_loading: 'Loading Shiba', skd_loading: 'Shiba animation while pages load',
       skf_podium: 'Felt podium', skd_podium: 'Felt-style top 3 on the leaderboard',
@@ -237,6 +237,21 @@
       skf_freeze: 'Streak freeze', skd_freeze: '1 Napping Cap per week keeps a streak alive',
       skf_share: 'Share to Story', skd_share: '9:16 image with a QR to Kitabku',
       skf_notif: 'Gentle notifications', skd_notif: 'Max 2 a day, plus a 20:00 WIB streak reminder',
+      skf_adopsi: 'Adoption certificate', skd_adopsi: 'Players name a new plush and get a certificate',
+      skf_ultah: 'Character birthdays', skd_ultah: 'Birthday banner, wish and party hat; dates are set below',
+      skf_kamar: 'Mofmo Room', skd_kamar: 'Drag furniture and plushies around; friends visit with stickers',
+      skf_kapsul: 'Daily capsule', skd_kapsul: '1 free cosmetic a day: frames, stickers, badges, room items',
+      skf_suratbuddy: 'Buddy letters', skd_suratbuddy: 'Weekly letter from the buddy, Sunday 19:00 WIB',
+      skf_musim: 'Seasonal outfits', skd_musim: 'Rain, December and Lebaran decor by WIB date',
+      skf_foto: 'Photo with plush', skd_foto: "Camera frame; photos stay on the player's phone",
+      skf_lemari: 'Buddy wardrobe', skd_lemari: 'Caps, bags, charms and toys unlock only from product cards the player owns; Matching Outfit badge',
+      skf_kapsuledisi: 'Edition capsule', skd_kapsuledisi: '6 themed items in the free daily capsule during an edition; leftovers join the regular capsule after',
+      skf_fotokartu: 'Me in Kitabku', skd_fotokartu: "Player's photo cut out inside a chapter card; stays on their phone",
+      ul_segera: 'Upcoming', ul_30: 'Next 30 days', ul_90: 'Next 90 days', ul_semua: 'All 17', ul_pemilik: '{n} owners', ul_hari0: 'today', ul_hari1: 'tomorrow', ul_hariN: 'in {n} days',
+      ul_caption: 'Caption draft', ul_salin: 'Copy caption', ul_disalin: 'Caption copied. Edit it before posting.', ul_kosongRentang: 'No birthdays in this period.',
+      ul_ketSegera: 'For the content team: post on the same day Kitabku shows the birthday. Owners = players with at least one card of that character.',
+      ul_judul: 'Character birthdays', ul_ket: 'Shown in Kitabku when Character birthdays is on. Write MM-DD, for example 11-01 for 1 November.',
+      ul_simpan: 'Save', ul_ok: '{k}: birthday saved ({d}).', ul_salah: 'Write the date as MM-DD, for example 11-01 for 1 November.', ul_hariIni: 'today', ul_muat: 'Loading birthdays...',
       lb_judul: 'Engagement', lb_ket: 'How players use Kitabku in the chosen period, so we know which switch to turn up next.', lb_hari: '{n} days',
       lb_aktif: 'Daily active players', lb_aktifKet: 'today · avg {r} over {n} days', lb_kirim: 'Cards sent as gifts', lb_kirimKet: '{n} from requests',
       lb_baru: 'New players from gifts', lb_baruKet: '{p}% of gifts', lb_share: 'Shares to Story', lb_shareMati: 'switch is off', lb_shareKet: 'in {n} days',
@@ -245,7 +260,13 @@
       lb_corong: 'From gift to new player', lb_corongKet: 'the Kitabku funnel the gift feature feeds',
       lb_c_kirim: 'Gifts sent', lb_c_dibuka: 'Opened by recipient', lb_c_penerimaBaru: 'Recipient was new to Kitabku', lb_c_scanSendiri: 'New player scanned own box',
       lb_fitur: 'By feature', lb_fiturKet: 'usage in this period next to each feature\'s current switch', lb_kFitur: 'Feature', lb_kPakai: 'Usage', lb_kSaklar: 'Switch',
-      lb_u_kirim: '{n} cards', lb_u_minta: '{n} requests, {d} fulfilled', lb_u_elus: '{n} pets', lb_u_share: '{n} shares', lb_u_notif: '{n} opened', lb_notif: 'Notifications opened'
+      lb_u_kirim: '{n} cards', lb_u_minta: '{n} requests, {d} fulfilled', lb_u_elus: '{n} pets', lb_u_share: '{n} shares', lb_u_notif: '{n} opened', lb_notif: 'Notifications opened',
+      cb_judul: 'Streak trial to purchase', cb_ket: 'Players who got a 7-day trial (cap, bag, charm or toy) and scanned the real item within 14 days of the trial start.',
+      cb_edisi: 'Edition: {e}', cb_tanpaAcara: 'No active edition.', cb_kosong: 'No trials yet. The first one starts after a 7-day stamp streak in the edition.',
+      cb_pinjam: 'Trials given', cb_pinjamKet: 'each 7-day streak lends one item', cb_beli: 'Bought the real item', cb_beliKet: 'within 14 days of the trial start',
+      cb_persen: 'Conversion', cb_persenKet: 'of {n} trials whose 14 days are over', cb_berjalan: 'Still inside 14 days', cb_berjalanKet: 'not counted as no-buy yet',
+      cb_j_cap: 'Caps', cb_j_tas: 'Bags', cb_j_jimat: 'Charms', cb_j_mainan: 'Toys', cb_dari: '{b} of {n} bought', cb_tanpa: 'no trials',
+      cb_kBarang: 'Item', cb_kPinjam: 'Trials', cb_kBeli: 'Bought', cb_kJalan: 'Pending'
     },
     id: {
       sp_judul: 'Siap edisi {cap}?', sp_sebelum: 'Mulai {t}, {d} hari lagi. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_hariIni: 'Mulai hari ini, {t}. Kartu paket diselipin selama edisi, maksimal {n} pesanan.', sp_jalan: 'Sedang berjalan, selesai {t}.', sp_skor: '{a} dari {b} siap', sp_kaki: 'Dicek ulang tiap tab ini dibuka. Tidak ada yang diubah otomatis; tombol cuma membawa ke tempat membetulkannya.',
@@ -328,7 +349,7 @@
       skf_buddy: 'Buddy di pojok', skd_buddy: 'Boneka pendamping dengan suasana siang dan malam (WIB)',
       skf_slot: 'Slot tidur', skd_slot: 'Slot kartu kosong tampil sebagai boneka yang tertidur',
       skf_unbox: 'Unboxing kartu langka', skd_unbox: 'Animasi pembukaan khusus untuk kartu langka',
-      skf_cap: 'Stempel Vegetable Cap', skd_cap: 'Stempel harian, hadiah topi di hari ke-7',
+      skf_cap: 'Coba seminggu (streak 7 hari)', skd_cap: 'Stempel harian; tiap streak 7 hari meminjamkan satu barang seminggu: cap saja, atau cap, tas, charm, mainan bergiliran selama Wardrobe buddy nyala',
       skf_elus: 'Elus kartu', skd_elus: 'Ketuk kartu untuk mengelus, ada reaksi kecil',
       skf_loading: 'Shiba pemuat', skd_loading: 'Animasi Shiba saat halaman dimuat',
       skf_podium: 'Podium flanel', skd_podium: 'Tiga teratas papan peringkat bergaya flanel',
@@ -336,6 +357,21 @@
       skf_freeze: 'Pembeku streak', skd_freeze: '1 Napping Cap per minggu menjaga streak tetap berjalan',
       skf_share: 'Bagikan ke Story', skd_share: 'Gambar 9:16 dengan QR ke Kitabku',
       skf_notif: 'Notifikasi lembut', skd_notif: 'Maks. 2 sehari, ditambah pengingat streak pukul 20.00 WIB',
+      skf_adopsi: 'Sertifikat adopsi', skd_adopsi: 'Pemain memberi nama plush baru dan mendapat sertifikat',
+      skf_ultah: 'Ulang tahun karakter', skd_ultah: 'Banner, ucapan, dan topi pesta; tanggal diatur di bawah',
+      skf_kamar: 'Kamar Mofmo', skd_kamar: 'Geser perabot dan plush; teman berkunjung dengan stiker',
+      skf_kapsul: 'Kapsul harian', skd_kapsul: '1 kosmetik gratis sehari: bingkai, stiker, lencana, perabot',
+      skf_suratbuddy: 'Surat buddy', skd_suratbuddy: 'Surat mingguan dari buddy, Minggu 19.00 WIB',
+      skf_musim: 'Dekor musim', skd_musim: 'Hiasan musim hujan, Desember, dan Lebaran menurut tanggal WIB',
+      skf_foto: 'Foto bareng plush', skd_foto: 'Bingkai kamera; foto tetap tersimpan di HP pemain',
+      skf_lemari: 'Wardrobe buddy', skd_lemari: 'Cap, tas, charm, dan mainan hanya terbuka dari kartu produk yang dimiliki pemain; lencana Matching Outfit',
+      skf_kapsuledisi: 'Kapsul edisi', skd_kapsuledisi: '6 barang bertema di kapsul harian gratis selama edisi; sisanya masuk kapsul biasa sesudahnya',
+      skf_fotokartu: 'Me in Kitabku', skd_fotokartu: 'Foto pemain dipotong dan ditaruh di kartu bab; tetap tersimpan di HP pemain',
+      ul_segera: 'Akan datang', ul_30: '30 hari ke depan', ul_90: '90 hari ke depan', ul_semua: 'Semua 17', ul_pemilik: '{n} pemilik', ul_hari0: 'hari ini', ul_hari1: 'besok', ul_hariN: '{n} hari lagi',
+      ul_caption: 'Draf caption', ul_salin: 'Salin caption', ul_disalin: 'Caption tersalin. Sunting dulu sebelum diunggah.', ul_kosongRentang: 'Tidak ada ulang tahun di periode ini.',
+      ul_ketSegera: 'Untuk tim konten: unggah di hari yang sama dengan ulang tahun di Kitabku. Pemilik = pemain yang punya minimal satu kartu karakter itu.',
+      ul_judul: 'Ulang tahun karakter', ul_ket: 'Tampil di Kitabku saat saklar Ulang tahun karakter menyala. Tulis BB-HH, misalnya 11-01 untuk 1 November.',
+      ul_simpan: 'Simpan', ul_ok: '{k}: tanggal ulang tahun tersimpan ({d}).', ul_salah: 'Tulis tanggal dengan format BB-HH (MM-DD), misalnya 11-01 untuk 1 November.', ul_hariIni: 'hari ini', ul_muat: 'Memuat tanggal ulang tahun...',
       lb_judul: 'Keterlibatan pemain', lb_ket: 'Cara pemain memakai Kitabku pada periode terpilih, sebagai dasar memilih saklar yang dinaikkan berikutnya.', lb_hari: '{n} hari',
       lb_aktif: 'Pemain aktif harian', lb_aktifKet: 'hari ini · rata-rata {r} dalam {n} hari', lb_kirim: 'Kartu dikirim sebagai hadiah', lb_kirimKet: '{n} dari permintaan',
       lb_baru: 'Pemain baru dari hadiah', lb_baruKet: '{p}% dari kiriman', lb_share: 'Dibagikan ke Story', lb_shareMati: 'saklar mati', lb_shareKet: 'dalam {n} hari',
@@ -344,7 +380,13 @@
       lb_corong: 'Dari hadiah ke pemain baru', lb_corongKet: 'corong Kitabku yang diisi fitur kirim kartu',
       lb_c_kirim: 'Kiriman terkirim', lb_c_dibuka: 'Dibuka penerima', lb_c_penerimaBaru: 'Penerima baru di Kitabku', lb_c_scanSendiri: 'Pemain baru scan kotak sendiri',
       lb_fitur: 'Per fitur', lb_fiturKet: 'pemakaian periode ini di samping saklar tiap fitur saat ini', lb_kFitur: 'Fitur', lb_kPakai: 'Pemakaian', lb_kSaklar: 'Saklar',
-      lb_u_kirim: '{n} kartu', lb_u_minta: '{n} permintaan, {d} dipenuhi', lb_u_elus: '{n} elusan', lb_u_share: '{n} kali', lb_u_notif: '{n} dibuka', lb_notif: 'Notifikasi dibuka'
+      lb_u_kirim: '{n} kartu', lb_u_minta: '{n} permintaan, {d} dipenuhi', lb_u_elus: '{n} elusan', lb_u_share: '{n} kali', lb_u_notif: '{n} dibuka', lb_notif: 'Notifikasi dibuka',
+      cb_judul: 'Pinjaman jadi beli', cb_ket: 'Pemain yang dapat pinjaman 7 hari (cap, tas, charm, atau mainan) lalu memindai barang aslinya dalam 14 hari sejak pinjaman mulai.',
+      cb_edisi: 'Edisi: {e}', cb_tanpaAcara: 'Belum ada edisi aktif.', cb_kosong: 'Belum ada pinjaman. Pinjaman pertama muncul sesudah streak stempel 7 hari di edisi.',
+      cb_pinjam: 'Pinjaman diberikan', cb_pinjamKet: 'tiap streak 7 hari meminjamkan satu barang', cb_beli: 'Membeli barang aslinya', cb_beliKet: 'dalam 14 hari sejak pinjaman mulai',
+      cb_persen: 'Konversi', cb_persenKet: 'dari {n} pinjaman yang 14 harinya sudah lewat', cb_berjalan: 'Masih dalam 14 hari', cb_berjalanKet: 'belum dihitung tidak beli',
+      cb_j_cap: 'Cap', cb_j_tas: 'Tas', cb_j_jimat: 'Charm', cb_j_mainan: 'Mainan', cb_dari: '{b} dari {n} membeli', cb_tanpa: 'belum ada pinjaman',
+      cb_kBarang: 'Barang', cb_kPinjam: 'Pinjaman', cb_kBeli: 'Beli', cb_kJalan: 'Berjalan'
     }
   };
   var BULAN = { en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'], id: ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'] };
@@ -564,7 +606,9 @@
      Fitur rilis baru dinyalakan bertahap tanpa deploy: off, staf, 10, 50, semua. Layar baru menulis mode
      baru sesudah server menjawab ok, lalu membaca ulang saklar dari server supaya log ikut terbarui.
      Login WMS memakai satu kode bersama tanpa nama orang, jadi "oleh" ditulis WMS. */
-  var SK_FITUR = ['kirim', 'ucapan', 'minta', 'kurir', 'balas', 'bond', 'surat', 'buddy', 'slot', 'unbox', 'cap', 'elus', 'loading', 'podium', 'tenang', 'freeze', 'share', 'notif'];
+  /* 25 Okt: delapan fitur gemas (mockup 32 sampai 41) ikut daftar; di server mulai Off (migrasi-gemas-25okt.sql) */
+  var SK_FITUR = ['kirim', 'ucapan', 'minta', 'kurir', 'balas', 'bond', 'surat', 'buddy', 'slot', 'unbox', 'cap', 'elus', 'loading', 'podium', 'tenang', 'freeze', 'share', 'notif',
+    'adopsi', 'ultah', 'kamar', 'kapsul', 'suratbuddy', 'musim', 'foto', 'lemari', 'kapsuledisi', 'fotokartu'];
   var SK_MODE = ['off', 'staf', '10', '50', 'semua'];
   A.sk = { data: null, memuat: false, sibuk: '', pesan: '', ok: false, yakin: false, ke: '', stafPesan: '' };
   function namaOleh() { var S = M().S || {}; return String(S.nama || S.pengguna || 'WMS').slice(0, 40); }
@@ -579,8 +623,79 @@
   }
   function simpanDataSk(h) { A.sk.data = { saklar: Array.isArray(h.saklar) ? h.saklar : [], log: Array.isArray(h.log) ? h.log : [], staf: Array.isArray(h.staf) ? h.staf : [] }; }
   /* diam: dibaca ulang sesudah ubah, tanpa layar memuat; galatnya jadi pesan kecil, bukan halaman galat */
+  /* ---------- Tanggal ulang tahun karakter (25 Okt 2026, Ferdy: "Claude bikin daftarnya", bisa diubah dari WMS) ----------
+     Server: aksi admin ultah dan ubahUltah (gemas.js). Tanggal BB-HH diperiksa di layar dulu, server memeriksa ulang. */
+  A.ul = { data: null, memuat: false, sibuk: '', pesan: '', ok: false, nilai: {}, rentang: '30' };
+  /* kalender ulang tahun (mockup 45): jarak hari dari hari ini (WIB), draf caption untuk tim konten */
+  function jarakUltah(t) {
+    var w = new Date(Date.now() + 7 * 3600e3), th = w.getUTCFullYear(), n0 = Date.UTC(th, w.getUTCMonth(), w.getUTCDate());
+    var b = Number(String(t).slice(0, 2)), h = Number(String(t).slice(3, 5)), d = Date.UTC(th, b - 1, h);
+    if (d < n0) d = Date.UTC(th + 1, b - 1, h);
+    return Math.round((d - n0) / 864e5);
+  }
+  var CAPTION = [
+    '{n} ulang tahun hari ini! Kirim ucapan di Kitabku, buddy kamu dapat topi pesta seharian. #mofmofriends #kitabku',
+    'Selamat ulang tahun, {n}! Mampir ke Kitabku dan kirim ucapan buat dapat stiker Party Hat. #mofmofriends #kitabku',
+    'Hari ini {n} ulang tahun. Buka Kitabku, kirim ucapan, dan lihat buddy kamu pakai topi pesta. #mofmofriends #kitabku'
+  ];
+  function captionUltah(r) { var i = 0; for (var k = 0; k < r.karakter.length; k++) i += r.karakter.charCodeAt(k); return CAPTION[i % CAPTION.length].replace('{n}', r.nama || r.karakter); }
+  function salinCaption(k) {
+    var r = (A.ul.data || []).filter(function (x) { return x.karakter === k; })[0]; if (!r) return;
+    var teks = captionUltah(r), ok = function () { A.ul.pesan = t('ul_disalin'); A.ul.ok = true; bunyi('scanOk'); gambar(); };
+    try { navigator.clipboard.writeText(teks).then(ok, function () { A.ul.pesan = teks; A.ul.ok = true; gambar(); }); } catch (e) { A.ul.pesan = teks; A.ul.ok = true; gambar(); }
+  }
+  function htmlSegera() {
+    var U = A.ul, rs = U.rentang, maks = rs === 'all' ? 999 : Number(rs);
+    var L = (U.data || []).map(function (r) { return { r: r, d: jarakUltah(r.tanggal) }; }).filter(function (x) { return x.d <= maks; }).sort(function (a, b) { return a.d - b.d; });
+    var chip = function (n, k) { return '<button type="button" data-kb="ulRentang" data-n="' + n + '" aria-pressed="' + (rs === n) + '">' + esc(t(k)) + '</button>'; };
+    return '<div class="kb-ul-segera"><div class="kb-ul-kepala"><b>' + esc(t('ul_segera')) + '</b><div class="kb-sk-seg" role="group" aria-label="' + esc(t('ul_segera')) + '">' + chip('30', 'ul_30') + chip('90', 'ul_90') + chip('all', 'ul_semua') + '</div></div>' +
+      '<p class="ket-alat">' + esc(t('ul_ketSegera')) + '</p>' +
+      (L.length ? '<ul class="kb-ul-kal">' + L.map(function (x) {
+        var r = x.r, hari = x.d === 0 ? t('ul_hari0') : x.d === 1 ? t('ul_hari1') : teksIsi('ul_hariN', { n: x.d });
+        var tgl = Number(r.tanggal.slice(3, 5)) + ' ' + BULAN[bhs()][Number(r.tanggal.slice(0, 2)) - 1];
+        return '<li data-ul-segera="' + esc(r.karakter) + '"' + (x.d <= 7 ? ' class="dekat"' : '') + '><div class="kb-ul-tgl"><b>' + esc(tgl) + '</b><small>' + esc(hari) + '</small></div>' +
+          '<div class="kb-ul-info"><b>' + esc(r.nama || r.karakter) + '</b><small>' + esc(r.pemilik == null ? '' : teksIsi('ul_pemilik', { n: nf(r.pemilik) })) + '</small></div>' +
+          '<div class="kb-ul-cap"><small>' + esc(t('ul_caption')) + '</small><span>' + esc(captionUltah(r)) + '</span><button type="button" class="btn dua" data-kb="ulSalin" data-kar="' + esc(r.karakter) + '">' + esc(t('ul_salin')) + '</button></div></li>';
+      }).join('') + '</ul>' : '<p class="ket-alat">' + esc(t('ul_kosongRentang')) + '</p>') + '</div>';
+  }
+  var HARI_BULAN = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  function tglUltahSah(x) { var m = /^(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/.exec(String(x || '')); return !!m && Number(m[2]) <= HARI_BULAN[Number(m[1]) - 1]; }
+  function muatUltah() {
+    A.ul.memuat = true;
+    return panggil('ultah').then(function (h) {
+      A.ul.memuat = false;
+      if (!h || !h.ok) throw new Error((h && h.pesan) || t('gagal'));
+      A.ul.data = Array.isArray(h.karakter) ? h.karakter : []; A.ul.nilai = {};
+      if (A.tab === 'saklar') gambar();
+    }).catch(function (e) { A.ul.memuat = false; A.ul.pesan = e.message; A.ul.ok = false; if (A.tab === 'saklar') gambar(); });
+  }
+  function simpanUltah(k) {
+    var x = (A.ul.data || []).filter(function (r) { return r.karakter === k; })[0]; if (!x || A.ul.sibuk) return;
+    var tgl = String(A.ul.nilai[k] != null ? A.ul.nilai[k] : x.tanggal).trim();
+    if (!tglUltahSah(tgl)) { A.ul.pesan = t('ul_salah'); A.ul.ok = false; bunyi('scanTolak'); gambar(); return; }
+    A.ul.sibuk = k; A.ul.pesan = ''; gambar();
+    panggil('ubahUltah', { karakter: k, tanggal: tgl }).then(function (r) {
+      A.ul.sibuk = '';
+      if (!r || !r.ok) { A.ul.pesan = (r && r.pesan) || t('gagal'); A.ul.ok = false; bunyi('scanTolak'); gambar(); return; }
+      x.tanggal = tgl; delete A.ul.nilai[k];
+      A.ul.pesan = teksIsi('ul_ok', { k: x.nama || k, d: tgl }); A.ul.ok = true; bunyi('scanOk'); gambar();
+    }, function (e) { A.ul.sibuk = ''; A.ul.pesan = e.message; A.ul.ok = false; gambar(); });
+  }
+  function htmlUltah() {
+    var U = A.ul;
+    if (!U.data) return '<section class="kb-kotak" id="kbUltah"><h3>' + esc(t('ul_judul')) + '</h3><p class="ket-alat">' + esc(U.memuat ? t('ul_muat') : U.pesan || t('ul_muat')) + '</p></section>';
+    var hari = new Date(Date.now() + 7 * 3600e3).toISOString().slice(5, 10);
+    return '<section class="kb-kotak" id="kbUltah"><h3>' + esc(t('ul_judul')) + '</h3><p class="ket-alat">' + esc(t('ul_ket')) + '</p>' +
+      (U.pesan ? '<p id="kbUltahPesan" class="kb-sk-pesan' + (U.ok ? ' ok' : '') + '" role="' + (U.ok ? 'status' : 'alert') + '">' + esc(U.pesan) + '</p>' : '') +
+      htmlSegera() + '<ul class="kb-ul-daftar">' + U.data.map(function (r) {
+        var v = U.nilai[r.karakter] != null ? U.nilai[r.karakter] : r.tanggal;
+        return '<li class="kb-ul-baris"><label for="kbUl-' + esc(r.karakter) + '"><b>' + esc(r.nama || r.karakter) + '</b>' + (r.tanggal === hari ? ' <span class="kb-sk-pil" data-sk-status="live">' + esc(t('ul_hariIni')) + '</span>' : '') + '</label>' +
+          '<input id="kbUl-' + esc(r.karakter) + '" data-ul-kar="' + esc(r.karakter) + '" value="' + esc(v) + '" inputmode="numeric" maxlength="5" placeholder="MM-DD" autocomplete="off" spellcheck="false">' +
+          '<button type="button" class="btn dua" data-kb="ulSimpan" data-kar="' + esc(r.karakter) + '"' + (U.sibuk ? ' disabled' : '') + '>' + esc(U.sibuk === r.karakter ? t('sk_simpan') : t('ul_simpan')) + '</button></li>';
+      }).join('') + '</ul></section>';
+  }
   function muatSaklar(diam) {
-    if (!diam) { A.galat = ''; A.sk.memuat = true; A.sk.yakin = false; gambar(); }
+    if (!diam) { A.galat = ''; A.sk.memuat = true; A.sk.yakin = false; A.ul.pesan = ''; gambar(); muatUltah(); }
     return panggil('saklar').then(function (h) {
       A.sk.memuat = false;
       if (!h || !h.ok) throw new Error((h && h.pesan) || t('gagal'));
@@ -671,17 +786,20 @@
     }).join('') + '</ol>' + (log.length ? '' : '<p class="ket-alat">' + esc(t('sk_logKosong')) + '</p>') + '</section>';
     return '<div id="kbSaklar" class="kb-sk"><h2 class="kb-sk-judul">' + esc(t('sk_judul')) + '</h2><p class="ket-alat">' + esc(t('sk_ket')) + '</p>' + pesan +
       '<section class="kb-kotak"><h3>' + esc(t('sk_rilis')) + ' <small class="ket-alat">' + esc(teksIsi('sk_rilisKet', { a: nyala, n: SK_FITUR.length })) + '</small></h3><ul class="kb-sk-daftar">' + baris + '</ul></section>' +
-      darurat + kotakStaf + kotakLog + '</div>';
+      htmlUltah() + darurat + kotakStaf + kotakLog + '</div>';
   }
 
   /* ---------- Keterlibatan pemain (24 Okt 2026, Ferdy setuju mockup WmsEngage) ----------
      Server: aksi admin statKitab {hari: 7|14|30}. Grafik digambar SVG sendiri, WMS tidak memuat pustaka luar.
      Kolom saklar di ringkasan per fitur dibaca dari aksi saklar; kalau gagal, kolomnya memakai bacaan terakhir atau kosong. */
-  A.lb = { hari: 14, data: null, memuat: false };
+  A.lb = { hari: 14, data: null, memuat: false, coba: null };
   function muatLibat() {
     A.galat = ''; A.lb.memuat = true; gambar();
     /* saklar selalu dibaca ulang: bisa sudah diubah orang lain sejak tab Saklar terakhir dibuka */
     panggil('saklar').then(function (h) { if (h && h.ok) { simpanDataSk(h); if (A.tab === 'libat' && A.lb.data) gambar(); } }, function () {});
+    /* pinjaman jadi beli (25 Okt sore): per edisi aktif, tidak ikut pilihan 7/14/30 hari; dibaca ulang tiap halaman dibuka */
+    panggil('cobaBeli').then(function (h) { A.lb.coba = h && h.ok ? h : { galat: (h && h.pesan) || t('gagal') }; if (A.tab === 'libat') gambar(); },
+      function (e) { A.lb.coba = { galat: e.message || t('gagal') }; if (A.tab === 'libat') gambar(); });
     var hari = A.lb.hari;
     return panggil('statKitab', { hari: hari }).then(function (h) {
       if (hari !== A.lb.hari) return;
@@ -744,7 +862,32 @@
     var fitur = '<section class="kb-kotak"><h3>' + esc(t('lb_fitur')) + '</h3><p class="ket-alat">' + esc(t('lb_fiturKet')) + '</p><div class="kb-lb-gulir"><table id="kbLbFitur" class="kb-lb-tabel"><thead><tr><th>' + esc(t('lb_kFitur')) + '</th><th class="num">' + esc(t('lb_kPakai')) + '</th><th>' + esc(t('lb_kSaklar')) + '</th></tr></thead><tbody>' +
       pakai.map(function (r) { var x = cariSk(r[3]); return '<tr data-lb-fitur="' + r[0] + '"><th scope="row">' + esc(r[1]) + '</th><td class="num">' + esc(r[2]) + '</td><td>' + (x ? '<span class="kb-sk-pil" data-sk-status="' + statusSk(x.mode) + '">' + esc(labelMode(x.mode)) + '</span>' : '') + '</td></tr>'; }).join('') +
       '</tbody></table></div></section>';
-    return kepala + kpi + '<div class="kb-lb-dua">' + grafik + buddy + '</div><div class="kb-lb-dua">' + corong + fitur + '</div></div>';
+    return kepala + kpi + '<div class="kb-lb-dua">' + grafik + buddy + '</div><div class="kb-lb-dua">' + corong + fitur + '</div>' + htmlCobaBeli() + '</div>';
+  }
+
+  /* Pinjaman jadi beli (25 Okt sore, Ferdy): dari aksi admin cobaBeli. Konversi dihitung dari pinjaman yang jendela 14
+     harinya sudah lewat, supaya pinjaman yang masih berjalan tidak terbaca sebagai tidak beli di tengah edisi. */
+  function htmlCobaBeli() {
+    var C = A.lb.coba;
+    var kepala = '<section class="kb-kotak" id="kbCobaBeli"><h3>' + esc(t('cb_judul')) + '</h3><p class="ket-alat">' + esc(t('cb_ket')) + '</p>';
+    if (!C) return kepala + '<p class="ket-alat">' + esc(t('muat')) + '</p></section>';
+    if (C.galat) return kepala + '<p class="ket-alat" role="alert">' + esc(C.galat) + '</p></section>';
+    if (!C.acara) return kepala + '<p class="ket-alat">' + esc(t('cb_tanpaAcara')) + '</p></section>';
+    var T = C.total || {}, pinjam = Number(T.pinjam) || 0, beli = Number(T.beli) || 0, berjalan = Number(T.berjalan) || 0, selesai = Math.max(0, pinjam - berjalan);
+    kepala += '<p class="ket-alat">' + esc(teksIsi('cb_edisi', { e: C.acara.nama || '' })) + '</p>';
+    if (!pinjam) return kepala + '<p class="ket-alat" data-cb-kosong>' + esc(t('cb_kosong')) + '</p></section>';
+    var ubin = function (k, judul, angka, ket) { return '<div class="kb-kpi" data-cb-kpi="' + k + '"><span>' + esc(judul) + '</span><b>' + esc(angka) + '</b><small>' + esc(ket) + '</small></div>'; };
+    var kpi = '<div class="kb-kpis kb-lb-kpis">' + ubin('pinjam', t('cb_pinjam'), nf(pinjam), t('cb_pinjamKet')) + ubin('beli', t('cb_beli'), nf(beli), t('cb_beliKet')) +
+      ubin('persen', t('cb_persen'), selesai > 0 ? Math.round(beli / selesai * 100) + '%' : '-', teksIsi('cb_persenKet', { n: nf(selesai) })) + ubin('berjalan', t('cb_berjalan'), nf(berjalan), t('cb_berjalanKet')) + '</div>';
+    var J = C.jenis || {};
+    var jenis = '<ol class="kb-lb-corong">' + ['cap', 'tas', 'jimat', 'mainan'].map(function (k) {
+      var x = J[k] || {}, n = Number(x.pinjam) || 0, b = Number(x.beli) || 0, p = n > 0 ? Math.round(b / n * 100) : 0;
+      return '<li data-cb-jenis="' + k + '"><div><b>' + esc(t('cb_j_' + k)) + '</b><span>' + esc(n ? teksIsi('cb_dari', { b: nf(b), n: nf(n) }) : t('cb_tanpa')) + '</span></div><span class="kb-lb-trek"><span class="kb-lb-isi" style="width:' + Math.min(100, p) + '%"></span></span></li>';
+    }).join('') + '</ol>';
+    var B = (Array.isArray(C.barang) ? C.barang : []).slice(0, 8);
+    var tabel = '<div class="kb-lb-gulir"><table class="kb-lb-tabel"><thead><tr><th>' + esc(t('cb_kBarang')) + '</th><th class="num">' + esc(t('cb_kPinjam')) + '</th><th class="num">' + esc(t('cb_kBeli')) + '</th><th class="num">' + esc(t('cb_kJalan')) + '</th></tr></thead><tbody>' +
+      B.map(function (x) { return '<tr data-cb-barang><th scope="row">' + esc(x.nama || x.kode || '') + '</th><td class="num">' + nf(x.pinjam) + '</td><td class="num">' + nf(x.beli) + '</td><td class="num">' + nf(x.berjalan) + '</td></tr>'; }).join('') + '</tbody></table></div>';
+    return kepala + kpi + '<div class="kb-lb-dua">' + jenis + tabel + '</div></section>';
   }
 
   /* ---------- kerangka lembar (pakai gaya .alat-latar milik alat.js) ---------- */
@@ -758,7 +901,7 @@
     d.addEventListener('input', ketik);
     d.addEventListener('change', ketik);
     d.addEventListener('keydown', tombolScan);
-    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target && e.target.id === 'kbSkStaf') { e.preventDefault(); tambahStaf(); } });
+    d.addEventListener('keydown', function (e) { if (e.key === 'Enter' && e.target && e.target.id === 'kbSkStaf') { e.preventDefault(); tambahStaf(); } if (e.key === 'Enter' && e.target && e.target.getAttribute && e.target.getAttribute('data-ul-kar') != null) { e.preventDefault(); simpanUltah(e.target.getAttribute('data-ul-kar')); } });
     /* scan berikutnya menimpa isi lama, bukan menyambung di belakangnya */
     d.addEventListener('focusin', function (e) { var x = e.target; if (x && (x.id === 'kbPsPesanan' || x.id === 'kbPsKartu') && x.select) x.select(); });
     document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && d.classList.contains('buka')) { e.preventDefault(); tutup(); } });
@@ -1767,6 +1910,9 @@
     else if (a === 'skMatiYa') matikanSemua();
     else if (a === 'skStafTambah') tambahStaf();
     else if (a === 'skStafHapus') hapusStaf(x.getAttribute('data-sid'));
+    else if (a === 'ulSimpan') simpanUltah(x.getAttribute('data-kar'));
+    else if (a === 'ulRentang') { A.ul.rentang = x.getAttribute('data-n'); A.ul.pesan = ''; gambar(); }
+    else if (a === 'ulSalin') salinCaption(x.getAttribute('data-kar'));
     else if (a === 'lbHari') { var hr = Number(x.getAttribute('data-hari')); if (hr !== A.lb.hari) { A.lb.hari = hr; muatLibat(); } }
     else if (a === 'tpUnggah') unggahTemplate();
     else if (a === 'tpFinal') finalTemplate(x.getAttribute('data-id'), x.getAttribute('data-final') === '1');
@@ -1811,6 +1957,7 @@
     if (x.getAttribute && x.getAttribute('data-vpakai') != null) ketikPakai(x);
     if (x.id === 'kbVoucherBerkas' && e.type === 'change' && x.files && x.files[0]) unggahVoucher(x.files[0]);
     if (x.id === 'kbSkStaf') A.sk.ke = x.value;
+    if (x.getAttribute && x.getAttribute('data-ul-kar') != null) A.ul.nilai[x.getAttribute('data-ul-kar')] = x.value;
     if (x.id === 'kbTpAcara') A.tp.acara = x.value;
     if (x.id === 'kbTpCatatan') A.tp.catatan = x.value;
     if (x.id === 'kbPdfUk' || x.id === 'kbPdfUk2' || x.id === 'kbPdfUkEd') A.ukuranPdf = String(x.value);
