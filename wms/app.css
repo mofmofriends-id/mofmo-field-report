@@ -1380,3 +1380,5 @@ html[data-theme="dark"] #kbHs .kb-hs-angka{background:#3a2023;color:#f3c2c6;bord
   .kb-sk-oleh{text-align:left}
   .kb-sk-judul{font-size:26px}
 }
+/* Saklar Jubelio (jubelio.js, 1 Nov 2026) */
+.jb-saklar .chip-alat.on{background:var(--navOn);color:var(--navOnInk);border-color:transparent}
